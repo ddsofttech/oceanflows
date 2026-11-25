@@ -161,7 +161,6 @@ a:hover { color: var(--color-action-primary-hover); }
   position: relative;
   overflow: hidden;
   width: 100%;
-  /* Match light/dark banner artboard 1200∶400 on desktop */
   aspect-ratio: 1200 / 400;
   height: auto;
   min-height: 12rem;
@@ -174,20 +173,16 @@ a:hover { color: var(--color-action-primary-hover); }
 [data-theme="dark"] .hero-banner {
   background-color: var(--color-navy-950);
 }
-.hero-banner::before {
-  content: "";
+.hero-banner__art {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: url("../assets/banners/light_banner.svg?v=2") center center / contain no-repeat;
+  background: url("../assets/banners/light_banner.svg?v=3") center center / contain no-repeat;
   pointer-events: none;
   user-select: none;
 }
-[data-theme="dark"] .hero-banner::before {
-  background-image: url("../assets/banners/dark_banner.svg?v=2");
-  background-size: contain;
-  opacity: 1;
-  filter: none;
+[data-theme="dark"] .hero-banner__art {
+  background-image: url("../assets/banners/dark_banner.svg?v=3");
 }
 .hero-banner::after {
   content: "";
@@ -282,15 +277,29 @@ a:hover { color: var(--color-action-primary-hover); }
 }
 .hero-banner__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
 @media (max-width: 639px) {
-  /* Grow with copy — fixed 3∶1 box is too short for headline + lead */
+  /* Stack: aligned copy, then full-width banner (contain, no crop) */
   .hero-banner {
     aspect-ratio: auto;
     min-height: 0;
     height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
+  .hero-banner__art {
+    position: relative;
+    inset: auto;
+    order: 2;
+    width: 100%;
+    aspect-ratio: 1200 / 400;
+    background-position: center center;
+    background-size: contain;
+  }
+  .hero-banner::after { display: none; }
   .hero-banner__layout {
+    order: 1;
     align-items: flex-start;
-    padding-block: var(--space-5) var(--space-6);
+    padding-block: var(--space-5) var(--space-4);
   }
   .hero-banner__content { max-width: 100%; }
   .hero-banner__brand-line {
@@ -303,28 +312,6 @@ a:hover { color: var(--color-action-primary-hover); }
   }
   .hero-banner__tags,
   .hero-banner__actions { display: none; }
-  .hero-banner::before {
-    background-position: center bottom;
-    background-size: contain;
-  }
-  .hero-banner::after {
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.96) 0%,
-      rgba(255, 255, 255, 0.88) 38%,
-      rgba(255, 255, 255, 0.45) 68%,
-      rgba(255, 255, 255, 0.12) 100%
-    );
-  }
-  [data-theme="dark"] .hero-banner::after {
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--color-navy-950) 96%, transparent) 0%,
-      color-mix(in srgb, var(--color-navy-950) 78%, transparent) 42%,
-      color-mix(in srgb, var(--color-navy-950) 35%, transparent) 72%,
-      transparent 100%
-    );
-  }
 }
 
 [data-theme="dark"] .pull-quote { color: var(--color-brand-cyan); }
