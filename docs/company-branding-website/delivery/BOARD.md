@@ -6,7 +6,7 @@
 - Route: Normal
 - PRD version: 1.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; G4 Approve D17
-- Last updated: 2026-11-25 (production catch-up PR onto release/; no UX merge)
+- Last updated: 2026-11-25 (PR #9 merged — production web/ on release/)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
@@ -37,7 +37,7 @@
 | Git host (GitHub) | Yes | github.com/ddsofttech/oceanflows.git |
 | PR CI (gates) | Yes | `web-ci` green |
 | GitHub Cloudflare secrets | Yes | Owner set |
-| Cloudflare live site | No | NS on Cloudflare only; **no A/AAAA/CNAME** for apex — S6.2 Fail (H3) |
+| Cloudflare live site | No | `web/` now on `release/`; rebuild CF on that branch, then custom domain (H3) |
 | Test plan | Yes | `testing/TEST-PLAN.md` |
 | RP1 RC | Yes | `8f974c60` |
 
