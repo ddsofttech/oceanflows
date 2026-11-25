@@ -1,3 +1,3 @@
-export function sitePhase(): "preview" {
-  return "preview";
+export function sitePhase(): "live-contact" {
+  return "live-contact";
 }

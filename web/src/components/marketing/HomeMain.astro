@@ -1,9 +1,11 @@
 ---
-import { publicSiteLinks } from "../../lib/public-site";
+import BookingPanel from "../BookingPanel.astro";
+import ContactDetails from "../ContactDetails.astro";
+import InquiryForm from "../InquiryForm.astro";
+import { publicSiteConfig } from "../../lib/public-site";
 
-const { bookingUrl, publicEmail } = publicSiteLinks();
+const site = publicSiteConfig();
 ---
-
 <section
   id="home"
   class="hero-banner section--flush"
@@ -630,101 +632,21 @@ const { bookingUrl, publicEmail } = publicSiteLinks();
       </p>
     </div>
     <div class="contact-layout">
-      <form
-        class="inquiry-form"
-        id="inquiry-form"
-        action="#"
-        method="post"
-        data-static-inquiry
-        novalidate
-      >
-        <div class="form-field">
-          <label for="name">Name <span aria-hidden="true">*</span></label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            autocomplete="name"
-            required
-          />
-        </div>
-        <div class="form-field">
-          <label for="email">Email <span aria-hidden="true">*</span></label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autocomplete="email"
-            required
-          />
-          <p class="form-field__hint">We reply to the address you provide.</p>
-        </div>
-        <div class="form-field">
-          <label for="phone"
-            >Phone <span class="caption muted">(optional)</span></label
-          >
-          <input id="phone" name="phone" type="tel" autocomplete="tel" />
-        </div>
-        <div class="form-field">
-          <label for="message">Inquiry <span aria-hidden="true">*</span></label>
-          <textarea id="message" name="message" required></textarea>
-        </div>
-        <p class="privacy-note">
-          By sending this form you agree to our <a href="/privacy"
-            >privacy notice</a
-          >.
-        </p>
-        <p id="inquiry-static-note" class="caption muted">
-          Inquiry delivery is not enabled on this preview.
-        </p>
-        <button
-          class="btn btn--primary"
-          type="submit"
-          disabled
-          aria-describedby="inquiry-static-note">Send inquiry</button
-        >
-      </form>
+      <InquiryForm
+        publicEmail={site.publicEmail}
+        turnstileSiteKey={site.turnstileSiteKey}
+      />
       <aside>
-        <div class="booking-panel" id="booking-panel">
-          <h3 class="h3">Book a 30-minute consultation</h3>
-          <p class="muted">
-            Pick a time that works for you. Confirmation is handled by Cal.com.
-          </p>
-          <p>
-            <a
-              class="btn btn--secondary"
-              href={bookingUrl}
-              rel="noopener noreferrer">Open booking calendar</a
-            >
-          </p>
-        </div>
-        <div class="contact-details">
-          <h3 class="h3">Other ways to reach us</h3>
-          <ul>
-            <li>
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                aria-hidden="true"
-                ><path d="M4 4h16v16H4z"></path><path d="m4 7 8 6 8-6"
-                ></path></svg
-              ><a href={`mailto:${publicEmail}`}>{publicEmail}</a>
-            </li>
-            <li>
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                aria-hidden="true"
-                ><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"
-                ></path><circle cx="12" cy="10" r="2.5"></circle></svg
-              ><span>Alberta, Canada</span>
-            </li>
-          </ul>
-        </div>
+        <BookingPanel
+          bookingUrl={site.bookingUrl}
+          bookingAvailable={site.bookingAvailable}
+          publicEmail={site.publicEmail}
+        />
+        <ContactDetails
+          publicEmail={site.publicEmail}
+          phone={site.phone}
+          linkedInUrl={site.linkedInUrl}
+        />
       </aside>
     </div>
   </div>

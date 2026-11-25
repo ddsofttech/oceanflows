@@ -1,0 +1,80 @@
+---
+interface Props {
+  publicEmail: string;
+  phone?: string;
+  linkedInUrl?: string;
+  locationLabel?: string;
+}
+
+const {
+  publicEmail,
+  phone,
+  linkedInUrl,
+  locationLabel = "Alberta, Canada",
+} = Astro.props;
+---
+
+<div class="contact-details">
+  <h3 class="h3">Other ways to reach us</h3>
+  <ul>
+    <li>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+        ><path d="M4 4h16v16H4z"></path><path d="m4 7 8 6 8-6"></path></svg
+      ><a href={`mailto:${publicEmail}`}>{publicEmail}</a>
+    </li>
+    {
+      phone ? (
+        <li>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M6.6 10.8a13.4 13.4 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 9.6 9.6 0 0 0 3 .48 1 1 0 0 1 1 1v3.2a1 1 0 0 1-1 1A16.7 16.7 0 0 1 3 5a1 1 0 0 1 1-1h3.2a1 1 0 0 1 1 1 9.6 9.6 0 0 0 .48 3 1 1 0 0 1-.25 1z" />
+          </svg>
+          <a href={`tel:${phone}`}>{phone}</a>
+        </li>
+      ) : null
+    }
+    {
+      linkedInUrl ? (
+        <li>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-14h4v2" />
+            <rect x="2" y="9" width="4" height="12" />
+            <circle cx="4" cy="4" r="2" />
+          </svg>
+          <a href={linkedInUrl} target="_blank" rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+        </li>
+      ) : null
+    }
+    <li>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+        ><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"></path><circle
+          cx="12"
+          cy="10"
+          r="2.5"></circle></svg
+      ><span>{locationLabel}</span>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,86 @@
+---
+interface Props {
+  publicEmail: string;
+  turnstileSiteKey?: string;
+  privacyHref?: string;
+}
+
+const {
+  publicEmail,
+  turnstileSiteKey,
+  privacyHref = "/privacy",
+} = Astro.props;
+---
+
+<div
+  class="inquiry-form-shell"
+  data-inquiry-form
+  data-public-email={publicEmail}
+  data-turnstile-site-key={turnstileSiteKey ?? ""}
+>
+  <div data-inquiry-status hidden></div>
+  <form class="inquiry-form" id="inquiry-form" method="post" novalidate>
+    <div class="visually-hidden" aria-hidden="true">
+      <label for="hp">Leave blank</label>
+      <input
+        id="hp"
+        name="hp"
+        type="text"
+        tabindex="-1"
+        autocomplete="off"
+        value=""
+      />
+    </div>
+    <div class="form-field">
+      <label for="name">Name <span aria-hidden="true">*</span></label>
+      <input
+        id="name"
+        name="name"
+        type="text"
+        autocomplete="name"
+        required
+      />
+      <p class="form-field__error" hidden></p>
+    </div>
+    <div class="form-field">
+      <label for="email">Email <span aria-hidden="true">*</span></label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        required
+      />
+      <p class="form-field__hint">We reply to the address you provide.</p>
+      <p class="form-field__error" hidden></p>
+    </div>
+    <div class="form-field">
+      <label for="phone"
+        >Phone <span class="caption muted">(optional)</span></label
+      >
+      <input id="phone" name="phone" type="tel" autocomplete="tel" />
+      <p class="form-field__error" hidden></p>
+    </div>
+    <div class="form-field">
+      <label for="message">Inquiry <span aria-hidden="true">*</span></label>
+      <textarea id="message" name="message" required></textarea>
+      <p class="form-field__error" hidden></p>
+    </div>
+    {
+      turnstileSiteKey ? (
+        <div class="form-field" data-turnstile-mount aria-label="Security check" />
+      ) : null
+    }
+    <p class="privacy-note">
+      By sending this form you agree to our <a href={privacyHref}
+        >privacy notice</a
+      >.
+    </p>
+    <button class="btn btn--primary" type="submit">Send inquiry</button>
+  </form>
+</div>
+
+<script>
+  import { initInquiryForm } from "../scripts/inquiry-form";
+  initInquiryForm();
+</script>

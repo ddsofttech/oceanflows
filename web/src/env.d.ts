@@ -5,6 +5,7 @@ interface ImportMetaEnv {
   readonly PUBLIC_PUBLIC_EMAIL?: string;
   readonly PUBLIC_PUBLIC_PHONE?: string;
   readonly PUBLIC_LINKEDIN_URL?: string;
+  readonly PUBLIC_TURNSTILE_SITE_KEY?: string;
 }
 
 interface ImportMeta {
