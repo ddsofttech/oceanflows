@@ -2,8 +2,8 @@
 
 ## A. What was reviewed
 - UX brief: `docs/company-branding-website/ux/UX-BRIEF.md` (G2 option A recorded; build record §F).
-- UX branch and commit: `ux/company-branding-website` @ `87a29bc85e5ec9343c4ea94df63f3ed3471cb476` ("Build S2.3 company branding website UX prototype.").
-- Evidence type: **owner walkthrough** (design-lead code and markup review, screenshot review, partial HTTP serve from extracted branch; IDE browser could not load localhost in this session).
+- UX branch and commit: `ux/company-branding-website` @ `56f6d56c62107fe84e12a90f4663b12109d53733` ("Fix S2.4 UX defects for company branding prototype."). Prior review: `87a29bc`.
+- Evidence type: **owner walkthrough** (revalidation of designer fixes only: styled screenshot review at 390/1440, markup/CSS/JS on UX branch; Playwright not available in this session for live 320/360 viewport measure).
 - Requirements baseline: `docs/baselines/prds/PRD-v1.0.md` (v1.0, G1 approved).
 
 ## B. UI check results (what was built)
@@ -11,16 +11,16 @@
 |---|---|---|---|
 | Engineering-standards UI checks (a11y, tokens, catalog) | — | **Not run** | `docs/ENGINEERING-STANDARDS.md` does not exist. **Missing UI check** → `architect` at S3.1. |
 | UI catalog current | `ui-catalog.py --check` | **Not run / N/A** | `prototype/` exists only on `ux/company-branding-website`; on `release/company-branding-website` check fails (`src: not found`, stale `docs/COMPONENTS.md`). Re-run on UX branch before S3 implementation gate. |
-| Accessibility (contrast, focus, keyboard) | Manual (design-lead) | **Partial** | Spot-check from tokens and markup only; no axe/pa11y. Focus-visible styles present in CSS; mobile menu has Escape close but no focus trap. Full WCAG 2.2 AA pass not claimed. |
+| Accessibility (contrast, focus, keyboard) | Manual (design-lead) | **Partial** | Tokens/markup/CSS; mobile nav now has focus trap, Escape close, and focus return (`prototype/js/site.js`). No axe/pa11y run. Full WCAG 2.2 AA pass not claimed. |
 | Design tokens | Manual | **Pass (structure)** | `design/tokens/design-tokens.json` + `tokens.css` on UX branch; values sourced from Figma foundations per build record. |
 | Stories build | — | N/A | Plain HTML stories; no Storybook build. |
 
 ## C. Question results
 | Question | Result | Evidence |
 |---|---|---|
-| UQ1 | **Still open** | Styled first viewport at 320/360 px not verified in session (screenshots unusable; see E. Home). Markup and CSS suggest hero is text-led (`display` class) but sticky header + two body paragraphs + CTA may exceed one screen on small devices — needs styled capture or owner confirm. |
-| UQ2 | **Partially answered** | Desktop/mobile nav, `aria-current`, `IntersectionObserver`, mobile toggle with `aria-expanded`, Escape closes menu (`site.js`). **Gap:** no focus trap or focus return to menu button when mobile nav opens; not-found page nav omits `data-section-link` / mobile menu (desktop-only header). Owner walkthrough (code). |
-| UQ3 | **Partially answered** | Five ruled services with problem/outcome; RAG explained in Knowledge row. **Gap:** "AI Agents & Automation" title uses the term before a plain-language definition (outcome says "Intelligent agents" only). Owner walkthrough (markup). |
+| UQ1 | **Partially answered** (defer at G3) | Styled captures at **390px** and `nav-mobile-open-mobile.png` show text-led hero (`display` is largest element) with brand line, SMB statement, consulting-first copy, and CTA. **320/360 first-viewport-without-scroll** not measured (full-page shots only; Playwright unavailable here). Owner may accept 390px proxy or confirm on device. Owner walkthrough (screenshots). |
+| UQ2 | **Partially answered** | Main site: desktop/mobile nav, `aria-current`, `IntersectionObserver`, focus trap + Tab wrap + focus return + Escape (`site.js`); toggle has visually hidden "Menu" label. **Gap:** `not-found.html` uses desktop `primary-nav` only (no mobile menu pattern). Owner walkthrough (code + `nav-mobile-open-mobile.png`). |
+| UQ3 | **Answered** | Five ruled services; RAG plain-language in Knowledge row; "AI Agents & Automation" outcome defines agents in plain language (follow steps, routine decisions, hand off). Owner walkthrough (markup + `services-mobile.png`). |
 | UQ4 | **Answered** | Four stages in order with deliverables; copy states consulting engagement not package; CSS `counter` shows 1–4 on approach track. Owner walkthrough (markup + CSS). |
 | UQ5 | **Answered** | Founder, 10 years, expertise list, philosophy pull-quote; no empty proof placeholders. Owner walkthrough (markup). |
 | UQ6 | **Answered** | Matching `Book a consultation` primary buttons on Home, Services, Approach, About → `#contact`; Contact shows form + booking aside. Owner walkthrough (markup). |
@@ -31,8 +31,8 @@
 | UQ11 | **Answered** | `privacy.html` prose layout; link from form and footer. Draft legal copy flagged in page. Owner walkthrough (markup). |
 | UQ12 | **Answered** | `not-found.html`: full primary nav + button to home (hash link). No mobile menu on this page (see UQ2). Owner walkthrough (markup). |
 | UQ13 | **Answered (code)** | `prefers-reduced-motion` disables scroll-behavior and loading animation; mobile nav uses class toggle without required motion. Not exercised in browser this session. Owner walkthrough (CSS + JS). |
-| UQ14 | **Partially answered** | Figma-sourced palette and Montserrat/Inter; typography-led, no stock imagery. **Gaps:** logo shipped as PNG not SVG (brief §B); header tagline duplicates brand line from logo asset. Owner walkthrough (assets + screenshots of styled intent N/A). |
-| UQ15 | **Still open** | Screenshot package does not evidence styled layouts at any width. CSS uses responsive grid and `clamp()`; overflow not verified at 320–1440 in styled mode this session. |
+| UQ14 | **Answered** | Figma-sourced palette and Montserrat/Inter; typography-led, no stock or AI clichés; `logo-mark.svg` in header/footer on styled screenshots. Minor: header tagline "Intelligence integrated" sits beside logo mark (acceptable unless owner objects). Owner walkthrough (screenshots + assets). |
+| UQ15 | **Partially answered** (defer at G3) | Styled screenshots at **390** and **1440**; no overflow visible in reviewed shots. Widths 320, 360, 768, 1024 not all captured. Owner walkthrough (screenshots). |
 
 ## D. Scenario results
 | Scenario ID | Expected outcome | Observed result | Result | Steps to reproduce | Finding type | Severity | Owner and action |
@@ -41,7 +41,7 @@
 | W1b | CTA → Contact → open Cal.com booking | Booking link with `[BOOKING_URL]`; 30-minute copy present | Pass (prototype) | `index.html#contact` → "Open booking calendar" | — | — | Architect: R6 embed vs link |
 | E1 | Invalid fields → errors, values kept | Story shows three field errors + values | Pass | `stories/contact-field-errors.html` | — | — | — |
 | E2 | Delivery failure → error + email alternative | Story matches FR-08 | Pass | `stories/contact-delivery-failure.html` | — | — | — |
-| E3 | Spam → no success confirmation | **No UI state built** | **Blocked** | — | Usability concern | Important | `architect` mechanism first; then `designer` E3 story/screen |
+| E3 | Spam → no success confirmation | `contact-spam-rejected.html`: error state, no success confirmation; captioned BR-07 | Pass (story) | Open `prototype/stories/contact-spam-rejected.html` via repo-root HTTP serve | — | — | Architect: R3 mechanism in production; no screenshot in `ux/screens/` package |
 | E4 | Unknown URL → not-found + nav | Page built with nav and home CTA | Pass | `pages/not-found.html` | — | — | — |
 | E5 | Reduced motion → animations off | CSS/JS rules present | Pass (code) | Toggle OS reduce motion; reload | — | — | QA to verify at S5 |
 | E7 | Booking unavailable → form + email usable | Story matches | Pass | `stories/contact-booking-unavailable.html` | — | — | — |
@@ -50,31 +50,32 @@
 ## E. Design review
 | Screen | Area | Observation | Finding type | Severity | Owner and action |
 |---|---|---|---|---|---|
-| All (screenshots) | Identity / responsiveness / design system | All `ux/screens/*-{mobile,desktop}.png` show **unstyled** default browser rendering (serif fonts, no grid). Cause: `site.css` imports `../../design/tokens/tokens.css`; serving only `prototype/` (per UX brief §F) leaves tokens unreachable, so captured pixels are not the designed UI. | UX defect | **Blocking** | `designer`: re-capture every screenshot with HTTP root that includes `prototype/` and `design/` (or fix serve path in brief); replace `ux/screens/*`. |
-| Home / Contact (`index.html`) | States / copy | Stray `<motionwrap/>` in contact form markup (invalid element). | UX defect | **Blocking** | `designer`: remove placeholder from `prototype/pages/index.html`. |
-| All | Design system | Logo in header/footer is PNG (`logo-mark-export.png`), not SVG as UX brief §B requires. | UX defect | Important | `designer`: export SVG from Figma or document owner-approved exception at G3. |
-| Services | Copy | "AI Agents" in service name without inline plain-language definition at first use (NFR-07). | UX defect | Important | `designer`: add short parenthetical in that row (mirror RAG pattern). |
-| Header / Nav | Accessibility | Mobile menu: Escape closes; no focus trap, no focus return to toggle; menu button uses `☰` character only. | Usability concern | Important | `designer`: trap focus while open, return focus on close, optional aria label on icon. |
-| Not found | States | No mobile nav / consultation CTA (unlike main site header). | UX defect | Non-blocking | `designer`: align header pattern with `index.html` if FR-12 expects full nav at all widths. |
+| All (screenshots) | Identity / design system | **Revalidation pass:** `ux/screens/*-{mobile,desktop}.png` show styled Figma tokens (navy primary, Montserrat/Inter, ruled services, numbered approach). Prior blocking capture issue resolved (repo-root serve per UX brief §F). | — | — | — |
+| Home / Contact (`index.html`) | States / copy | `<motionwrap/>` removed; duplicate Home caption inline styles merged. | — | — | — |
+| All | Design system | Logo is SVG (`prototype/assets/logo-mark.svg`). | — | — | — |
+| Services | Copy | AI agents plain-language in outcome column (NFR-07). | — | — | — |
+| Header / Nav | Accessibility | Mobile menu focus trap, Tab wrap, focus return, Escape; hidden "Menu" label on toggle. Not keyboard-tested live this session. | — | — | QA at S5 |
+| Home | Responsiveness (UQ1) | Full-page mobile captures include content below fold; first-screen fit at 320/360 not isolated. | Usability concern | Non-blocking | Owner confirm at G3 or `designer`: optional 320/360 first-viewport shots |
+| Not found | States | Desktop primary nav only; no mobile menu or header consultation CTA (unlike `index.html`). Styled `not-found-mobile.png` acceptable for E4 content. | UX defect | Non-blocking | `designer`: align with main header if owner wants parity at all widths |
+| E3 spam story | States / coverage | Story exists; not in screenshot manifest (`capture-screenshots.py`). | — | Non-blocking | Optional capture for G3 evidence set |
 | Privacy | Copy | Draft privacy structure OK; placeholders `[INQUIRY_EMAIL]` expected in prototype. | — | Non-blocking | Owner / RA: approve copy before production (FR-11). |
 | Contact (stories) | Hierarchy | Prototype banner links on story pages are fine for dev; ensure production build omits. | — | Non-blocking | Frontend at S4. |
-| Home | Defaults | Duplicate `style` attributes on company caption line in `index.html`. | UX defect | Non-blocking | `designer`: clean inline styles. |
-| All | Imagery | No AI clichés or stock; type-led layout matches brief signature decisions when styled. | — | — | — |
+| All | Imagery | No AI clichés or stock; type-led layout matches brief signature decisions. | — | — | — |
 
 ## F. Limitations
 - Simulated behavior: form latency and submit flows demonstrated via static story pages and shell mocks; main `index.html` does not run live validation/submit.
 - Not validated: backend delivery, spam (BR-07), HTTPS, CWV (NFR-03), Cal.com integration, analytics (FR-14), full automated WCAG audit, keyboard-only session in browser, owner content sign-off (FR-05, NFR-07).
-- Remaining risks: G3 human may approve unstyled screenshots if not replaced; architect must define spam UX and booking embed (R6).
+- Remaining risks: architect must define spam detection/response (R3) for production; Cal.com embed vs link (R6); no automated a11y gate until ENGINEERING-STANDARDS exists.
 
 ## G. Recommendation and handoff note
 
-- Ready for G3? **No** — material blockers on screenshot evidence and contact markup; recommend human **Revise** (not Reject): return to `designer` for screenshot re-capture and two markup fixes, then S2.4 revalidation.
-- Material questions still open or contradicted: UQ1, UQ15 (styled viewport proof); UQ3/UQ14 partial; UQ2 partial (mobile a11y).
+- Ready for G3? **Yes** — prior **Blocking** UX defects cleared (styled screenshots, markup). Recommend human **Approve** if owner accepts deferred UQ1/UQ15 viewport evidence at 390/1440 proxy.
+- Material questions still open or contradicted: none **blocking**; **defer at G3:** UQ1 (320/360 first viewport), UQ15 (additional breakpoints), UQ2 gap on not-found mobile nav (non-blocking).
 - Requirement changes (Class C): none identified.
 - UX constraints that bind architecture:
   - Single-page anchored sections; duplicate header/footer on `privacy.html` and `not-found.html`.
   - Contact: form-first layout; booking as link or embed must not block form; E7 unavailable state copy pattern.
-  - BR-07: when spam rejected, UI must show **no** success confirmation (state not designed).
+  - BR-07: when spam rejected, UI must show **no** success confirmation (`contact-spam-rejected.html` story; production hook per architect R3).
   - Placeholders `[INQUIRY_EMAIL]`, `[PUBLIC_EMAIL]`, `[BOOKING_URL]`, optional phone/LinkedIn — omit optional fields when unset (BR-09).
 - API data the UI assumes:
   - Inquiry POST body: `{ name, email, phone?, message }` → outcomes: sent confirmation | per-field validation errors | delivery failure with public email fallback | spam rejected (no success).
@@ -90,46 +91,59 @@
   - Component markup patterns: `prototype/components/catalog.html` doc blocks; page compositions in `prototype/pages/index.html`, `privacy.html`, `not-found.html`.
   - Catalog doc: `docs/COMPONENTS.md` (regenerate from UX branch).
 - Accepted or deferred issues (for human at G3):
-  - **Defer:** E3 spam UI until architect defines detection/response (BR-07, R3).
+  - **Defer:** UQ1 first-viewport proof at 320/360 (390px styled evidence provided).
+  - **Defer:** UQ15 full breakpoint matrix (390 + 1440 evidenced).
+  - **Defer:** not-found mobile header parity (non-blocking).
+  - **Defer:** E3 production spam mechanism (R3); story UI approved for BR-07 messaging pattern.
   - **Defer:** Cal.com embed vs link (R6) — UI supports link today.
   - **Defer:** Privacy legal final copy and owner FR-05/NFR-07 sign-off.
-  - **Must fix before Approve:** screenshot package; `<motionwrap/>` removal.
+  - **Defer:** ENGINEERING-STANDARDS UI checks — architect S3.1.
 
 ---
 
 ## G3 package (human — HITL stop)
 
-### What was validated
-- T2 prototype on `ux/company-branding-website` @ `87a29bc`: single-page site, privacy, not-found, contact form states (stories), booking unavailable, mobile nav story, design tokens from Figma option A, `docs/COMPONENTS.md` on branch.
-- UX brief questions UQ4–UQ12 largely answered in markup/stories when styled correctly.
-- PRD flows W1, W1b, E1, E2, E4, E7 represented in prototype stories or pages.
+### What was validated (revalidation @ `56f6d56`)
+- T2 prototype: single-page site, privacy, not-found, contact states (stories incl. **E3 spam rejected**), booking unavailable, mobile nav open story, Figma option A tokens, `docs/COMPONENTS.md` on UX branch.
+- Prior **Blocking** fixes confirmed: styled screenshot package (22 PNGs at 390/1440); no `<motionwrap/>`; SVG logo; mobile nav focus trap; AI agents copy; UX brief §F preview URL.
+- UX questions UQ3–UQ12 answered in markup/stories/screenshots; UQ4–UQ11 unchanged from prior review.
+- PRD flows W1, W1b, E1, E2, **E3 (story)**, E4, E7 represented.
 
-### Open / deferred
+### Blocking remaining for designer
+**None.**
+
+### Open / deferred (human may accept at G3)
 | Item | Disposition |
 |---|---|
-| UQ1, UQ15 styled viewport proof | Open until new screenshots or live styled walkthrough |
-| E3 / BR-07 spam state | Deferred to architect → designer |
-| R6 Cal.com embed vs link | Deferred (architect); UI ready for link |
-| Logo SVG | Important gap vs brief |
-| ENGINEERING-STANDARDS UI checks | Missing — architect S3.1 |
+| UQ1 @ 320/360 first screen without scroll | Defer — accept 390px proxy or owner device check |
+| UQ15 @ 320/360/768/1024 | Defer — 390 + 1440 evidenced |
+| Not-found mobile nav | Non-blocking — optional parity fix |
+| E3 screenshot in package | Non-blocking |
+| R3 spam mechanism | Architect S3.1 |
+| R6 Cal.com embed vs link | Architect; UI link-ready |
+| ENGINEERING-STANDARDS UI checks | Architect S3.1 |
+| Privacy / owner copy sign-off | Owner / RA before production |
 
-### How to preview (corrected)
-From repo root on UX branch (must include `design/` and `prototype/`):
+### How to preview
+Check out `ux/company-branding-website`. From **repo root**:
 
 ```bash
 python3 -m http.server 8765 --directory .
 # Main site: http://127.0.0.1:8765/prototype/pages/index.html
 # Flow index: http://127.0.0.1:8765/prototype/shell/index.html
+# E3 spam: http://127.0.0.1:8765/prototype/stories/contact-spam-rejected.html
 ```
 
-Using `--directory prototype` alone **breaks** token import and matches the broken screenshot capture.
+Do **not** serve with `--directory prototype` only (token CSS breaks).
 
 ### Screenshots for decision
-- Current files under `docs/company-branding-website/ux/screens/` — **do not use for visual approval** until replaced (unstyled).
-- After designer fix: same filenames at 390px and 1440px widths, styled, per state list in UX brief §F.
+Use `docs/company-branding-website/ux/screens/*-{mobile,desktop}.png` as the **approved look** on **Approve** — styled captures at 390px and 1440px. Regenerate with `docs/company-branding-website/ux/capture-screenshots.py` while repo-root server runs.
 
 ### Design-lead recommendation to human
-**Revise** — send to `designer` (S2.3): (1) re-capture all screenshots with correct server root, (2) remove `<motionwrap/>`, (3) address Important items above as time allows. Re-run S2.4 before second G3. Do **not** treat current screenshots as the approved look.
+**Approve** — UX prototype and visual evidence meet material PRD/brief intent; deferred items above are explicit and do not block architecture planning. Choose **Revise** only if owner requires exact 320/360 first-viewport proof or not-found mobile nav parity before G4. **Reject** only if brand direction or scope is wrong (not indicated here).
+
+### Decision requested
+At G3, please reply **Approve**, **Revise**, or **Reject**, and whether to accept **390px as sufficient mobile evidence** for UQ1/UQ15 or require extra captures.
 
 ### Handoff note for architecture (S3.1)
-See §G bullets: inquiry contract, spam failure UX requirement, booking integration choice (R6), static hosting with form as only server behavior, tokens/components reuse paths, add ENGINEERING-STANDARDS UI checks naming axe/token/catalog gates for this site.
+See §G bullets: inquiry contract (`{ name, email, phone?, message }` → sent | field errors | delivery failure | spam-rejected), spam UX must never show success (wire to R3), booking integration choice (R6), static hosting with form POST as primary server behavior, reuse tokens/`site.css`/`site.js`/page markup from UX branch, regenerate `docs/COMPONENTS.md` on implementation branch, add ENGINEERING-STANDARDS UI checks (axe, tokens, catalog) at S3.1.
