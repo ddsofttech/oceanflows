@@ -1,49 +1,112 @@
-# Cloudflare Pages setup (owner / dashboard)
+# Cloudflare Workers setup (owner / dashboard)
 
-Provisioning for `company-branding-website` uses **Cloudflare Pages** with the Astro Cloudflare adapter. CI builds in GitHub Actions; deploy wiring needs account access.
+Cloudflare’s current product for this site is a **Worker application** (Workers Builds + Git), not the old static **Pages** wizard. Astro uses `@astrojs/cloudflare` (`output: "server"`), so deploy is **`npx wrangler deploy`**. There is **no “build output directory”** field — Wrangler reads `web/wrangler.toml` after `npm run build`.
 
-## 1. Create the Pages project
+Official refs: [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/), [Build configuration](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/), [GitHub Actions / Wrangler](https://developers.cloudflare.com/workers/ci-cd/external-cicd/github-actions/).
 
-1. Sign in to [Cloudflare Dashboard](https://dash.cloudflare.com/) (account with D2 custom domain).
-2. **Workers & Pages → Create → Pages → Connect to Git**.
-3. Repository: `ddsofttech/oceanflows` (or mirror).
-4. **Production branch:** `main` or team default; **preview:** all non-production branches (PR previews).
-5. **Root directory:** `web`
-6. **Build command:** `npm ci && npm run build`
-7. **Build output directory:** `dist`
+## 1. Create the application (recommended)
 
-Alternatively, use the **GitHub Action** workflow `.github/workflows/web-deploy.yml` with API token deploy (no dashboard Git link required).
+1. Sign in to [Cloudflare Dashboard](https://dash.cloudflare.com/).
+2. Go to **Workers & Pages**.
+3. Select **Create application** (not “Pages → Connect to Git”).
+4. Choose **GitHub** (or GitLab), authorize, pick repo **`ddsofttech/oceanflows`**.
+5. Configure:
 
-## 2. GitHub secrets (for Action deploy)
-
-| Secret | Purpose |
+| Setting | Value |
 |---|---|
-| `CLOUDFLARE_API_TOKEN` | Pages deploy (Account → Cloudflare Pages → Edit) |
-| `CLOUDFLARE_ACCOUNT_ID` | Account ID from Workers & Pages overview |
+| **Name** | `oceanflows-company-site` (must match `name` in `web/wrangler.toml`) |
+| **Git branch** (production) | `ux/company-branding-website` for staging; later `main` for prod |
+| **Root directory** | `web` |
+| **Build command** | `npm ci && npm run build` |
+| **Deploy command** | `npx wrangler deploy` (default — keep this) |
+| **Preview command** | `npx wrangler preview` (default) |
 
-Optional for production RP2:
+6. **API token (optional on this screen):** leave Cloudflare’s auto-generated token. You do **not** need a manual Pages token for Git-connected Workers Builds.
+7. Select **Save and Deploy** / **Deploy**.
+8. Open the `*.workers.dev` URL when the first build succeeds.
 
-| Variable (production env) | Example |
-|---|---|
-| `PUBLIC_BOOKING_URL` | Cal.com link (D3) |
-| `PUBLIC_PUBLIC_EMAIL` | Public contact email (D6) |
-| `INQUIRY_EMAIL` | Inbox for inquiries |
-| `RESEND_API_KEY` | Resend send API (encrypted) |
-| `TURNSTILE_SECRET_KEY` | Optional spam |
+Later edits: open the Worker → **Settings → Builds**.
 
-Use **Settings → Environment variables** per environment (Production vs Preview). Never commit values; use `web/.env.example` as the key list.
+### Why no “build output directory”
 
-## 3. Custom domain (RP2 / cbw-devops-02)
+Workers Builds runs **build** then **deploy**. Deploy is Wrangler (`npx wrangler deploy`), which uploads the Worker + assets from the Astro Cloudflare adapter output. The old Pages field “Build output directory = `dist`” only applied to static Pages Git projects.
 
-1. Pages project → **Custom domains** → add D2 hostname.
-2. Confirm HTTPS (automatic when DNS is on Cloudflare or CNAME is correct).
-3. Run production placeholder check (`web` `npm run check:placeholders` after build with production env).
+## 2. Runtime variables and secrets
 
-## 4. Resend (RP1+)
+Worker → **Settings → Variables and Secrets** (runtime — not only Build variables).
 
-1. Verify sending domain or use Resend onboarding inbox for staging.
-2. Store `RESEND_API_KEY` only in Cloudflare encrypted env or `wrangler secret`.
+| Name | Type | Notes |
+|---|---|---|
+| `PUBLIC_BOOKING_URL` | Variable | Cal.com link |
+| `PUBLIC_PUBLIC_EMAIL` | Variable | Public contact |
+| `PUBLIC_PUBLIC_PHONE` | Variable | Optional |
+| `PUBLIC_LINKEDIN_URL` | Variable | Optional |
+| `PUBLIC_TURNSTILE_SITE_KEY` | Variable | Optional |
+| `INQUIRY_EMAIL` | Secret | Inquiry inbox |
+| `RESEND_API_KEY` | Secret | Resend |
+| `RESEND_FROM_EMAIL` | Secret / Variable | Verified sender |
+| `TURNSTILE_SECRET_KEY` | Secret | Optional |
 
-## 5. Branch protection (GitHub)
+Key list also in `web/.env.example`. Never commit values.
 
-Mark required status checks from `.github/workflows/web-ci.yml` job names once the first PR is green (orchestrator / repo owner).
+Build-only vars (if needed): **Settings → Builds → Build variables and secrets** — not available at request time.
+
+## 3. Account ID (for GitHub Actions only)
+
+If you use `.github/workflows/web-deploy.yml` instead of (or in addition to) Workers Builds:
+
+1. Workers & Pages overview, or any zone **Overview** → **API** sidebar → **Account ID**.
+2. Or: Worker → copy from URL / account switcher.
+
+Add GitHub repo secret `CLOUDFLARE_ACCOUNT_ID`.
+
+## 4. API token for GitHub Actions (optional path)
+
+Workers Builds **does not** require you to create a token yourself. Use this section only for **GitHub Actions** / Wrangler CI.
+
+### Where to go (current UI)
+
+1. Open [Account API tokens](https://dash.cloudflare.com/?to=/:account/api-tokens)  
+   Path: **My Profile** (user icon) → **API Tokens**, or account **Manage account → Account API tokens**.
+2. **Create Token**.
+
+### Recommended: template (Workers)
+
+1. Find template **Edit Cloudflare Workers** → **Use template**.
+2. Restrict **Account Resources** to this account only.
+3. Create → copy the token once → GitHub secret `CLOUDFLARE_API_TOKEN`.
+
+That template grants Workers Scripts write (and related) — enough for `npx wrangler deploy`.
+
+### Custom token (if you still deploy with `wrangler pages deploy`)
+
+1. **Create Token** → **Custom token** → **Get started**.
+2. Under **Permissions**, add rows from the dropdowns (this is **not** a menu named “Cloudflare Pages”):
+
+| | Permission group | Access |
+|---|---|---|
+| Account | **Workers Scripts** | Edit |
+| Account | **Account Settings** | Read |
+| Account | **Cloudflare Pages** | Edit *(only if the workflow uses `wrangler pages deploy`)* |
+
+“Account → Cloudflare Pages → Edit” in older docs meant **that permission row**, not a dashboard page. If **Cloudflare Pages** does not appear in the Account permission list, use the **Edit Cloudflare Workers** template and deploy with `npx wrangler deploy` (Workers Builds / current Astro path).
+
+## 5. Align the GitHub Action (if used)
+
+Repo workflow `.github/workflows/web-deploy.yml` currently runs:
+
+`pages deploy dist --project-name=oceanflows-company-site`
+
+For the **Worker application** path, change that command to match dashboard deploy (e.g. `deploy` with `workingDirectory: web`) when you enable Action-based production deploys. Prefer **one** deploy path: either Workers Builds (Git) **or** GitHub Actions, not both fighting the same Worker name.
+
+## 6. Custom domain (RP2)
+
+Worker → **Settings → Domains & Routes** / **Triggers** → add custom domain (D2). Prefer DNS on Cloudflare for automatic HTTPS.
+
+## 7. Resend (RP1+)
+
+Verify sender domain (or use Resend test inbox). Store `RESEND_API_KEY` only as a Cloudflare **Secret**.
+
+## 8. Branch protection (GitHub)
+
+Mark required checks from `.github/workflows/web-ci.yml` after a green PR.

@@ -1,7 +1,7 @@
 # Part plan: cbw-devops-02 — Production configuration and domain
 
 ## Goal
-Production Netlify site serves custom domain over HTTPS with owner-supplied emails, booking URL, and Resend verified sender.
+Cloudflare Worker (`oceanflows-company-site`) serves custom domain `oceanflows.net` over HTTPS with owner-supplied emails, booking URL, and Resend verified sender.
 
 ## Acceptance criteria
 | AC ID | Done when |
@@ -18,7 +18,7 @@ Production Netlify site serves custom domain over HTTPS with owner-supplied emai
 | Release | `design/IMPLEMENTATION-PLAN.md` RP2 |
 
 ## Changes
-- Expected files: Netlify env docs, `scripts/check-production-placeholders.ts`, DNS checklist in PR description (not new markdown unless requested)
+- Expected files: Cloudflare Worker env docs, `scripts/check-production-placeholders.ts`, DNS/custom-domain checklist in PR description (not new markdown unless requested)
 - Reuse: `cbw-devops-01` pipeline
 - Out of bounds: application feature work
 
