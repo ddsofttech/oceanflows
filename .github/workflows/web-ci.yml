@@ -260,5 +260,5 @@ jobs:
           git fetch origin ux/company-branding-website || true
           python .cursor/sdlc/scripts/sdlc-check.py \
             --request company-branding-website \
-            --part cbw-devops-01 \
+            --part cbw-fe-01 \
             --base origin/ux/company-branding-website

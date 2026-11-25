@@ -28,7 +28,7 @@ Audience: SMB owners and executives deciding whether a founder-led AI consultanc
 | ServiceItem | One service row with problem and outcome columns | name, problem, outcome | default | `prototype/components/catalog.html` | prototype/pages/index.html#services |
 | SiteFooter | Footer with logo, copyright, privacy link | year, privacyHref | default | `prototype/components/catalog.html` | prototype/pages/index.html |
 | SiteHeader | Sticky header with logo, section navigation, and consultation action | logoSrc, tagline, navSections, ctaHref, currentSection | default, mobile-open | `prototype/components/catalog.html` | prototype/pages/index.html |
-| SiteShell | Minimal scaffold shell until UX migration (cbw-fe-01) | title | default | `web/src/components/SiteShell.astro` |  |
+| SiteShell | Marketing site document shell with theme, styles, and scripts | title, description, skipTarget | default | `web/src/components/SiteLayout.astro` |  |
 | StatusMessage | Inline success or error feedback after form actions | variant, title, body | success, error | `prototype/components/catalog.html` | prototype/stories/contact-sent.html |
 | TextArea | Multi-line inquiry message field | id, label, name, required, value, error | default, focus, filled, error, disabled | `prototype/components/catalog.html` | prototype/stories/contact-field-errors.html |
 | TextField | Single-line labeled input with hint and error slot | id, label, name, type, required, hint, value, error | default, focus, filled, error, disabled | `prototype/components/catalog.html` | prototype/stories/contact-field-errors.html |

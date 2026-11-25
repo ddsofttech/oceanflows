@@ -97,7 +97,7 @@ Changed lines per PR, excluding tests, generated files, and `docs/`.
 |---|---|---|
 | Small | 250 | Greenfield marketing-site norm |
 | Medium | 600 | UX migration tranche |
-| Large | 1200 | Initial `cbw-fe-01` scaffold |
+| Large | 3600 | UX migration `cbw-fe-01` (prototype CSS + assets) |
 
 ## 10. Known exceptions
 | Location | Departs from rule | Why | Owner | Expires |

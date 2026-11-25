@@ -1,10 +1,20 @@
 ---
 export const prerender = true;
 
-import SiteShell from "../components/SiteShell.astro";
+import SiteLayout from "../components/SiteLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import HomeMain from "../components/marketing/HomeMain.astro";
+
+const title = "DD Software Solutions Inc. — AI consulting and integration";
+const description =
+  "We help businesses turn AI opportunities into working solutions. AI consulting and integration for small and medium-sized businesses in Canada and the US.";
 ---
 
-<SiteShell title="Oceanflows — scaffold">
-  <h1>Company site scaffold</h1>
-  <p>Production marketing pages land in cbw-fe-01.</p>
-</SiteShell>
+<SiteLayout title={title} description={description} skipTarget="#home">
+  <SiteHeader slot="header" variant="home" />
+  <main>
+    <HomeMain />
+  </main>
+  <SiteFooter slot="footer" />
+</SiteLayout>
