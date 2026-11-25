@@ -265,20 +265,18 @@ a:hover { color: var(--color-action-primary-hover); }
 /* Section */
 .section { padding-block: var(--space-8); scroll-margin-top: var(--header-height); }
 .section--tight { padding-block: var(--space-7); }
-.section-heading { margin-bottom: var(--space-6); max-width: var(--measure); }
-.section-heading--wide { max-width: none; width: 100%; }
+.section-heading { margin-bottom: var(--space-6); max-width: none; width: 100%; }
 .section-heading .label { font-size: var(--text-caption-size); font-weight: 600; color: var(--color-action-primary); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: var(--space-2); }
+.section-heading .muted { margin: var(--space-2) 0 0; max-width: none; }
 .consultation-cta { margin-top: var(--space-6); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); }
 
 /* Services — problem → outcome table */
-.section-heading--services { max-width: none; width: 100%; }
 .services-title {
   color: var(--color-brand-deep-blue);
   font-weight: 800;
   margin: 0;
 }
 [data-theme="dark"] .services-title { color: var(--color-brand-cyan); }
-.section-heading--services .muted { margin: var(--space-2) 0 0; max-width: 40rem; }
 .services-table {
   background: var(--color-surface-card);
   border: 1px solid var(--color-border-default);
@@ -581,12 +579,11 @@ a:hover { color: var(--color-action-primary-hover); }
 }
 
 /* About */
-.section-heading--about { max-width: 40rem; }
-.about-title { max-width: 22ch; }
 .about-intro {
   display: grid;
   gap: var(--space-4);
-  max-width: 46rem;
+  max-width: none;
+  width: 100%;
   margin-bottom: var(--space-8);
 }
 .about-intro p {
@@ -634,7 +631,7 @@ a:hover { color: var(--color-action-primary-hover); }
   line-height: 1.5;
   color: var(--color-text-secondary);
 }
-.about-philosophy { max-width: 40rem; }
+.about-philosophy { max-width: none; width: 100%; }
 .about-philosophy .label { margin-bottom: var(--space-3); }
 .pull-quote {
   font-family: var(--font-display);
@@ -642,9 +639,9 @@ a:hover { color: var(--color-action-primary-hover); }
   line-height: 1.25;
   color: var(--color-action-primary);
   margin: 0 0 var(--space-4);
-  max-width: 22ch;
+  max-width: none;
 }
-.about-philosophy .muted { margin: 0; max-width: 40rem; }
+.about-philosophy .muted { margin: 0; max-width: none; }
 
 /* Contact */
 .contact-layout { display: grid; gap: var(--space-7); }
