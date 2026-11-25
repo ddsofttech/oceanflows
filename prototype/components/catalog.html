@@ -100,4 +100,22 @@
 @props title, sections[]
 @states default
 @story prototype/pages/privacy.html
+
+@component HeroBanner
+@purpose Figma brand banner with wave motif, PRD headline, and consultation CTA
+@props brandLine, message, lead, featureCard
+@states light, dark
+@story prototype/pages/index.html#home
+
+@component ThemeToggle
+@purpose Header control switching light and dark themes with localStorage
+@props storageKey
+@states light, dark
+@story prototype/pages/index.html
+
+@component CampaignBanner
+@purpose Compact consultation strip from Figma campaign banner pattern
+@props body, ctaHref
+@states default
+@story prototype/pages/index.html
 -->

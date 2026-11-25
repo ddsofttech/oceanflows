@@ -1,7 +1,7 @@
 # UX Brief
 
 - Started by: G1 decision D9 (2026-11-24) confirmed design **trigger 1, Greenfield UI**: the product has no UI and no design system. Baseline: `docs/baselines/prds/PRD-v1.0.md`. Profile: Standard. G2 stops for the design system and visual identity (trigger 1); no T3 screen; tiers are not a G2 decision in Standard but are listed for the human.
-- Status: S2.1 done; S2.2 (G2) approved (D10, option A); S2.3 build complete on `ux/company-branding-website`; S2.4 revise fixes applied (screenshots, markup, a11y). Awaiting design-lead S2.4 revalidation.
+- Status: S2.3 **G3 Revise (D11)** rebuild on `ux/company-branding-website` — Figma-faithful hero banner, light **and** dark themes, wave motif; screenshots re-captured. Hand to design-lead S2.4 (not self-validated).
 - `docs/COMPONENTS.md`: does not exist (greenfield). Every component below is new.
 
 ## A. Screens and tiers
@@ -40,7 +40,7 @@ Highest tier: T2. No T1 screens, no T3 screens.
   - Imagery: none by default; the site is type-led. The only photograph that could appear is a real founder portrait, if the owner supplies one (open question G2-Q3). One icon family as SVG (Figma's if it defines one; otherwise Lucide outline), used only where it carries content (email, location, LinkedIn). No illustration unless the Figma file defines it.
   - Motion: opacity and transform only, 150–250 ms, one easing curve. It is used for the mobile menu open/close, the nav indicator, and the form's sent and error transitions; the form confirmation is the one orchestrated moment. No scroll-reveal on every section. With reduced motion, all of it is off (NFR-04).
 - **Changes needed (built in S2.3, after G2):**
-  - Tokens file in W3C design-tokens format, plus a CSS custom-properties mirror (greenfield, no scaffold yet). Contents: color by role (neutral ground, text and border levels, brand primary from Figma, status for error and success; every text pair meets WCAG AA), the type families, scale, weights, and line heights from Figma, spacing on one base unit, radius and elevation by hierarchy, and motion durations, easing, and the reduced-motion rule. Light theme only for this release unless G2-Q2 says otherwise; dark values will be defined only if Figma defines them.
+  - Tokens file in W3C design-tokens format, plus a CSS custom-properties mirror (greenfield, no scaffold yet). Contents: color by role (neutral ground, text and border levels, brand primary from Figma, status for error and success; every text pair meets WCAG AA), the type families, scale, weights, and line heights from Figma, spacing on one base unit, radius and elevation by hierarchy, and motion durations, easing, and the reduced-motion rule. **G3 D11 supersedes G2-Q2 “light only”:** light and dark themes ship (`data-theme` + header toggle, `localStorage` key `dd-theme`); dark surfaces match Figma navy banner tokens (`#0B1746`, `#081F59`, cyan accents).
   - Logo as SVG exported from Figma (header, footer, favicon).
   - Components, each with all its states and a catalog doc block: SiteHeader, PrimaryNav (desktop, mobile closed and open, current section), Button (primary, secondary, link; default, hover, focus, active, disabled, loading), SectionHeading, ConsultationCta, ServiceItem, ApproachStage, FounderProfile, ExpertiseList, TextField and TextArea (default, focus, filled, error, disabled), InquiryForm, StatusMessage (success, error), BookingPanel (available, unavailable), ContactDetails, SiteFooter, Prose.
   - How Figma will be imported once access exists: read the variables, styles, and components through the Figma MCP server (or the owner's export). Map them to role-named tokens, rebuild the components in plain HTML, CSS, and JS from those tokens, and never paste generated markup.
@@ -91,7 +91,7 @@ None: no screen is T1.
 None: the PRD fixes the structure (single page, five sections), and the brand comes from the owner's Figma system, so no screen's direction is open.
 
 - Screenshots: none.
-- Chosen at G2: **Option A — owner's Figma file** `LkfGLRJsrCSCoYdu9m0hyf` (node `8:1953`). Light theme only. No founder portrait. Signature layout from the brief applies where it does not conflict with Figma (Figma wins).
+- Chosen at G2: **Option A — owner's Figma file** `LkfGLRJsrCSCoYdu9m0hyf` (node `8:1953`). **G3 D11:** light and dark themes required; landing hero uses Figma banner / in-context patterns (wave motif, “Intelligence Integrated” treatment, navy feature card, campaign strip) with PRD copy — no invented industry report download. No founder portrait. Figma wins over prior typography-only hero spec.
 
 ## F. Build record (T2 and T3 screens, design-system changes)
 
@@ -103,7 +103,7 @@ None: the PRD fixes the structure (single page, five sections), and the brand co
 
 | Screen | States | Story path |
 |---|---|---|
-| Design system tokens + CSS | light theme | `design/tokens/*` |
+| Design system tokens + CSS | light theme, dark theme | `design/tokens/*`, `prototype/js/theme.js` |
 | Single-page site (Home, Services, Approach, About, Contact, header/footer) | default | `prototype/pages/index.html` |
 | Privacy notice | default (draft copy) | `prototype/pages/privacy.html` |
 | Not found | default | `prototype/pages/not-found.html` |
@@ -113,14 +113,14 @@ None: the PRD fixes the structure (single page, five sections), and the brand co
 | Primary navigation | desktop current-section, mobile open | `prototype/pages/index.html`, `prototype/stories/mobile-nav-open.html` |
 | Button | primary, secondary, link, disabled, loading | `prototype/stories/button-states.html` |
 
-- Layout concepts (implemented): typography-led Home hero (no hero image); Services ruled list with problem/outcome columns; Approach numbered 1–4 track; About two-column text without portrait; Contact form-first with booking aside on desktop.
+- Layout concepts (implemented): **Figma-style Home hero banner** (wave SVG `prototype/assets/banners/wave-motif.svg`, grid overlay, “Intelligence Integrated” + PRD headline, navy “How we work” card, compact campaign strip); Services ruled list with problem/outcome columns; Approach numbered 1–4 track; About two-column text without portrait; Contact form-first with booking aside on desktop; **ThemeToggle** in header on index/privacy/not-found.
 - Simulated: form submit latency **~800 ms** (`DDPrototypeMocks.inquiryLatencyMs` in shell mocks only; story pages use static HTML for each state). E3 spam-rejected story (`contact-spam-rejected.html`) shows **no success confirmation** per BR-07; final copy/mechanism still for architect (R3). Placeholders `[INQUIRY_EMAIL]`, `[PUBLIC_EMAIL]`, `[BOOKING_URL]`, `[PUBLIC_PHONE]`, `[LINKEDIN_URL]` per BR-09. Privacy text is a structural draft (FR-11). No analytics script in the prototype.
-- **S2.4 revise fixes (2026-11-25):** removed `<motionwrap/>` from contact form; merged duplicate inline styles on Home caption; plain-language AI agents outcome copy (NFR-07); mobile nav focus trap + focus return (`prototype/js/site.js`); logo switched to Figma SVG export `prototype/assets/logo-mark.svg`; all `ux/screens/*` re-captured at 390/1440 with repo-root HTTP serve (`docs/company-branding-website/ux/capture-screenshots.py` helper).
+- **G3 Revise D11 (2026-11-25):** rebuilt Home for Figma banner fidelity; added dark theme tokens + toggle; downloaded wave asset from Figma banners board; re-captured screenshots including `home-idle-dark-*`.
 - API data assumed: unchanged from S2.1 plan (`{ name, email, phone?, message }` → sent | field errors | delivery failure | spam-rejected; Cal.com URL; static section copy).
 - UI checks: `docs/ENGINEERING-STANDARDS.md` does not exist — **no named UI checks**; manual walk-through of shell flows and viewport screenshots at 390px and 1440px widths.
 - Screenshots: `docs/company-branding-website/ux/screens/*-{mobile,desktop}.png` (key states listed in orchestrator handoff).
 - Catalog: `docs/COMPONENTS.md` regenerated from `prototype/components/catalog.html` and tokens.
-- Assets from Figma: `prototype/assets/logo-mark.svg` (symbol export, node `8:2320`), `prototype/assets/logo-mark-export.png` (legacy PNG retained), `prototype/assets/logo.png`.
+- Assets from Figma: `prototype/assets/logo-mark.svg`, `prototype/assets/banners/wave-motif.svg` (node `8:2282` / newsletter wave), `prototype/assets/banners/brand-banner-reference.png` (design reference only, not shipped in UI).
 - Affected by design-system change: all T2 screens above (restyled from Figma foundations).
 
 ## G. Open items for G2

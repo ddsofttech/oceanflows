@@ -16,7 +16,15 @@
     "surface": {
       "ground": { "$value": "#F8FAFC" },
       "card": { "$value": "#FFFFFF" },
-      "navy": { "$value": "#081F59" }
+      "navy": { "$value": "#081F59" },
+      "navy-950": { "$value": "#0B1746" }
+    },
+    "theme-dark": {
+      "text-primary": { "$value": "#F8FAFC" },
+      "text-secondary": { "$value": "#94A3B8" },
+      "surface-ground": { "$value": "#0B1746" },
+      "surface-card": { "$value": "#081F59" },
+      "border-default": { "$value": "#1E3A5F" }
     },
     "border": {
       "default": { "$value": "#E2E8F0" },

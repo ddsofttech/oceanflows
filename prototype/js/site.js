@@ -2,6 +2,29 @@
  * Presentational behaviors only (nav). Form simulation lives in prototype/shell/mocks.js on story pages.
  */
 (function () {
+  const THEME_KEY = "dd-theme";
+  const themeToggle = document.querySelector("[data-theme-toggle]");
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    try {
+      localStorage.setItem(THEME_KEY, theme);
+    } catch (_) {}
+    if (themeToggle) {
+      const dark = theme === "dark";
+      themeToggle.setAttribute("aria-pressed", dark ? "true" : "false");
+      themeToggle.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
+    }
+  }
+
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      applyTheme(next);
+    });
+    applyTheme(document.documentElement.getAttribute("data-theme") || "light");
+  }
+
   const toggle = document.querySelector("[data-nav-toggle]");
   const mobileNav = document.querySelector("[data-mobile-nav]");
   const sectionLinks = document.querySelectorAll("[data-section-link]");
