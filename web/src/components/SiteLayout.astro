@@ -1,11 +1,12 @@
 ---
 /**
- * @component SiteShell
+ * @component SiteLayout
  * @purpose Marketing site document shell with theme, styles, and scripts
  * @props title, description, skipTarget
  * @states default
  */
 import "../styles/site.css";
+import SiteMeta from "./SiteMeta.astro";
 
 interface Props {
   title: string;
@@ -19,10 +20,7 @@ const { title, description, skipTarget = "#home" } = Astro.props;
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    {description ? <meta name="description" content={description} /> : null}
+    <SiteMeta title={title} description={description} />
     <script is:inline src="/scripts/theme.js"></script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
@@ -32,5 +30,6 @@ const { title, description, skipTarget = "#home" } = Astro.props;
     <slot />
     <slot name="footer" />
     <script is:inline src="/scripts/site.js"></script>
+    <script is:inline src="/scripts/inquiry-static.js"></script>
   </body>
 </html>
