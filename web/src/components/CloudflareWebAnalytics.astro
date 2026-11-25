@@ -1,0 +1,22 @@
+---
+/**
+ * @component CloudflareWebAnalytics
+ * @purpose Cookieless page-view beacon (FR-14); omitted when token unset
+ * @props (none)
+ * @states default | disabled (no PUBLIC_CF_ANALYTICS_TOKEN)
+ */
+import { cfAnalyticsToken } from "../lib/public-site";
+
+const token = cfAnalyticsToken();
+const beaconConfig = token ? JSON.stringify({ token }) : undefined;
+---
+
+{
+  token && beaconConfig && (
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={beaconConfig}
+    />
+  )
+}

@@ -1,0 +1,654 @@
+---
+import BookingPanel from "../BookingPanel.astro";
+import ContactDetails from "../ContactDetails.astro";
+import InquiryForm from "../InquiryForm.astro";
+import { publicSiteConfig } from "../../lib/public-site";
+
+const site = publicSiteConfig();
+---
+
+<section
+  id="home"
+  class="hero-banner section--flush"
+  aria-labelledby="home-heading"
+>
+  <div class="hero-banner__art" aria-hidden="true">
+    <img
+      class="hero-banner__art-img hero-banner__art-img--light"
+      src="/assets/banners/light_banner.svg?v=8"
+      width="1200"
+      height="400"
+      alt=""
+      decoding="async"
+    />
+    <img
+      class="hero-banner__art-img hero-banner__art-img--dark"
+      src="/assets/banners/dark_banner.svg?v=8"
+      width="1200"
+      height="400"
+      alt=""
+      decoding="async"
+    />
+  </div>
+  <div class="container hero-banner__inner">
+    <div class="hero-banner__content">
+      <p class="hero-banner__eyebrow">AI consulting &amp; engineering</p>
+      <h1 id="home-heading" class="hero-banner__brand-line">
+        Turn AI Opportunities Into Working Solutions.
+      </h1>
+      <p class="hero-banner__lead muted">
+        We help businesses identify where AI creates value, design practical
+        solutions, and integrate intelligent systems into everyday operations.
+      </p>
+      <ul class="hero-banner__tags" aria-label="Focus areas">
+        <li>AI Strategy</li>
+        <li>AI Integration</li>
+        <li>Intelligent Automation</li>
+      </ul>
+      <div class="hero-banner__actions">
+        <a class="btn btn--primary" href="#contact">Book a consultation</a>
+        <a class="btn btn--secondary" href="#use-cases">Explore use cases</a>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="services" class="section section--services">
+  <div class="container">
+    <div class="section-heading">
+      <p class="label">Services</p>
+      <h2 class="h2 services-title">What we solve</h2>
+      <p class="muted">
+        Five services, each tied to a problem you recognize and the outcome you
+        can expect.
+      </p>
+    </div>
+    <div
+      class="services-table"
+      role="table"
+      aria-label="Services, problems, and outcomes"
+    >
+      <div class="services-table__head" role="row">
+        <div role="columnheader">Service</div>
+        <div role="columnheader">
+          <span
+            class="services-table__dot services-table__dot--problem"
+            aria-hidden="true"></span>Problem
+        </div>
+        <div
+          role="columnheader"
+          class="services-table__spacer"
+          aria-hidden="true"
+        >
+        </div>
+        <div role="columnheader">
+          <span
+            class="services-table__dot services-table__dot--outcome"
+            aria-hidden="true"></span>Outcome
+        </div>
+      </div>
+      <div class="services-table__row" role="row">
+        <div class="services-table__service" role="cell">
+          <span class="services-table__icon" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none"
+              ><circle
+                cx="15"
+                cy="15"
+                r="10"
+                stroke="currentColor"
+                stroke-width="1.75"></circle><circle
+                cx="15"
+                cy="15"
+                r="4"
+                stroke="currentColor"
+                stroke-width="1.75"></circle><circle
+                cx="15"
+                cy="15"
+                r="1.5"
+                fill="currentColor"></circle></svg
+            >
+          </span>
+          <span>
+            <span class="services-table__num">01</span>
+            <span class="services-table__name"
+              >AI Consulting &amp; Strategy</span
+            >
+          </span>
+        </div>
+        <div class="services-table__problem" role="cell">
+          You are not sure where AI fits, or every idea competes for attention.
+        </div>
+        <div class="services-table__arrow" role="cell" aria-hidden="true">
+          →
+        </div>
+        <div class="services-table__outcome" role="cell">
+          A practical adoption plan with prioritized use cases tied to business
+          goals.
+        </div>
+      </div>
+      <div class="services-table__row" role="row">
+        <div class="services-table__service" role="cell">
+          <span class="services-table__icon" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none"
+              ><circle
+                cx="7"
+                cy="15"
+                r="3"
+                stroke="currentColor"
+                stroke-width="1.75"></circle><circle
+                cx="23"
+                cy="8"
+                r="3"
+                stroke="currentColor"
+                stroke-width="1.75"></circle><circle
+                cx="23"
+                cy="22"
+                r="3"
+                stroke="currentColor"
+                stroke-width="1.75"></circle><path
+                d="M10 14.2 20 9.2M10 15.8 20 20.8"
+                stroke="currentColor"
+                stroke-width="1.75"></path></svg
+            >
+          </span>
+          <span>
+            <span class="services-table__num">02</span>
+            <span class="services-table__name">AI Integration</span>
+          </span>
+        </div>
+        <div class="services-table__problem" role="cell">
+          AI tools sit beside your systems instead of inside how work actually
+          happens.
+        </div>
+        <div class="services-table__arrow" role="cell" aria-hidden="true">
+          →
+        </div>
+        <div class="services-table__outcome" role="cell">
+          AI connected to your applications, APIs, and workflows people already
+          use.
+        </div>
+      </div>
+      <div class="services-table__row" role="row">
+        <div class="services-table__service" role="cell">
+          <span class="services-table__icon" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none"
+              ><rect
+                x="5"
+                y="8"
+                width="12"
+                height="14"
+                rx="2"
+                stroke="currentColor"
+                stroke-width="1.75"></rect><path
+                d="M17 13h5.5a2.5 2.5 0 0 1 0 5H17"
+                stroke="currentColor"
+                stroke-width="1.75"></path><circle
+                cx="24"
+                cy="15.5"
+                r="2"
+                fill="currentColor"></circle></svg
+            >
+          </span>
+          <span>
+            <span class="services-table__num">03</span>
+            <span class="services-table__name">AI Agents &amp; Automation</span>
+          </span>
+        </div>
+        <div class="services-table__problem" role="cell">
+          Teams repeat the same manual steps instead of focusing on decisions.
+        </div>
+        <div class="services-table__arrow" role="cell" aria-hidden="true">
+          →
+        </div>
+        <div class="services-table__outcome" role="cell">
+          Software that works on your behalf — AI agents that follow steps, make
+          routine decisions, and hand off to people when needed — plus workflows
+          that handle repetitive work reliably.
+        </div>
+      </div>
+      <div class="services-table__row" role="row">
+        <div class="services-table__service" role="cell">
+          <span class="services-table__icon" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none"
+              ><path
+                d="M8 6h10l4 4v14H8V6z"
+                stroke="currentColor"
+                stroke-width="1.75"></path><path
+                d="M18 6v4h4M11 15h8M11 19h6"
+                stroke="currentColor"
+                stroke-width="1.75"></path></svg
+            >
+          </span>
+          <span>
+            <span class="services-table__num">04</span>
+            <span class="services-table__name"
+              >Knowledge &amp; RAG Solutions</span
+            >
+          </span>
+        </div>
+        <div class="services-table__problem" role="cell">
+          Important knowledge is trapped in documents, inboxes, and people’s
+          heads.
+        </div>
+        <div class="services-table__arrow" role="cell" aria-hidden="true">
+          →
+        </div>
+        <div class="services-table__outcome" role="cell">
+          An AI assistant that finds answers from your approved knowledge
+          sources. Retrieval-Augmented Generation (RAG) means the assistant
+          answers from your content, not generic internet text.
+        </div>
+      </div>
+      <div class="services-table__row" role="row">
+        <div class="services-table__service" role="cell">
+          <span class="services-table__icon" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none"
+              ><path
+                d="M12 8.5 15 5l3 3.5V12h3.5L25 15l-3.5 3H18v3.5L15 25l-3-3.5V18H8.5L5 15l3.5-3H12V8.5z"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linejoin="round"></path><circle
+                cx="15"
+                cy="15"
+                r="2.25"
+                stroke="currentColor"
+                stroke-width="1.5"></circle></svg
+            >
+          </span>
+          <span>
+            <span class="services-table__num">05</span>
+            <span class="services-table__name">Custom AI Solutions</span>
+          </span>
+        </div>
+        <div class="services-table__problem" role="cell">
+          Off-the-shelf tools do not match a specific operational problem.
+        </div>
+        <div class="services-table__arrow" role="cell" aria-hidden="true">
+          →
+        </div>
+        <div class="services-table__outcome" role="cell">
+          A solution designed around your constraint, integrated with what you
+          already run.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="approach" class="section section--approach">
+  <div class="container">
+    <div class="section-heading">
+      <p class="label">Approach</p>
+      <h2 class="h2">From discovery to delivery</h2>
+      <p class="muted">A consulting engagement — not a fixed product bundle.</p>
+    </div>
+    <ol class="approach-track">
+      <li class="approach-stage">
+        <div class="approach-stage__marker" aria-hidden="true">
+          <span class="approach-stage__icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
+              ><circle
+                cx="14"
+                cy="14"
+                r="9"
+                stroke="currentColor"
+                stroke-width="1.75"></circle><circle
+                cx="14"
+                cy="14"
+                r="4.5"
+                stroke="currentColor"
+                stroke-width="1.75"></circle><circle
+                cx="14"
+                cy="14"
+                r="1.75"
+                fill="currentColor"></circle></svg
+            >
+          </span>
+        </div>
+        <article class="approach-stage__card">
+          <span class="approach-stage__num" aria-hidden="true">01</span>
+          <h3 class="approach-stage__title">Discover &amp; assess</h3>
+          <p class="approach-stage__body">
+            Understand your business, processes, and constraints before
+            proposing technology.
+          </p>
+          <div class="approach-stage__deliverable">
+            <p class="approach-stage__deliverable-label">You receive</p>
+            <p class="approach-stage__deliverable-value">
+              Opportunity assessment and prioritized use cases
+            </p>
+          </div>
+        </article>
+      </li>
+      <li class="approach-stage">
+        <div class="approach-stage__marker" aria-hidden="true">
+          <span class="approach-stage__icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
+              ><rect
+                x="5"
+                y="5"
+                width="7.5"
+                height="7.5"
+                rx="1.25"
+                stroke="currentColor"
+                stroke-width="1.75"></rect><rect
+                x="15.5"
+                y="5"
+                width="7.5"
+                height="7.5"
+                rx="1.25"
+                stroke="currentColor"
+                stroke-width="1.75"></rect><rect
+                x="5"
+                y="15.5"
+                width="7.5"
+                height="7.5"
+                rx="1.25"
+                stroke="currentColor"
+                stroke-width="1.75"></rect><rect
+                x="15.5"
+                y="15.5"
+                width="7.5"
+                height="7.5"
+                rx="1.25"
+                stroke="currentColor"
+                stroke-width="1.75"></rect></svg
+            >
+          </span>
+        </div>
+        <article class="approach-stage__card">
+          <span class="approach-stage__num" aria-hidden="true">02</span>
+          <h3 class="approach-stage__title">Design</h3>
+          <p class="approach-stage__body">
+            Define requirements, solution architecture, integrations, and
+            implementation scope.
+          </p>
+          <div class="approach-stage__deliverable">
+            <p class="approach-stage__deliverable-label">You receive</p>
+            <p class="approach-stage__deliverable-value">
+              Solution approach and integration plan
+            </p>
+          </div>
+        </article>
+      </li>
+      <li class="approach-stage">
+        <div class="approach-stage__marker" aria-hidden="true">
+          <span class="approach-stage__icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
+              ><circle
+                cx="7"
+                cy="14"
+                r="3"
+                stroke="currentColor"
+                stroke-width="1.75"></circle><circle
+                cx="21"
+                cy="8"
+                r="3"
+                stroke="currentColor"
+                stroke-width="1.75"></circle><circle
+                cx="21"
+                cy="20"
+                r="3"
+                stroke="currentColor"
+                stroke-width="1.75"></circle><path
+                d="M9.8 12.8 18.2 9.2M9.8 15.2 18.2 18.8"
+                stroke="currentColor"
+                stroke-width="1.75"></path></svg
+            >
+          </span>
+        </div>
+        <article class="approach-stage__card">
+          <span class="approach-stage__num" aria-hidden="true">03</span>
+          <h3 class="approach-stage__title">Integrate</h3>
+          <p class="approach-stage__body">
+            Develop, test, and integrate the solution into your existing
+            environment.
+          </p>
+          <div class="approach-stage__deliverable">
+            <p class="approach-stage__deliverable-label">You receive</p>
+            <p class="approach-stage__deliverable-value">
+              Working integration in your environment
+            </p>
+          </div>
+        </article>
+      </li>
+      <li class="approach-stage">
+        <div class="approach-stage__marker" aria-hidden="true">
+          <span class="approach-stage__icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
+              ><path
+                d="M5 21V16.5M11 21V12M17 21V9M23 21V6"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"></path><path
+                d="M5.5 14.5 11 10l6 2.5L22.5 6"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path></svg
+            >
+          </span>
+        </div>
+        <article class="approach-stage__card">
+          <span class="approach-stage__num" aria-hidden="true">04</span>
+          <h3 class="approach-stage__title">Deliver &amp; measure</h3>
+          <p class="approach-stage__body">
+            Evaluate results, refine the solution, and provide technical
+            handover.
+          </p>
+          <div class="approach-stage__deliverable">
+            <p class="approach-stage__deliverable-label">You receive</p>
+            <p class="approach-stage__deliverable-value">
+              Handover and guidance on measuring outcomes
+            </p>
+          </div>
+        </article>
+      </li>
+    </ol>
+  </div>
+</section>
+<section
+  id="use-cases"
+  class="section section--use-cases"
+  aria-labelledby="use-cases-heading"
+>
+  <div class="container">
+    <div class="section-heading">
+      <p class="label">Use cases</p>
+      <h2 id="use-cases-heading" class="h2">
+        Where small businesses start with AI
+      </h2>
+      <p class="muted">
+        Four practical workflows with clear inputs, outputs, and room for a
+        person when judgment matters.
+      </p>
+    </div>
+    <ul class="use-case-grid">
+      <li class="use-case-card">
+        <img
+          class="use-case-card__media"
+          src="/assets/usecases/usecase-customer-support.jpg"
+          width="1536"
+          height="1024"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="use-case-card__body">
+          <p class="use-case-card__tag">Customer support</p>
+          <h3 class="use-case-card__title">Inquiry &amp; FAQ assistant</h3>
+          <p class="use-case-card__text">
+            Answer routine questions from approved FAQs and policies — hours,
+            shipping, returns — and escalate exceptions to your team.
+          </p>
+        </div>
+      </li>
+      <li class="use-case-card">
+        <img
+          class="use-case-card__media"
+          src="/assets/usecases/usecase-lead-qualification.jpg"
+          width="1536"
+          height="1024"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="use-case-card__body">
+          <p class="use-case-card__tag">Sales</p>
+          <h3 class="use-case-card__title">
+            Lead qualification &amp; follow-up
+          </h3>
+          <p class="use-case-card__text">
+            Score new website and email inquiries, draft a first response, and
+            route high-intent leads so nothing sits unanswered.
+          </p>
+        </div>
+      </li>
+      <li class="use-case-card">
+        <img
+          class="use-case-card__media"
+          src="/assets/usecases/usecase-internal-knowledge.jpg"
+          width="1536"
+          height="1024"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="use-case-card__body">
+          <p class="use-case-card__tag">Operations</p>
+          <h3 class="use-case-card__title">Internal knowledge assistant</h3>
+          <p class="use-case-card__text">
+            Let staff ask questions against SOPs, pricing sheets, and past
+            decisions — with links back to the source documents.
+          </p>
+        </div>
+      </li>
+      <li class="use-case-card">
+        <img
+          class="use-case-card__media"
+          src="/assets/usecases/usecase-workflow-automation.jpg"
+          width="1536"
+          height="1024"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="use-case-card__body">
+          <p class="use-case-card__tag">Automation</p>
+          <h3 class="use-case-card__title">
+            Booking &amp; follow-up workflows
+          </h3>
+          <p class="use-case-card__text">
+            Connect scheduling, reminders, and post-visit follow-ups so
+            appointments and next steps stay consistent without extra admin.
+          </p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+<section
+  id="about"
+  class="section section--about"
+  aria-labelledby="about-heading"
+>
+  <div class="container">
+    <div class="section-heading">
+      <p class="label">About</p>
+      <h2 id="about-heading" class="h2">
+        Engineering Better Solutions for a Smarter Business Future.
+      </h2>
+    </div>
+    <div class="about-intro">
+      <p>
+        DD Software Solutions Inc. is an Alberta-based software and AI
+        consulting company founded in 2023. We help small and medium-sized
+        businesses solve practical business challenges through software
+        engineering, intelligent automation, and AI integration.
+      </p>
+      <p>
+        With a foundation in software quality, enterprise applications,
+        automation, and system integration, we combine proven engineering
+        practices with emerging AI technologies to deliver solutions that are
+        practical, reliable, and aligned with business needs.
+      </p>
+      <p>
+        We believe technology should make businesses better, not more
+        complicated. Our focus is on understanding real problems, identifying
+        meaningful opportunities, and turning ideas into working solutions.
+      </p>
+    </div>
+    <div class="about-bring">
+      <h3 class="about-bring__heading">What we bring</h3>
+      <ul class="about-bring__grid">
+        <li>
+          <h4 class="about-bring__title">Artificial Intelligence</h4>
+          <p>
+            AI agents, intelligent assistants, knowledge solutions, and
+            AI-powered applications.
+          </p>
+        </li>
+        <li>
+          <h4 class="about-bring__title">Automation &amp; Integration</h4>
+          <p>
+            Intelligent workflows and seamless integration with existing
+            business systems.
+          </p>
+        </li>
+        <li>
+          <h4 class="about-bring__title">Software Engineering</h4>
+          <p>
+            Enterprise applications, APIs, architecture, and custom software
+            solutions.
+          </p>
+        </li>
+        <li>
+          <h4 class="about-bring__title">Quality &amp; Reliability</h4>
+          <p>
+            Engineering practices focused on security, maintainability, and
+            dependable solutions.
+          </p>
+        </li>
+      </ul>
+    </div>
+    <div class="about-philosophy">
+      <p class="label">Our philosophy</p>
+      <blockquote class="pull-quote">
+        “What if we could make this better?”
+      </blockquote>
+      <p class="muted">
+        We believe every business challenge is an opportunity to improve how
+        things work. We approach technology with curiosity, engineering
+        discipline, and a commitment to practical outcomes.
+      </p>
+    </div>
+  </div>
+</section>
+<section id="contact" class="section section--tight">
+  <div class="container">
+    <div class="section-heading">
+      <p class="label">Contact</p>
+      <h2 class="h2">Start a conversation</h2>
+      <p class="muted">
+        Send a message or book a 30-minute consultation. Choose whichever is
+        easier.
+      </p>
+    </div>
+    <div class="contact-layout">
+      <InquiryForm
+        publicEmail={site.publicEmail}
+        turnstileSiteKey={site.turnstileSiteKey}
+      />
+      <aside>
+        <BookingPanel
+          bookingUrl={site.bookingUrl}
+          bookingAvailable={site.bookingAvailable}
+          publicEmail={site.publicEmail}
+        />
+        <ContactDetails
+          publicEmail={site.publicEmail}
+          phone={site.phone}
+          linkedInUrl={site.linkedInUrl}
+        />
+      </aside>
+    </div>
+  </div>
+</section>
