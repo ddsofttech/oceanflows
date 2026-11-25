@@ -160,8 +160,8 @@ a:hover { color: var(--color-action-primary-hover); }
 .hero-banner {
   position: relative;
   width: 100%;
-  /* Tall enough for full copy; at least ~half viewport / 3∶1 band */
-  min-height: max(50svh, calc(100vw * 400 / 1200), 22rem);
+  /* Slightly under half viewport; still tall enough for copy */
+  min-height: max(40svh, calc(100vw * 400 / 1200), 18rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -283,7 +283,7 @@ a:hover { color: var(--color-action-primary-hover); }
 .hero-banner__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
 @media (max-width: 767px) {
   .hero-banner {
-    min-height: max(42svh, 20rem);
+    min-height: max(34svh, 16rem);
     align-items: flex-start;
   }
   .hero-banner__art-img {
