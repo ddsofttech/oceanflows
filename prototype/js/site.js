@@ -7,6 +7,9 @@
   const sectionLinks = document.querySelectorAll("[data-section-link]");
   const sections = ["home", "services", "approach", "about", "contact"];
 
+  const FOCUSABLE =
+    'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
   function setCurrentSection(id) {
     document.querySelectorAll("[data-section-link]").forEach((link) => {
       const match = link.getAttribute("href") === `#${id}`;
@@ -14,21 +17,59 @@
     });
   }
 
-  function closeMobileNav() {
+  function focusableIn(container) {
+    return Array.from(container.querySelectorAll(FOCUSABLE)).filter(
+      (el) => el.offsetParent !== null || el === document.activeElement
+    );
+  }
+
+  function closeMobileNav({ returnFocus = true } = {}) {
     if (!mobileNav || !toggle) return;
     mobileNav.classList.remove("is-open");
     toggle.setAttribute("aria-expanded", "false");
+    document.removeEventListener("keydown", onMobileNavKeydown);
+    if (returnFocus) toggle.focus();
+  }
+
+  function openMobileNav() {
+    if (!mobileNav || !toggle) return;
+    mobileNav.classList.add("is-open");
+    toggle.setAttribute("aria-expanded", "true");
+    const first = focusableIn(mobileNav)[0];
+    if (first) first.focus();
+    document.addEventListener("keydown", onMobileNavKeydown);
+  }
+
+  function onMobileNavKeydown(e) {
+    if (!mobileNav.classList.contains("is-open")) return;
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeMobileNav();
+      return;
+    }
+    if (e.key !== "Tab") return;
+    const items = focusableIn(mobileNav);
+    if (items.length === 0) return;
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   }
 
   if (toggle && mobileNav) {
     toggle.addEventListener("click", () => {
-      const open = mobileNav.classList.toggle("is-open");
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      const willOpen = !mobileNav.classList.contains("is-open");
+      if (willOpen) openMobileNav();
+      else closeMobileNav({ returnFocus: false });
     });
-    mobileNav.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMobileNav));
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && mobileNav.classList.contains("is-open")) closeMobileNav();
-    });
+    mobileNav.querySelectorAll("a").forEach((a) =>
+      a.addEventListener("click", () => closeMobileNav())
+    );
   }
 
   sectionLinks.forEach((link) => {

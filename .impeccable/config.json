@@ -1,0 +1,23 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-11-25T05:46:52.111Z",
+        "reason": "G2 D10: Figma design system option A defines Inter for body (NFR-08)"
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "prototype/pages/index.html"
+        ],
+        "createdAt": "2026-11-25T05:55:31.689Z",
+        "reason": "Designer S2.3 fix pass: approved T2 typography-led prototype per UX brief G2 option A; hierarchy from Figma tokens not changed in defect fix."
+      }
+    ]
+  }
+}
