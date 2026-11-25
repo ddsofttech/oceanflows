@@ -33,7 +33,7 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - run: npm ci
+      - run: npm ci --no-audit
         working-directory: web
       - run: npm run format
         working-directory: web
@@ -48,7 +48,7 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - run: npm ci
+      - run: npm ci --no-audit
         working-directory: web
       - run: npm run lint
         working-directory: web
@@ -63,7 +63,7 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - run: npm ci
+      - run: npm ci --no-audit
         working-directory: web
       - run: npm run check
         working-directory: web
@@ -78,7 +78,7 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - run: npm ci
+      - run: npm ci --no-audit
         working-directory: web
       - run: npm run jscpd
         working-directory: web
@@ -93,7 +93,7 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - run: npm ci
+      - run: npm ci --no-audit
         working-directory: web
       - run: npm run knip
         working-directory: web
@@ -108,7 +108,7 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - run: npm ci
+      - run: npm ci --no-audit
         working-directory: web
       - run: npm run audit:gate
         working-directory: web
@@ -123,7 +123,7 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - run: npm ci
+      - run: npm ci --no-audit
         working-directory: web
       - run: npm run lint
         working-directory: web
@@ -151,7 +151,7 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - run: npm ci
+      - run: npm ci --no-audit
         working-directory: web
       - run: npm run test:coverage
         working-directory: web
@@ -177,7 +177,7 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - run: npm ci
+      - run: npm ci --no-audit
         working-directory: web
       - run: npx playwright install chromium --with-deps
         working-directory: web
@@ -197,7 +197,7 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - run: npm ci
+      - run: npm ci --no-audit
         working-directory: web
       - run: npm run build && npm run check:placeholders
         working-directory: web
@@ -212,7 +212,7 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - run: npm ci
+      - run: npm ci --no-audit
         working-directory: web
       - run: npm run stylelint
         working-directory: web
