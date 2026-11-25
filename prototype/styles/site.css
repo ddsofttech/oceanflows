@@ -161,8 +161,8 @@ a:hover { color: var(--color-action-primary-hover); }
   position: relative;
   width: 100%;
   /* Cap band height — do not tie to full-viewport 3∶1 (that kept it tall on wide screens) */
-  min-height: max(44svh, 19rem);
-  max-height: 32rem;
+  min-height: max(52svh, 22rem);
+  max-height: 38rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -284,7 +284,7 @@ a:hover { color: var(--color-action-primary-hover); }
 .hero-banner__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
 @media (max-width: 767px) {
   .hero-banner {
-    min-height: max(36svh, 16.5rem);
+    min-height: max(42svh, 18rem);
     max-height: none; /* let copy define height on small screens */
     align-items: flex-start;
   }
