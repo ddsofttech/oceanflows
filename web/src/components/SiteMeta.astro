@@ -1,0 +1,19 @@
+---
+/**
+ * @component SiteMeta
+ * @purpose Per-route document title and meta description for SEO
+ * @props title, description
+ * @states default
+ */
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+{description ? <meta name="description" content={description} /> : null}

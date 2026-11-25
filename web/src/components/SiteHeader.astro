@@ -8,6 +8,16 @@ interface Props {
 
 const { variant = "home", homeHref = "/#home" } = Astro.props;
 const contactHref = variant === "home" ? "#contact" : "/#contact";
+const showMobileNav = variant === "home" || variant === "not-found";
+const mobileNavId = variant === "home" ? "mobile-nav" : "mobile-nav-not-found";
+
+const notFoundLinks = [
+  { href: "/#home", label: "Home" },
+  { href: "/#services", label: "Services" },
+  { href: "/#approach", label: "Approach" },
+  { href: "/#about", label: "About" },
+  { href: "/#contact", label: "Contact" },
+];
 ---
 
 <header class="site-header">
@@ -66,21 +76,11 @@ const contactHref = variant === "home" ? "#contact" : "/#contact";
       variant === "not-found" ? (
         <nav aria-label="Primary">
           <ul class="primary-nav">
-            <li>
-              <a href="/#home">Home</a>
-            </li>
-            <li>
-              <a href="/#services">Services</a>
-            </li>
-            <li>
-              <a href="/#approach">Approach</a>
-            </li>
-            <li>
-              <a href="/#about">About</a>
-            </li>
-            <li>
-              <a href="/#contact">Contact</a>
-            </li>
+            {notFoundLinks.map((link) => (
+              <li>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))}
           </ul>
         </nav>
       ) : null
@@ -95,13 +95,13 @@ const contactHref = variant === "home" ? "#contact" : "/#contact";
         ) : null
       }
       {
-        variant === "home" ? (
+        showMobileNav ? (
           <button
             class="nav-toggle"
             type="button"
             data-nav-toggle
             aria-expanded="false"
-            aria-controls="mobile-nav"
+            aria-controls={mobileNavId}
           >
             <span class="visually-hidden">Menu</span>☰
           </button>
@@ -111,7 +111,7 @@ const contactHref = variant === "home" ? "#contact" : "/#contact";
   </div>
   {
     variant === "home" ? (
-      <div id="mobile-nav" class="mobile-nav" data-mobile-nav>
+      <div id={mobileNavId} class="mobile-nav" data-mobile-nav>
         <ul>
           <li>
             <a data-section-link href="#services">
@@ -138,6 +138,19 @@ const contactHref = variant === "home" ? "#contact" : "/#contact";
               Contact
             </a>
           </li>
+        </ul>
+      </div>
+    ) : null
+  }
+  {
+    variant === "not-found" ? (
+      <div id={mobileNavId} class="mobile-nav" data-mobile-nav>
+        <ul>
+          {notFoundLinks.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))}
         </ul>
       </div>
     ) : null
