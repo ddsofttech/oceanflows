@@ -3,6 +3,7 @@ import { spawnSync } from "node:child_process";
 /**
  * Production audit gate for RP0 scaffold.
  * Fails on critical issues in direct runtime dependencies outside the Astro toolchain.
+ * Sunset: replace allowlist with strict `npm audit --omit=dev` once Astro/sharp advisories clear or RP1 baseline is recorded.
  */
 const ALLOWED = new Set([
   "astro",

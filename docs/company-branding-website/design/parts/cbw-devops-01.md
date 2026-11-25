@@ -1,7 +1,10 @@
 # Part plan: cbw-devops-01 — Platform scaffold and CI
 
 ## Goal
-`web/` Astro project exists, Netlify build succeeds, PR pipeline runs engineering-standard gates on changed files.
+`web/` Astro project exists, Cloudflare Pages build succeeds, PR pipeline runs engineering-standard gates on changed files.
+
+## Size
+**M** (approved architect resize H1, 2026-11-25): ~779 changed lines vs prior **S** cap (500); full gate toolchain + env/CI scaffold, excluding `package-lock.json`.
 
 ## Acceptance criteria
 | AC ID | Done when |
@@ -17,7 +20,7 @@
 | Environments | `design/IMPLEMENTATION-PLAN.md` §5 |
 
 ## Changes
-- Expected files: `web/package.json`, `astro.config.mjs`, `netlify.toml`, `.github/workflows/web-ci.yml` (or equivalent), `web/.env.example`, `.gitignore` entries
+- Expected files: `web/package.json`, `astro.config.mjs`, `wrangler.toml`, `.github/workflows/web-ci.yml` (or equivalent), `web/.env.example`, `web/.dev.vars.example`, `.gitignore` entries
 - Reuse: none (greenfield)
 - Out of bounds: page markup migration, inquiry handler
 
