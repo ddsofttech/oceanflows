@@ -170,6 +170,7 @@ a:hover { color: var(--color-action-primary-hover); }
   overflow: hidden;
   scroll-margin-top: var(--header-height);
   background-color: #fff;
+  border-bottom: 2px solid #06b6d4; /* cyan-500 */
 }
 [data-theme="dark"] .hero-banner {
   background-color: var(--color-navy-950);
@@ -334,6 +335,10 @@ main > section + section {
 }
 [data-theme="dark"] main > section + section {
   border-top-color: color-mix(in srgb, var(--color-border-default) 85%, transparent);
+}
+/* Hero already has cyan separator — avoid a double line into Services */
+.hero-banner + section {
+  border-top: none;
 }
 .section-heading { margin-bottom: var(--space-6); max-width: none; width: 100%; }
 .section-heading .h2 { margin: 0; }
