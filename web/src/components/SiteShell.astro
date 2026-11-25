@@ -1,0 +1,37 @@
+---
+/**
+ * @component SiteShell
+ * @purpose Minimal scaffold shell until UX migration (cbw-fe-01)
+ * @props title
+ * @states default
+ */
+interface Props {
+  title?: string;
+}
+
+const { title = "Oceanflows" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  main {
+    font-family: system-ui, sans-serif;
+    margin: 2rem auto;
+    max-width: 40rem;
+    padding: 0 1rem;
+  }
+</style>

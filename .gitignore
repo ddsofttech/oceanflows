@@ -1,1 +1,13 @@
 .cursor/worktrees/
+node_modules/
+dist/
+.wrangler/
+.dev.vars
+.env
+.env.*
+!.env.example
+**/__pycache__/
+web/coverage/
+web/.astro/
+web/test-results/
+web/playwright-report/
