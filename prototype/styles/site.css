@@ -62,8 +62,6 @@ a:hover { color: var(--color-action-primary-hover); }
 .site-header__logo--on-dark { display: none; height: 2.25rem; max-width: 11rem; }
 [data-theme="dark"] .site-header__brand > .site-header__logo:first-of-type { display: none; }
 [data-theme="dark"] .site-header__logo--on-dark { display: block; }
-.site-header__tagline { font-size: var(--text-caption-size); color: var(--color-text-secondary); display: none; }
-@media (min-width: 768px) { .site-header__tagline { display: block; } }
 .primary-nav { display: none; align-items: center; gap: var(--space-5); list-style: none; margin: 0; padding: 0; }
 @media (min-width: 768px) { .primary-nav { display: flex; } }
 .primary-nav a {
