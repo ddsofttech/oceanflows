@@ -179,12 +179,12 @@ a:hover { color: var(--color-action-primary-hover); }
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: url("../assets/banners/banner_new.svg?v=1") center center / contain no-repeat;
+  background: url("../assets/banners/light_banner.svg?v=1") center center / contain no-repeat;
   pointer-events: none;
   user-select: none;
 }
 [data-theme="dark"] .hero-banner::before {
-  background-image: url("../assets/banners/dark-banner2.svg?v=1");
+  background-image: url("../assets/banners/dark_banner.svg?v=1");
   background-size: contain;
   opacity: 1;
   filter: none;
