@@ -134,11 +134,15 @@ a:hover { color: var(--color-action-primary-hover); }
 .theme-toggle__icon::before { content: "◐"; }
 [data-theme="dark"] .theme-toggle__icon::before { content: "◑"; }
 
-/* Hero banner */
+/* Hero banner — box matches banner.svg ratio 1304×848 */
 .section--flush { padding-block: 0; }
 .hero-banner {
-  position: relative; overflow: hidden;
-  min-height: var(--hero-banner-min-height);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 1304 / 848;
+  display: flex;
+  align-items: center;
   border-bottom: 1px solid var(--color-border-default);
   scroll-margin-top: var(--header-height);
   background-color: var(--color-surface-card);
@@ -153,12 +157,11 @@ a:hover { color: var(--color-action-primary-hover); }
   pointer-events: none;
   background-image: url(../assets/banners/banner.svg);
   background-repeat: no-repeat;
-  /* Scale the full banner art to the hero box (no crop). */
   background-size: 100% 100%;
   background-position: center;
 }
 [data-theme="dark"] .hero-banner::before {
-  opacity: 0.5;
+  opacity: 0.55;
   filter: saturate(1.08) brightness(0.95);
 }
 .hero-banner::after {
@@ -167,30 +170,39 @@ a:hover { color: var(--color-action-primary-hover); }
   z-index: 0;
   pointer-events: none;
   background: linear-gradient(
-    112deg,
-    color-mix(in srgb, var(--color-surface-card) 96%, transparent) 0%,
-    color-mix(in srgb, var(--color-surface-card) 72%, transparent) 38%,
-    color-mix(in srgb, var(--color-surface-card) 28%, transparent) 58%,
-    transparent 76%
+    105deg,
+    color-mix(in srgb, var(--color-surface-card) 94%, transparent) 0%,
+    color-mix(in srgb, var(--color-surface-card) 55%, transparent) 42%,
+    transparent 72%
   );
 }
 [data-theme="dark"] .hero-banner::after {
   background: linear-gradient(
-    112deg,
-    color-mix(in srgb, var(--color-navy-950) 96%, transparent) 0%,
-    color-mix(in srgb, var(--color-navy-950) 70%, transparent) 40%,
-    color-mix(in srgb, var(--color-navy-900) 35%, transparent) 62%,
-    transparent 82%
+    105deg,
+    color-mix(in srgb, var(--color-navy-950) 94%, transparent) 0%,
+    color-mix(in srgb, var(--color-navy-950) 55%, transparent) 45%,
+    transparent 75%
   );
 }
 .hero-banner__layout {
-  position: relative; z-index: 1;
-  display: grid; gap: var(--space-6);
-  padding-block: var(--space-7) var(--space-8);
-  align-items: start;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: grid;
+  align-items: center;
+  padding-block: var(--space-5);
 }
-@media (min-width: 1024px) {
-  .hero-banner__layout { grid-template-columns: 1fr min(28rem, 38%); gap: var(--space-7); }
+.hero-banner__content {
+  max-width: 36rem;
+}
+@media (max-width: 639px) {
+  /* Keep ratio; allow a little vertical room for stacked type */
+  .hero-banner {
+    min-height: calc(100vw * 848 / 1304);
+    aspect-ratio: 1304 / 848;
+  }
+  .hero-banner__layout { padding-block: var(--space-4); }
+  .hero-banner__lead { display: none; }
 }
 .hero-banner__eyebrow {
   font-size: var(--text-caption-size); font-weight: 600; letter-spacing: 0.08em;
@@ -217,6 +229,20 @@ a:hover { color: var(--color-action-primary-hover); }
   font-size: var(--text-label-size); font-weight: 600; color: var(--color-action-primary); margin: 0;
 }
 [data-theme="dark"] .hero-banner__tagline { color: var(--color-brand-cyan); }
+.how-we-work {
+  background: var(--color-surface-ground);
+  border-bottom: 1px solid var(--color-border-default);
+}
+.how-we-work__layout {
+  display: grid;
+  gap: var(--space-5);
+}
+@media (min-width: 768px) {
+  .how-we-work__layout {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 40rem;
+  }
+}
 .hero-feature-card {
   padding: var(--space-5); border-radius: var(--radius-lg);
   background: var(--color-surface-navy); color: var(--color-text-inverse);
@@ -245,16 +271,6 @@ a:hover { color: var(--color-action-primary-hover); }
 .hero-feature-card__list li:first-child { border-top: none; padding-top: 0; }
 .hero-feature-card__list strong { font-size: var(--text-label-size); }
 .hero-feature-card__list span { font-size: var(--text-caption-size); color: var(--color-brand-silver); }
-.campaign-banner {
-  background: linear-gradient(90deg, var(--color-action-primary) 0%, var(--color-navy-900) 100%);
-  color: var(--color-text-inverse);
-  padding: var(--space-5) var(--page-gutter);
-}
-.campaign-banner__inner {
-  width: min(100% - 2 * var(--page-gutter), 72rem); margin-inline: auto;
-  display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; justify-content: space-between;
-}
-.campaign-banner p { margin: 0; font-size: var(--text-body-lg-size); line-height: var(--text-body-lg-lh); max-width: 38rem; }
 
 /* Section */
 .section { padding-block: var(--space-8); scroll-margin-top: var(--header-height); }
