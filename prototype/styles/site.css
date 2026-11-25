@@ -139,42 +139,54 @@ a:hover { color: var(--color-action-primary-hover); }
 .hero-banner {
   position: relative; overflow: hidden;
   min-height: var(--hero-banner-min-height);
-  background: linear-gradient(180deg, var(--color-surface-card) 0%, var(--color-surface-ground) 72%);
   border-bottom: 1px solid var(--color-border-default);
   scroll-margin-top: var(--header-height);
+  background-color: var(--color-surface-card);
 }
 [data-theme="dark"] .hero-banner {
-  background: linear-gradient(165deg, var(--color-navy-950) 0%, var(--color-navy-900) 55%, #0b1746 100%);
+  background-color: var(--color-navy-950);
 }
-.hero-banner__decor { pointer-events: none; position: absolute; inset: 0; }
-.hero-banner__visual {
+.hero-banner::before {
+  content: "";
   position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center 58%;
-  mix-blend-mode: multiply;
-  opacity: 0.92;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url(../assets/banners/banner.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 62% 18%;
 }
-[data-theme="dark"] .hero-banner__visual {
-  mix-blend-mode: lighten;
-  opacity: 0.42;
-  object-position: center 52%;
-  filter: saturate(1.05) contrast(1.05);
+[data-theme="dark"] .hero-banner::before {
+  opacity: 0.5;
+  filter: saturate(1.08) brightness(0.95);
 }
-.hero-banner__grid {
-  position: absolute; inset: 0; opacity: 0.22;
-  background-image:
-    linear-gradient(var(--color-border-default) 1px, transparent 1px),
-    linear-gradient(90deg, var(--color-border-default) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: linear-gradient(120deg, transparent 20%, black 55%, black 100%);
+.hero-banner::after {
+  content: "";
+  position: absolute; inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    112deg,
+    color-mix(in srgb, var(--color-surface-card) 96%, transparent) 0%,
+    color-mix(in srgb, var(--color-surface-card) 72%, transparent) 38%,
+    color-mix(in srgb, var(--color-surface-card) 28%, transparent) 58%,
+    transparent 76%
+  );
 }
-[data-theme="dark"] .hero-banner__grid { opacity: 0.2; }
+[data-theme="dark"] .hero-banner::after {
+  background: linear-gradient(
+    112deg,
+    color-mix(in srgb, var(--color-navy-950) 96%, transparent) 0%,
+    color-mix(in srgb, var(--color-navy-950) 70%, transparent) 40%,
+    color-mix(in srgb, var(--color-navy-900) 35%, transparent) 62%,
+    transparent 82%
+  );
+}
 .hero-banner__layout {
   position: relative; z-index: 1;
   display: grid; gap: var(--space-6);
   padding-block: var(--space-7) var(--space-8);
-  align-items: center;
+  align-items: start;
 }
 @media (min-width: 1024px) {
   .hero-banner__layout { grid-template-columns: 1fr min(28rem, 38%); gap: var(--space-7); }
