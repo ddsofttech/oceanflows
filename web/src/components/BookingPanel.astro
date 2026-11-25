@@ -20,16 +20,18 @@ const { bookingUrl, bookingAvailable, publicEmail } = Astro.props;
           class="btn btn--secondary"
           href={bookingUrl}
           target="_blank"
-          rel="noopener noreferrer">Open booking calendar</a
+          rel="noopener noreferrer"
         >
+          Open booking calendar
+        </a>
       </p>
     </div>
   ) : (
     <div class="booking-panel is-unavailable" id="booking-panel">
       <h3 class="h3">Booking is temporarily unavailable</h3>
       <p class="muted">
-        Use the form or email <a href={`mailto:${publicEmail}`}>{publicEmail}</a
-        >.
+        Use the form or email{" "}
+        <a href={`mailto:${publicEmail}`}>{publicEmail}</a>.
       </p>
     </div>
   )

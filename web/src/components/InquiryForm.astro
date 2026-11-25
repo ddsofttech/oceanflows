@@ -5,11 +5,7 @@ interface Props {
   privacyHref?: string;
 }
 
-const {
-  publicEmail,
-  turnstileSiteKey,
-  privacyHref = "/privacy",
-} = Astro.props;
+const { publicEmail, turnstileSiteKey, privacyHref = "/privacy" } = Astro.props;
 ---
 
 <div
@@ -33,13 +29,7 @@ const {
     </div>
     <div class="form-field">
       <label for="name">Name <span aria-hidden="true">*</span></label>
-      <input
-        id="name"
-        name="name"
-        type="text"
-        autocomplete="name"
-        required
-      />
+      <input id="name" name="name" type="text" autocomplete="name" required />
       <p class="form-field__error" hidden></p>
     </div>
     <div class="form-field">
@@ -68,7 +58,11 @@ const {
     </div>
     {
       turnstileSiteKey ? (
-        <div class="form-field" data-turnstile-mount aria-label="Security check" />
+        <div
+          class="form-field"
+          data-turnstile-mount
+          aria-label="Security check"
+        />
       ) : null
     }
     <p class="privacy-note">

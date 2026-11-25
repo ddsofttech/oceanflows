@@ -37,7 +37,9 @@ test.describe("live contact inquiry", () => {
     await page.getByLabel("Inquiry").fill("Hello");
     await page.getByRole("button", { name: "Send inquiry" }).click();
 
-    await expect(page.getByRole("alert")).toContainText("Check the fields below");
+    await expect(page.getByRole("alert")).toContainText(
+      "Check the fields below",
+    );
     await expect(page.locator("#email-error")).toContainText(
       "Enter a valid email address.",
     );
@@ -58,7 +60,9 @@ test.describe("live contact inquiry", () => {
     await page.getByLabel("Inquiry").fill("Need integration help.");
     await page.getByRole("button", { name: "Send inquiry" }).click();
 
-    await expect(page.getByRole("alert")).toContainText("Could not send right now");
+    await expect(page.getByRole("alert")).toContainText(
+      "Could not send right now",
+    );
   });
 
   test("does not show success when submission is rejected (BR-07)", async ({

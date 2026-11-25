@@ -112,10 +112,7 @@ function isInquiryResult(
 }
 
 type TurnstileApi = {
-  render: (
-    container: HTMLElement,
-    options: { sitekey: string },
-  ) => string;
+  render: (container: HTMLElement, options: { sitekey: string }) => string;
   getResponse: (widgetId?: string) => string | undefined;
   reset: (widgetId?: string) => void;
 };
@@ -165,9 +162,9 @@ function clearFieldErrors(form: HTMLFormElement) {
 function applyFieldErrors(form: HTMLFormElement, fields: ClientFieldErrors) {
   for (const [key, message] of Object.entries(fields)) {
     if (!message) continue;
-    const input = form.querySelector<HTMLElement>(`#${key}`)?.closest(
-      ".form-field",
-    );
+    const input = form
+      .querySelector<HTMLElement>(`#${key}`)
+      ?.closest(".form-field");
     if (!input) continue;
     input.classList.add("is-error");
     let errorEl = input.querySelector<HTMLElement>(".form-field__error");
