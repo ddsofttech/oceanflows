@@ -1,0 +1,103 @@
+<!--
+@component SiteHeader
+@purpose Sticky header with logo, section navigation, and consultation action
+@props logoSrc, tagline, navSections, ctaHref, currentSection
+@states default, mobile-open
+@story prototype/pages/index.html
+
+@component PrimaryNav
+@purpose Desktop anchored section links with current-section indicator
+@props sections[], currentId
+@states default, current-highlighted
+@story prototype/pages/index.html
+
+@component Button
+@purpose Primary, secondary, and link actions at 44px touch height
+@props variant, label, href, disabled, loading
+@states default, hover, focus, active, disabled, loading
+@story prototype/stories/button-states.html
+
+@component SectionHeading
+@purpose Section label and title block for marketing sections
+@props label, title, intro
+@states default
+@story prototype/pages/index.html
+
+@component ConsultationCta
+@purpose Repeated consultation call to action toward Contact
+@props heading, body, buttonLabel
+@states default
+@story prototype/pages/index.html#services
+
+@component ServiceItem
+@purpose One service row with problem and outcome columns
+@props name, problem, outcome
+@states default
+@story prototype/pages/index.html#services
+
+@component ApproachStage
+@purpose Numbered stage in the four-step engagement sequence
+@props title, summary, deliverable
+@states default
+@story prototype/pages/index.html#approach
+
+@component FounderProfile
+@purpose Founder name, role, and background without portrait
+@props name, role, paragraphs[]
+@states default, no-portrait
+@story prototype/pages/index.html#about
+
+@component ExpertiseList
+@purpose Bulleted expertise areas from owner copy
+@props items[]
+@states default
+@story prototype/pages/index.html#about
+
+@component TextField
+@purpose Single-line labeled input with hint and error slot
+@props id, label, name, type, required, hint, value, error
+@states default, focus, filled, error, disabled
+@story prototype/stories/contact-field-errors.html
+
+@component TextArea
+@purpose Multi-line inquiry message field
+@props id, label, name, required, value, error
+@states default, focus, filled, error, disabled
+@story prototype/stories/contact-field-errors.html
+
+@component InquiryForm
+@purpose Contact inquiry capture with validation states
+@props fields, submitLabel, privacyHref
+@states idle, sending, sent, field-errors, delivery-failure
+@story prototype/stories/contact-sent.html
+
+@component StatusMessage
+@purpose Inline success or error feedback after form actions
+@props variant, title, body
+@states success, error
+@story prototype/stories/contact-sent.html
+
+@component BookingPanel
+@purpose Cal.com booking link and unavailable fallback
+@props bookingUrl, available
+@states available, unavailable
+@story prototype/stories/contact-booking-unavailable.html
+
+@component ContactDetails
+@purpose Public email, location, optional phone and LinkedIn
+@props email, location, phone, linkedInUrl
+@states with-optional, without-optional
+@story prototype/stories/contact-details-full.html
+
+@component SiteFooter
+@purpose Footer with logo, copyright, privacy link
+@props year, privacyHref
+@states default
+@story prototype/pages/index.html
+
+@component Prose
+@purpose Long-form privacy notice typography
+@props title, sections[]
+@states default
+@story prototype/pages/privacy.html
+-->
