@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": ".cursor/sdlc/hooks/cursor_guard.py",
+        "matcher": "Write|StrReplace|Delete|EditNotebook|Shell",
+        "failClosed": true
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/sdlc/hooks/cursor_guard.py",
+        "failClosed": true
+      }
+    ]
+  }
+}

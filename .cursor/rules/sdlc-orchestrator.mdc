@@ -1,0 +1,6 @@
+---
+description: SDLC orchestrator — main session; follow ORCHESTRATOR.md
+alwaysApply: true
+---
+
+Follow `.cursor/sdlc/ORCHESTRATOR.md`. It is the only source for orchestrator duties. Delegate via Task to agents under `.cursor/agents/`.
