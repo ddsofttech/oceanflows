@@ -1,6 +1,14 @@
 name = "oceanflows-company-site"
+main = "./dist/_worker.js/index.js"
 compatibility_date = "2024-11-01"
-pages_build_output_dir = "./dist"
+upload_source_maps = true
+
+[assets]
+binding = "ASSETS"
+directory = "./dist"
+
+[observability]
+enabled = true
 
 # Optional until sessions are used (Astro Cloudflare adapter warning).
 # [[kv_namespaces]]

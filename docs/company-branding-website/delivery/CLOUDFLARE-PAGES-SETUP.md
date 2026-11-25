@@ -2,7 +2,9 @@
 
 Cloudflare’s current product for this site is a **Worker application** (Workers Builds + Git), not the old static **Pages** wizard. Astro uses `@astrojs/cloudflare` (`output: "server"`), so deploy is **`npx wrangler deploy`**. There is **no “build output directory”** field — Wrangler reads `web/wrangler.toml` after `npm run build`.
 
-Official refs: [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/), [Build configuration](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/), [GitHub Actions / Wrangler](https://developers.cloudflare.com/workers/ci-cd/external-cicd/github-actions/).
+`web/wrangler.toml` must be a **Workers** config (`main` + `[assets]`), **not** `pages_build_output_dir`. That Pages-only key makes Wrangler warn and fail with “Missing entry-point” under Workers Builds.
+
+Official refs: [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/), [Build configuration](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/), [Astro on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/astro/), [GitHub Actions / Wrangler](https://developers.cloudflare.com/workers/ci-cd/external-cicd/github-actions/).
 
 ## 1. Create the application (recommended)
 
@@ -93,11 +95,7 @@ That template grants Workers Scripts write (and related) — enough for `npx wra
 
 ## 5. Align the GitHub Action (if used)
 
-Repo workflow `.github/workflows/web-deploy.yml` currently runs:
-
-`pages deploy dist --project-name=oceanflows-company-site`
-
-For the **Worker application** path, change that command to match dashboard deploy (e.g. `deploy` with `workingDirectory: web`) when you enable Action-based production deploys. Prefer **one** deploy path: either Workers Builds (Git) **or** GitHub Actions, not both fighting the same Worker name.
+Repo workflow `.github/workflows/web-deploy.yml` runs `deploy` (Wrangler Workers) with `workingDirectory: web`. Prefer **one** deploy path: either Workers Builds (Git) **or** GitHub Actions, not both fighting the same Worker name.
 
 ## 6. Custom domain (RP2)
 
