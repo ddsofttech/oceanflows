@@ -16,6 +16,7 @@ Audience: SMB owners and executives deciding whether a founder-led AI consultanc
 | BookingPanel | Cal.com booking link and unavailable fallback | bookingUrl, available | available, unavailable | `prototype/components/catalog.html` | prototype/stories/contact-booking-unavailable.html |
 | Button | Primary, secondary, and link actions at 44px touch height | variant, label, href, disabled, loading | default, hover, focus, active, disabled, loading | `prototype/components/catalog.html` | prototype/stories/button-states.html |
 | CampaignBanner | Compact consultation strip from Figma campaign banner pattern | body, ctaHref | default | `prototype/components/catalog.html` | prototype/pages/index.html |
+| CloudflareWebAnalytics | Cookieless page-view beacon (FR-14); omitted when token unset | (none) | default \| disabled (no PUBLIC_CF_ANALYTICS_TOKEN) | `web/src/components/CloudflareWebAnalytics.astro` |  |
 | ConsultationCta | Repeated consultation call to action toward Contact | heading, body, buttonLabel | default | `prototype/components/catalog.html` | prototype/pages/index.html#services |
 | ContactDetails | Public email, location, optional phone and LinkedIn | email, location, phone, linkedInUrl | with-optional, without-optional | `prototype/components/catalog.html` | prototype/stories/contact-details-full.html |
 | ExpertiseList | Bulleted expertise areas from owner copy | items[] | default | `prototype/components/catalog.html` | prototype/pages/index.html#about |

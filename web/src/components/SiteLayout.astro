@@ -6,6 +6,7 @@
  * @states default
  */
 import "../styles/site.css";
+import CloudflareWebAnalytics from "./CloudflareWebAnalytics.astro";
 import SiteMeta from "./SiteMeta.astro";
 
 interface Props {
@@ -30,5 +31,6 @@ const { title, description, skipTarget = "#home" } = Astro.props;
     <slot />
     <slot name="footer" />
     <script is:inline src="/scripts/site.js"></script>
+    <CloudflareWebAnalytics />
   </body>
 </html>

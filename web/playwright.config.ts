@@ -14,7 +14,7 @@ export default defineConfig({
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
     command:
-      "PUBLIC_BOOKING_URL=https://cal.com/ddsofttech npm run build && npx serve dist -l 4321",
+      "PUBLIC_BOOKING_URL=https://cal.com/ddsofttech PUBLIC_CF_ANALYTICS_TOKEN=e2e-test-beacon-token npm run build && npx serve dist -l 4321",
     url: "http://127.0.0.1:4321",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

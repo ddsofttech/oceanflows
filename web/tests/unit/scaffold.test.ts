@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { publicSiteConfig, publicSiteLinks } from "../../src/lib/public-site";
+import {
+  cfAnalyticsToken,
+  publicSiteConfig,
+  publicSiteLinks,
+} from "../../src/lib/public-site";
 import { sitePhase } from "../../src/lib/site-status";
 
 describe("site lib", () => {
@@ -13,6 +17,10 @@ describe("site lib", () => {
     expect(publicEmail).not.toMatch(/\[[A-Z0-9_]+\]/);
     expect(bookingUrl.length).toBeGreaterThan(0);
     expect(publicEmail).toContain("@");
+  });
+
+  it("omits analytics token when PUBLIC_CF_ANALYTICS_TOKEN is unset", () => {
+    expect(cfAnalyticsToken()).toBeUndefined();
   });
 
   it("marks booking unavailable in non-production when URL is unset", () => {
