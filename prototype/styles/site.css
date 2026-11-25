@@ -153,8 +153,9 @@ a:hover { color: var(--color-action-primary-hover); }
   pointer-events: none;
   background-image: url(../assets/banners/banner.svg);
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 62% 18%;
+  /* Scale the full banner art to the hero box (no crop). */
+  background-size: 100% 100%;
+  background-position: center;
 }
 [data-theme="dark"] .hero-banner::before {
   opacity: 0.5;
