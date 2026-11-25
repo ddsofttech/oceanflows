@@ -1,7 +1,7 @@
 # UX Brief
 
 - Started by: G1 decision D9 (2026-11-24) confirmed design **trigger 1, Greenfield UI**: the product has no UI and no design system. Baseline: `docs/baselines/prds/PRD-v1.0.md`. Profile: Standard. G2 stops for the design system and visual identity (trigger 1); no T3 screen; tiers are not a G2 decision in Standard but are listed for the human.
-- Status: S2.1 done; S2.2 (G2) approved (D10, option A); S2.3 build complete on `ux/company-branding-website`. Awaiting S2.4 design-lead validation.
+- Status: S2.1 done; S2.2 (G2) approved (D10, option A); S2.3 build complete on `ux/company-branding-website`; S2.4 revise fixes applied (screenshots, markup, a11y). Awaiting design-lead S2.4 revalidation.
 - `docs/COMPONENTS.md`: does not exist (greenfield). Every component below is new.
 
 ## A. Screens and tiers
@@ -96,9 +96,9 @@ None: the PRD fixes the structure (single page, five sections), and the brand co
 ## F. Build record (T2 and T3 screens, design-system changes)
 
 - UX branch: `ux/company-branding-website`.
-- Open locally: from the repo root run `python3 -m http.server 8765 --directory prototype`, then visit `http://127.0.0.1:8765/shell/index.html` (flow index) or `http://127.0.0.1:8765/pages/index.html` (single-page site).
+- Open locally: from the **repo root** run `python3 -m http.server 8765 --directory .`, then visit `http://127.0.0.1:8765/prototype/shell/index.html` (flow index) or `http://127.0.0.1:8765/prototype/pages/index.html` (single-page site). Serving only `prototype/` breaks token CSS imports.
 - Prototype: plain HTML, CSS, and JS under `prototype/` — `design/tokens/design-tokens.json` plus `design/tokens/tokens.css` mirror; presentational markup in `prototype/pages/` and component doc blocks in `prototype/components/catalog.html`; navigation behavior in `prototype/js/site.js`; flow shell in `prototype/shell/` (mocks in `prototype/shell/mocks.js` — not imported by pages).
-- Flows linked from the shell: W1 (idle → sending → sent; E1 field errors; E2 delivery failure), W1b (booking available vs E7 unavailable), privacy link, E4 not found; optional contact details with phone/LinkedIn story.
+- Flows linked from the shell: W1 (idle → sending → sent; E1 field errors; E2 delivery failure; E3 spam rejected story), W1b (booking available vs E7 unavailable), privacy link, E4 not found; optional contact details with phone/LinkedIn story.
 - Screens / states built:
 
 | Screen | States | Story path |
@@ -107,19 +107,20 @@ None: the PRD fixes the structure (single page, five sections), and the brand co
 | Single-page site (Home, Services, Approach, About, Contact, header/footer) | default | `prototype/pages/index.html` |
 | Privacy notice | default (draft copy) | `prototype/pages/privacy.html` |
 | Not found | default | `prototype/pages/not-found.html` |
-| Contact inquiry form | idle, sending, sent, field errors, delivery failure | `prototype/pages/index.html#contact`, `prototype/stories/contact-*.html` |
+| Contact inquiry form | idle, sending, sent, field errors, delivery failure, spam rejected (no success) | `prototype/pages/index.html#contact`, `prototype/stories/contact-*.html` |
 | Booking panel | available, unavailable | `prototype/pages/index.html#contact`, `prototype/stories/contact-booking-unavailable.html` |
 | Contact details | without optional fields, with phone + LinkedIn | index vs `prototype/stories/contact-details-full.html` |
 | Primary navigation | desktop current-section, mobile open | `prototype/pages/index.html`, `prototype/stories/mobile-nav-open.html` |
 | Button | primary, secondary, link, disabled, loading | `prototype/stories/button-states.html` |
 
 - Layout concepts (implemented): typography-led Home hero (no hero image); Services ruled list with problem/outcome columns; Approach numbered 1–4 track; About two-column text without portrait; Contact form-first with booking aside on desktop.
-- Simulated: form submit latency **~800 ms** (`DDPrototypeMocks.inquiryLatencyMs` in shell mocks only; story pages use static HTML for each state). Spam-rejected (BR-07, R3) **not shown** — awaits architect mechanism. Placeholders `[INQUIRY_EMAIL]`, `[PUBLIC_EMAIL]`, `[BOOKING_URL]`, `[PUBLIC_PHONE]`, `[LINKEDIN_URL]` per BR-09. Privacy text is a structural draft (FR-11). No analytics script in the prototype.
+- Simulated: form submit latency **~800 ms** (`DDPrototypeMocks.inquiryLatencyMs` in shell mocks only; story pages use static HTML for each state). E3 spam-rejected story (`contact-spam-rejected.html`) shows **no success confirmation** per BR-07; final copy/mechanism still for architect (R3). Placeholders `[INQUIRY_EMAIL]`, `[PUBLIC_EMAIL]`, `[BOOKING_URL]`, `[PUBLIC_PHONE]`, `[LINKEDIN_URL]` per BR-09. Privacy text is a structural draft (FR-11). No analytics script in the prototype.
+- **S2.4 revise fixes (2026-11-25):** removed `<motionwrap/>` from contact form; merged duplicate inline styles on Home caption; plain-language AI agents outcome copy (NFR-07); mobile nav focus trap + focus return (`prototype/js/site.js`); logo switched to Figma SVG export `prototype/assets/logo-mark.svg`; all `ux/screens/*` re-captured at 390/1440 with repo-root HTTP serve (`docs/company-branding-website/ux/capture-screenshots.py` helper).
 - API data assumed: unchanged from S2.1 plan (`{ name, email, phone?, message }` → sent | field errors | delivery failure | spam-rejected; Cal.com URL; static section copy).
 - UI checks: `docs/ENGINEERING-STANDARDS.md` does not exist — **no named UI checks**; manual walk-through of shell flows and viewport screenshots at 390px and 1440px widths.
 - Screenshots: `docs/company-branding-website/ux/screens/*-{mobile,desktop}.png` (key states listed in orchestrator handoff).
 - Catalog: `docs/COMPONENTS.md` regenerated from `prototype/components/catalog.html` and tokens.
-- Assets from Figma: `prototype/assets/logo-mark-export.png`, `prototype/assets/logo.png`.
+- Assets from Figma: `prototype/assets/logo-mark.svg` (symbol export, node `8:2320`), `prototype/assets/logo-mark-export.png` (legacy PNG retained), `prototype/assets/logo.png`.
 - Affected by design-system change: all T2 screens above (restyled from Figma foundations).
 
 ## G. Open items for G2
