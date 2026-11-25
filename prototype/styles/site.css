@@ -182,8 +182,9 @@ a:hover { color: var(--color-action-primary-hover); }
   user-select: none;
 }
 [data-theme="dark"] .hero-banner::before {
-  opacity: 0.88;
-  filter: saturate(1.05) brightness(0.9);
+  background-image: url("../assets/banners/dark-banner2.svg");
+  opacity: 1;
+  filter: none;
 }
 .hero-banner::after {
   content: "";
