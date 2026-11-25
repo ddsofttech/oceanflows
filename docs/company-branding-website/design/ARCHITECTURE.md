@@ -6,10 +6,10 @@
 - Mode: greenfield
 - System architecture version: (none — created by this request)
 - Author: architect (S3.1)
-- Date: 2026-11-25
+- Date: 2026-11-25; revised 2026-11-25 (G4 Revise D16 — Cloudflare Pages)
 
 ## 1. Context
-- **Constraints:** C1–C7 (simple JAMstack, Cal.com free tier, Vercel or Netlify free tier, no CMS/DB). G3 waivers: FR-09 section-end CTAs → header + hero only; consulting-first tagline copy deferred as current hero wording. Human-locked IA adds **Use cases** section and six nav targets (not in PRD §4 list) — accepted at G3; no data contract impact.
+- **Constraints:** C1–C7 (simple JAMstack, Cal.com free tier, free-tier static/JAMstack host — **ADR-2/D16:** Cloudflare Pages; PRD C7 text still lists Vercel/Netlify, no product scope change). G3 waivers: FR-09 section-end CTAs → header + hero only; consulting-first tagline copy deferred as current hero wording. Human-locked IA adds **Use cases** section and six nav targets (not in PRD §4 list) — accepted at G3; no data contract impact.
 - **Non-functional requirements:** NFR-01–NFR-10 (responsive, WCAG 2.2 AA, CWV, motion, no custom backend except form delivery, HTTPS, spam control, cookieless analytics, SEO meta).
 - **Integration points:** (1) Email delivery to `[INQUIRY_EMAIL]`; (2) Cal.com booking URL `[BOOKING_URL]`; (3) cookieless analytics (Cloudflare Web Analytics or equivalent); (4) optional Cloudflare Turnstile for spam (decision with security-engineer).
 - **Binding UX constraints and simulations that must become real:**
@@ -23,10 +23,10 @@
 | Option | Summary | Meets requirements? | Trade-offs | Cost to reverse |
 |---|---|---|---|---|
 | Extend what exists | Deploy `prototype/` as static files; Netlify Forms for inquiry | Yes (with Netlify Forms spam/notify limits) | No typed contract; harder to implement BR-07 “no success” for spam consistently | Low |
-| **Astro + Netlify Function + Resend (recommended)** | Static site from UX; one serverless POST `/api/inquiry`; email via Resend | Yes | Small new dependencies; owner needs Resend API key | Low–medium |
+| **Astro + Cloudflare Pages Function + Resend (recommended)** | Static site from UX; one serverless POST `/api/inquiry`; email via Resend | Yes | Small new dependencies; owner needs Resend API key + Cloudflare account | Low–medium |
 | Next.js on Vercel | SSG + Route Handler | Yes | Heavier than needed; Vercel Hobby commercial-use risk (R7) | Medium |
 
-- **Recommendation:** Astro 4.x static output with `@astrojs/netlify` adapter, one Netlify Function implementing the OpenAPI contract, Resend for transactional email to the inquiry inbox. Host on **Netlify free tier** (commercial use permitted; addresses R7 vs Vercel Hobby).
+- **Recommendation:** Astro 5.x with `@astrojs/cloudflare`, `output: "server"` (replaces Astro 4 “hybrid” — prerender per route with `export const prerender = true` on marketing pages; SSR/API routes default on-server). One Pages Function via Astro API route `src/pages/api/inquiry.ts` implementing the OpenAPI contract, Resend for transactional email to the inquiry inbox. Host on **Cloudflare Pages** (free tier suitable for commercial marketing site; addresses R7 vs Vercel Hobby; per human decision D16). **Class A (H1, 2026-11-25):** RP0 scaffold ships Astro 5 + server output; no stack or hosting change vs G4 intent.
 - **Heavier choices and the requirement that needs each:** Resend + Function (D5, NFR-05/06, BR-06/07 with explicit spam response); optional Turnstile (R3, NFR-06) if honeypot + rate limit insufficient.
 
 ## 3. Change to the system architecture
@@ -53,7 +53,7 @@
 | Pagination and limits | `message` max 5000 chars; rate limit per IP (e.g. 5/min) | analyst; open with security |
 | Caching | Immutable hashed assets long TTL; HTML short TTL or immutable per deploy | NFR-03 |
 | Sync versus async work | Inquiry: synchronous email send in function with timeout | FR-07 |
-| What scales out | Netlify CDN and serverless concurrency (vendor-managed) | C7 |
+| What scales out | Cloudflare CDN and Pages/Workers concurrency (vendor-managed) | C7; D16 |
 
 ## 5. Data model
 | Entity | Keys and constraints | Indexes | Change and migration |
@@ -87,7 +87,7 @@ Site copy and tokens are source files in git (Q15).
 |---|---|---|
 | Validation error | 400 + field errors; client keeps values | Function log `inquiry.validation_failed` (no PII in message body) |
 | Resend unavailable | 502; client shows delivery failure + public email (FR-08) | Log `inquiry.delivery_failed`; alert on error rate |
-| Rate limit | 429; generic client message | Netlify/function metrics |
+| Rate limit | 429; generic client message | Cloudflare analytics / Wrangler tail (no PII) |
 | Spam | 200 rejected; idle form (no success) | Metric `inquiry.spam_rejected` count only |
 | Cal.com down | Booking link fails in browser; form still works (E7) | Manual; optional synthetic check |
 | Analytics blocked | Site works; visit not counted | Analytics dashboard empty |
@@ -97,10 +97,11 @@ Logging: structured JSON, no full message body or phone in logs (PII minimizatio
 ## 8. Security design items
 | Threat model ID | Design item |
 |---|---|
-| TM-01 (spam abuse) | Honeypot field `hp`, server-side validation, IP rate limit; optional Turnstile — **formal IDs in `THREAT-MODEL.md` via security-engineer handoff** |
-| TM-02 (PII in transit) | HTTPS only; TLS to Resend | 
+| TM-01 (spam abuse) | Honeypot field `hp`, server-side validation, IP rate limit; optional Turnstile — **formal IDs in `THREAT-MODEL.md`** |
+| TM-12 (rate-limit IP) | Key rate limit on `CF-Connecting-IP` / `request.cf`; do not trust client `X-Forwarded-For` alone |
+| TM-02 (PII in transit) | HTTPS only; TLS to Resend |
 | TM-03 (PII in logs) | Log inquiry IDs and outcomes only |
-| TM-04 (secret exposure) | Resend/Turnstile secrets in Netlify env, never `PUBLIC_*` |
+| TM-04 (secret exposure) | Resend/Turnstile secrets in Cloudflare Pages/Workers env (dashboard or `wrangler secret`), never `PUBLIC_*` |
 | TM-05 (XSS via form) | Escape output in email template; Astro auto-escape in UI |
 
 **Handoff:** Orchestrator must run `security-engineer` (S3.1 threat modeling skill) to publish `design/THREAT-MODEL.md` and confirm spam stack before `cbw-be-01` merges.
@@ -109,13 +110,14 @@ Logging: structured JSON, no full message body or phone in logs (PII minimizatio
 ### ADR-1: Astro as the production web framework
 - Context: Greenfield marketing site; UX delivered as static HTML/CSS/JS; NFR-05 simplicity.
 - Options considered: Deploy prototype as-is; Astro; Next.js.
-- Decision: Astro with static pages, islands for theme/nav/form client script.
-- Consequences: New `web/` app; prototype remains reference until migrated in `cbw-fe-01`.
+- Decision: Astro 5 with static (prerendered) marketing pages, islands for theme/nav/form client script; `output: "server"` + Cloudflare adapter so `src/pages/api/inquiry.ts` runs on Pages Functions without a separate hybrid mode flag.
+- Consequences: New `web/` app; prototype remains reference until migrated in `cbw-fe-01`. Marketing pages in `cbw-fe-01` must set `export const prerender = true` unless a route needs SSR.
 
-### ADR-2: Netlify hosting over Vercel Hobby
-- Context: C7 requires free tier; R7 flags Vercel Hobby non-commercial terms.
-- Decision: Netlify free tier for company marketing site.
-- Consequences: Use `@astrojs/netlify` and Netlify Functions.
+### ADR-2: Cloudflare Pages hosting (revised D16)
+- Context: C7 / NFR-05 require a free-tier JAMstack host; R7 flags Vercel Hobby non-commercial terms. G4 Revise D16: human chose Cloudflare Pages over the prior Netlify recommendation.
+- Options considered: Netlify (prior G4 draft); Cloudflare Pages; Vercel Hobby (rejected, R7).
+- Decision: **Cloudflare Pages** for the company marketing site; inquiry API on **Pages Functions** through `@astrojs/cloudflare` (Astro API route — simplest Astro-compatible path).
+- Consequences: `wrangler.toml` (or Pages project config via dashboard); build command `astro build`; secrets via Cloudflare **Settings → Environment variables** (encrypted) or `wrangler secret`; local dev with `wrangler pages dev` / adapter dev. PRD C7 still names Vercel/Netlify — intent is unpaid JAMstack hosting; no OpenAPI or product scope change (Class A clarification).
 
 ### ADR-3: Cal.com as a new-tab link (not embed)
 - Context: R6 — embed may set cookies and conflict with FR-14 cookieless analytics stance.
@@ -124,7 +126,7 @@ Logging: structured JSON, no full message body or phone in logs (PII minimizatio
 
 ### ADR-4: Resend for inquiry email delivery
 - Context: D5; need programmatic spam rejection and HTML email with all fields (BR-06).
-- Decision: Netlify Function calls Resend `POST /emails` to `INQUIRY_EMAIL`.
+- Decision: Pages Function (Astro API route) calls Resend `POST /emails` to `INQUIRY_EMAIL`.
 - Consequences: Owner creates Resend account; domain verification for `from` address before production (devops + owner).
 
 ## 10. Risks and open questions
@@ -132,7 +134,7 @@ Logging: structured JSON, no full message body or phone in logs (PII minimizatio
 |---|---|---|---|---|---|
 | R3 | Contact spam | B | Important | security-engineer + backend | Threat model + implement in `cbw-be-01` |
 | R6 | Cal.com cookies | A | Non-blocking | architect | ADR-3 link-only |
-| R7 | Hosting terms | A | Important | architect/devops | ADR-2 Netlify |
+| R7 | Hosting terms | A | Important | architect/devops | ADR-2 Cloudflare Pages |
 | Q19 | Placeholders | B | Non-blocking | Duong | Before S6 production |
 | FR-09 | Section CTAs waived at G3 | A | — | — | Header+hero only |
 | FR-01 copy | Consulting-first line deferred | A | Non-blocking | designer/owner | Optional copy PR |

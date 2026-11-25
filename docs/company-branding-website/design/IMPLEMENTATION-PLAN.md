@@ -2,15 +2,15 @@
 
 ## Metadata
 - Architecture version: S3.1 `design/ARCHITECTURE.md` (2026-11-25)
-- G4 decision (recorded on approval): (pending)
+- G4 decision (recorded on approval): D17 Approve (2026-11-25) — Cloudflare Pages plan locked
 - Author: architect (S3.2)
-- Date: 2026-11-25
+- Date: 2026-11-25; revised 2026-11-25 (G4 Revise D16 — Cloudflare Pages)
 
 ## 1. Slice parts
 
 | Part ID | Slice | AC IDs | Part | Owner | Depends on | Release point | Size | Review class | Part plan |
 |---|---|---|---|---|---|---|---|---|---|
-| cbw-devops-01 | Platform | NFR-05, gates | back-end | devops | — | RP0 | S | Important | `parts/cbw-devops-01.md` |
+| cbw-devops-01 | Platform | NFR-05, gates | back-end | devops | — | RP0 | M | Important | `parts/cbw-devops-01.md` |
 | cbw-fe-01 | Site shell | FR-01–05, FR-02, FR-12, NFR-01,04,08,10 | front-end | frontend-developer | cbw-devops-01 | RP1 | L | Important | `parts/cbw-fe-01.md` |
 | cbw-be-01 | Inquiry API | FR-06–08, FR-07, BR-05–07, NFR-06 | back-end | backend-developer | cbw-devops-01 | RP1 | M | **Sensitive** | `parts/cbw-be-01.md` |
 | cbw-fe-02 | Contact live | FR-06–08, FR-10, FR-13, FR-11 (links) | front-end | frontend-developer | cbw-fe-01, cbw-be-01 | RP1 | M | Important | `parts/cbw-fe-02.md` |
@@ -43,22 +43,22 @@
 | 4 | cbw-fe-04 | cbw-fe-01 | cbw-devops-02 | — |
 | 5 | cbw-devops-02 | cbw-fe-02, cbw-fe-04 | — | Owner placeholders |
 
-**Spike (optional, day-boxed):** Resend sandbox send from Netlify deploy preview — owner of `cbw-be-01`.
+**Spike (optional, day-boxed):** Resend sandbox send from Cloudflare Pages preview deployment — owner of `cbw-be-01`.
 
 ## 4. Release points
 
 | Release point | Parts | What the user gets | Why |
 |---|---|---|---|
 | RP0 | cbw-devops-01 | CI green on empty `web/` | Gate before feature PRs |
-| RP1 (staging) | cbw-fe-01, cbw-be-01, cbw-fe-02, cbw-fe-03 | Full site on Netlify preview; inquiry to test inbox; booking link; privacy + 404 | End-to-end QA (S5) |
+| RP1 (staging) | cbw-fe-01, cbw-be-01, cbw-fe-02, cbw-fe-03 | Full site on Cloudflare Pages preview branch; inquiry to test inbox; booking link; privacy + 404 | End-to-end QA (S5) |
 | RP2 (production) | cbw-fe-04, cbw-devops-02 | Live domain, real emails/booking, analytics, no placeholders | G7 go-live |
 
 ## 5. CI and environments (provisioned at S3.4)
 - **Git host:** existing repo remote (orchestrator confirms); branch flow: feature → `ux/company-branding-website` / `main` per team rule.
-- **Pipelines:** PR — lint, typecheck, unit tests, Playwright smoke, gitleaks, npm audit, `ui-catalog.py --check`, `sdlc-check.py`; main — deploy Netlify production.
+- **Pipelines:** PR — lint, typecheck, unit tests, Playwright smoke, gitleaks, npm audit, `ui-catalog.py --check`, `sdlc-check.py`; main — Cloudflare Pages production deploy (Git integration or GitHub Action with Wrangler).
 - **Quality gates:** `docs/ENGINEERING-STANDARDS.md` §9.
-- **Environments:** Netlify deploy previews (PR); staging alias; production custom domain (D2).
-- **Scaffold creator:** `cbw-devops-01` adds `web/` + `netlify.toml` + GitHub Actions (or Netlify build hooks).
+- **Environments:** Cloudflare Pages preview deployments (per branch/PR); production custom domain on Cloudflare (D2); secrets per environment in dashboard.
+- **Scaffold creator:** `cbw-devops-01` adds `web/` + `wrangler.toml` + `@astrojs/cloudflare` + CI workflow.
 
 ## 6. Rollout
 - Migrations: none.

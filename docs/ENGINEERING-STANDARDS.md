@@ -1,7 +1,7 @@
 # Engineering Standards
 
 ## Metadata
-- Stack: Astro 4, TypeScript, Netlify (CDN + Functions), Resend; design tokens W3C JSON + CSS variables; plain CSS (from UX prototype)
+- Stack: Astro 5 (`output: "server"` + `@astrojs/cloudflare`; marketing routes prerendered per-page via `export const prerender = true`), TypeScript, Cloudflare Pages (CDN + Pages Functions), Resend; design tokens W3C JSON + CSS variables; plain CSS (from UX prototype)
 - Last changed by request: `company-branding-website`
 - Date: 2026-11-25
 
@@ -10,7 +10,7 @@ Each rule: one line, one example, the tool that enforces it (or "review"), and w
 ## 1. Structure and boundaries
 | Rule | Example | Enforced by | Status |
 |---|---|---|---|
-| Marketing UI lives under `web/src/`; serverless handlers under `web/netlify/functions/` | `web/src/pages/index.astro` | review | proposed |
+| Marketing UI lives under `web/src/`; inquiry API as Astro endpoint under `web/src/pages/api/` | `web/src/pages/api/inquiry.ts` | review | proposed |
 | Design tokens authoritative in `design/tokens/design-tokens.json`; CSS mirror `design/tokens/tokens.css` imported by global styles | `--color-action-primary` from tokens | stylelint + review | proposed |
 | UI components under `web/src/components/`; no business logic in `.astro` frontmatter beyond props | `InquiryForm.astro` + `inquiry-form.ts` | ESLint | proposed |
 | Inquiry delivery only in `inquiry` function; front end calls `POST /api/inquiry` | No Resend import in `web/src/` | ESLint `import/no-restricted-paths` | proposed |
@@ -22,7 +22,7 @@ Each rule: one line, one example, the tool that enforces it (or "review"), and w
 |---|---|---|---|
 | Astro components PascalCase `.astro` | `SiteHeader.astro` | review | proposed |
 | Client scripts kebab-case `.ts` colocated or in `web/src/scripts/` | `theme.ts` | review | proposed |
-| Netlify function file name matches route | `inquiry.ts` → `/api/inquiry` | Netlify | proposed |
+| Astro API file maps to route | `src/pages/api/inquiry.ts` → `/api/inquiry` | `@astrojs/cloudflare` routing | proposed |
 | CSS classes kebab-case, BEM-like blocks from prototype | `.hero-banner`, `.services-table` | stylelint | proposed |
 | Env vars: `PUBLIC_*` client-safe; secrets never prefixed `PUBLIC_` | `PUBLIC_BOOKING_URL` | review | proposed |
 
@@ -46,7 +46,7 @@ Each rule: one line, one example, the tool that enforces it (or "review"), and w
 ## 5. Configuration and secrets
 | Rule | Example | Enforced by | Status |
 |---|---|---|---|
-| Secrets only in Netlify environment (or local `.env` gitignored) | `RESEND_API_KEY` | gitleaks | proposed |
+| Secrets only in Cloudflare Pages/Workers env or local `.dev.vars` / `.env` (gitignored); never commit | `RESEND_API_KEY` | gitleaks | proposed |
 | `.env.example` lists keys without values | `INQUIRY_EMAIL=` | review | proposed |
 | Production build fails CI if placeholder `[BOOKING_URL]` in output | BR-09 check script | proposed CI step | proposed |
 
@@ -68,7 +68,7 @@ Each rule: one line, one example, the tool that enforces it (or "review"), and w
 | Rule | Example | Enforced by | Status |
 |---|---|---|---|
 | New npm deps need architect approval in PR description | Resend SDK | review | proposed |
-| Pin major versions; Renovate/Dependabot enabled | `astro@^4` | npm audit | proposed |
+| Pin major versions; Renovate/Dependabot enabled | `astro@^5` | npm audit | proposed |
 | No client-side analytics SDKs with cookies | Cloudflare beacon script only | review | proposed |
 
 ## 9. Quality gates
