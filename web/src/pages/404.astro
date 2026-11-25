@@ -6,9 +6,11 @@ import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 
 const title = "Page not found — DD Software Solutions Inc.";
+const description =
+  "This page could not be found. Return to the DD Software Solutions Inc. home page or start a conversation from the contact section.";
 ---
 
-<SiteLayout title={title} skipTarget="#content">
+<SiteLayout title={title} description={description} skipTarget="#content">
   <SiteHeader slot="header" variant="not-found" homeHref="/#home" />
   <main id="content" class="section">
     <div class="container not-found stack">
