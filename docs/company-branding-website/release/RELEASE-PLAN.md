@@ -76,7 +76,7 @@ Mapped to PRD / TEST-PLAN RP1 smoke; **hosted column blocked until DNS + HTTP 20
 | Playwright integrated (local build) | **pass** | QA / RC `8f974c60` |
 
 **S6.2 outcome:** **Fail** — cannot mark hosted staging green. **Environment issues (Blocking):**
-1. **Workers Builds deploy** (2026-11-25): build OK; deploy failed — `wrangler.toml` had `pages_build_output_dir` (Pages) while dashboard runs `npx wrangler deploy` → “Missing entry-point”. Fix: Workers `main` + `[assets]` (+ `public/.assetsignore`); see PR on `release/company-branding-website`. After merge, owner **Retry** Cloudflare build.
+1. **Workers Builds deploy** (2026-11-25): build OK; deploy failed — `wrangler.toml` had `pages_build_output_dir` (Pages) while dashboard runs `npx wrangler deploy` → “Missing entry-point”. Fix: Workers `main` + `[assets]` (+ `public/.assetsignore`); see PR #10. Retry then failed again: `sharp`/`detect-libc` unresolved (`child_process`/`fs`). Fix: `imageService: "passthrough"` in Astro Cloudflare adapter so sharp is not bundled into the Worker. After merge, owner **Retry** Cloudflare build.
 2. **DNS:** publish apex/custom domain for `oceanflows.net`, then rerun checklist (use browser UA; if 403 persists, allowlist smoke IP or manual owner screenshot per BOARD).
 
 ### Observation

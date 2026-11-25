@@ -4,6 +4,8 @@ Cloudflare’s current product for this site is a **Worker application** (Worker
 
 `web/wrangler.toml` must be a **Workers** config (`main` + `[assets]`), **not** `pages_build_output_dir`. That Pages-only key makes Wrangler warn and fail with “Missing entry-point” under Workers Builds.
 
+Astro adapter must use `imageService: "passthrough"` (or `"cloudflare"`) so **sharp** is not bundled into the Worker — otherwise `npx wrangler deploy` fails resolving Node built-ins (`fs`, `child_process`) via `detect-libc`.
+
 Official refs: [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/), [Build configuration](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/), [Astro on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/astro/), [GitHub Actions / Wrangler](https://developers.cloudflare.com/workers/ci-cd/external-cicd/github-actions/).
 
 ## 1. Create the application (recommended)
