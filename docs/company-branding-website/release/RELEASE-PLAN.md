@@ -40,18 +40,40 @@ Request: `company-branding-website`. One section per release point, newest first
   4. Notify orchestrator; reopen RP0 only if platform gate must be re-established.
 - **Rollback tested:** **no** (git revert only; low risk). Flagged as acceptable for RP0 — no live traffic.
 
+### Staging verification (S6.2)
+
+- **Date:** 2026-11-25
+- **Method:** CI-only close-out (no hosted deploy). Staging = GitHub Actions `web-ci` on integration branch at RC `05ec0c5`.
+- **Result:** **Staging verified** for RP0 platform gate — all applicable checks **pass**.
+- **Hosted staging URL:** **N/A until H2** (Cloudflare Pages preview not provisioned; required for RP1+, not RP0).
+
+**Evidence (authoritative):**
+
+| Field | Value |
+|---|---|
+| Workflow | `web-ci` |
+| Run | [45694850445](https://github.com/ddsofttech/oceanflows/actions/runs/45694850445) |
+| `headSha` | `05ec0c5b75b6cfc66a27eaf3274f1422f53d28a0` |
+| `conclusion` | `success` |
+| Trigger | Merge PR #1 → `ux/company-branding-website` |
+| QA cross-ref | `testing/reports/RP0.md` (G6 D18) |
+
 ### Staging checklist
 
-RP0 staging target = **integration branch CI + optional hosted preview**. Per IMPLEMENTATION-PLAN, RP0 deliverable is “CI green on empty `web/`”, not a public staging URL.
+RP0 staging target = **integration branch CI**; hosted preview **out of scope** until H2 closes. Per IMPLEMENTATION-PLAN, RP0 deliverable is “CI green on empty `web/`”.
 
 | Check (smoke set mapped to AC IDs) | Result | Evidence |
 |---|---|---|
-| NFR-05 — JAMstack scaffold, Cloudflare adapter, no DB/CMS | **pass** | QA report; `web/` layout at RC |
-| PR pipeline — ENGINEERING-STANDARDS §9 gates | **pass** | `web-ci` run 45694850445 on `05ec0c5` |
-| TM-04 — no secrets in diff/repo | **pass** | `gate / secrets` (gitleaks) |
-| Playwright smoke — scaffold page loads + axe | **pass** | `gate / playwright-smoke` on RC |
-| Build placeholders — no `[TOKEN]` in `dist/` | **pass** | `gate / build-placeholders` |
-| Cloudflare Pages preview deploy (smoke URL) | **not run** | **Blocked — H2** (owner Cloudflare account/secrets). Run in S6.2 when H2 closes; not gating RP0 sign-off. |
+| NFR-05 — JAMstack scaffold, Cloudflare adapter, no DB/CMS | **pass** | QA S5.2; `web/` at `05ec0c5` |
+| PR pipeline — ENGINEERING-STANDARDS §9 gates | **pass** | Run 45694850445 — format, lint, types, duplication, unused, dependency-audit, sast, unit-tests, stylelint, ui-catalog, sdlc-process |
+| TM-04 — no secrets in diff/repo | **pass** | `gate / secrets` — success |
+| Playwright smoke — scaffold page loads + axe | **pass** | `gate / playwright-smoke` — success |
+| Build placeholders — no `[TOKEN]` in `dist/` | **pass** | `gate / build-placeholders` — success |
+| Change-size (PR-only) | **skipped** | Expected on merge push |
+| Cloudflare Pages preview deploy (smoke URL) | **N/A** | **H2 open** — not required for RP0; first URL check deferred to RP1 staging |
+| Hosted staging health check | **N/A** | No URL; CI smoke substitutes for RP0 |
+
+**S6.2 outcome:** Platform gate staging **verified**. No product deploy performed. No G7 package prepared (RP0).
 
 ### Observation
 
@@ -68,18 +90,17 @@ RP0 staging target = **integration branch CI + optional hosted preview**. Per IM
 
 | Environment | Date | Version | Result | Rollback run? |
 |---|---|---|---|---|
-| Git / CI (`ux/company-branding-website`) | 2026-11-25 | `05ec0c5` | Success — `web-ci` green | N/A |
-| Cloudflare Pages (preview / staging) | — | — | **Not deployed** — H2 open | N/A |
+| Git / CI (`ux/company-branding-website`) | 2026-11-25 | `05ec0c5` | Success — `web-ci` run 45694850445 | N/A |
+| Staging (S6.2 verify) | 2026-11-25 | `05ec0c5` | **Verified** — CI checklist complete; no hosted URL | N/A |
+| Cloudflare Pages (preview / staging) | — | — | **Not deployed** — H2 open; URL **N/A** until owner completes setup | N/A |
 | Cloudflare Pages (production) | — | — | **Not in scope for RP0** | N/A |
 
-### S6.2 readiness (staging verify)
+### Release status
 
-| Item | Status | Notes |
-|---|---|---|
-| G6 recorded | **Ready** | D18 Approve |
-| RC identified | **Ready** | `05ec0c5` |
-| CI staging evidence | **Ready** | Release test complete in `testing/reports/RP0.md` |
-| Hosted staging URL (Cloudflare preview) | **Blocked** | H2 — follow `delivery/CLOUDFLARE-PAGES-SETUP.md` |
-| G7 package (S6.3) | **Not applicable** | RP0 skips G7; do not prepare production Go for RP0 |
-
-**Can S6.2 run?** **Yes, in narrow scope:** record RP0 as **Released** on the integration branch with CI evidence (S6.2 verify = confirm post-merge `web-ci` + archive staging checklist above). **No** full S6.2 Cloudflare staging soak until H2 closes; that work carries to **RP1** staging, not a blocker to closing RP0 in the board sense.
+| Field | Value |
+|---|---|
+| S6.1 | Complete — this release plan |
+| S6.2 | Complete — staging verified (CI evidence only) |
+| S6.3 / G7 | **N/A** for RP0 |
+| S6.4 production | **N/A** for RP0 |
+| **Board: ready to mark Released?** | **Yes** — RP0 platform gate; orchestrator may set release point RP0 to **Released** with evidence above. Feature work (RP1) proceeds; Cloudflare hosted staging remains **follow-up via H2** before RP1 soak on a public preview URL. |
