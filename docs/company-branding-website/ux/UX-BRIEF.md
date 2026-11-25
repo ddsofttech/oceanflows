@@ -1,7 +1,7 @@
 # UX Brief
 
 - Started by: G1 decision D9 (2026-11-24) confirmed design **trigger 1, Greenfield UI**: the product has no UI and no design system. Baseline: `docs/baselines/prds/PRD-v1.0.md`. Profile: Standard. G2 stops for the design system and visual identity (trigger 1); no T3 screen; tiers are not a G2 decision in Standard but are listed for the human.
-- Status: S2.3 **G3 Revise (D11)** rebuild on `ux/company-branding-website` — Figma-faithful hero banner, light **and** dark themes, wave motif; screenshots re-captured. Hand to design-lead S2.4 (not self-validated).
+- Status: S2.3 **G3 Revise (D12)** asset wiring on `ux/company-branding-website` — `light-banner.svg` hero, `primary-logo.svg` (+ dark swap); home screenshots re-captured. Hand to design-lead S2.4 (not self-validated).
 - `docs/COMPONENTS.md`: does not exist (greenfield). Every component below is new.
 
 ## A. Screens and tiers
@@ -113,14 +113,15 @@ None: the PRD fixes the structure (single page, five sections), and the brand co
 | Primary navigation | desktop current-section, mobile open | `prototype/pages/index.html`, `prototype/stories/mobile-nav-open.html` |
 | Button | primary, secondary, link, disabled, loading | `prototype/stories/button-states.html` |
 
-- Layout concepts (implemented): **Figma-style Home hero banner** (wave SVG `prototype/assets/banners/wave-motif.svg`, grid overlay, “Intelligence Integrated” + PRD headline, navy “How we work” card, compact campaign strip); Services ruled list with problem/outcome columns; Approach numbered 1–4 track; About two-column text without portrait; Contact form-first with booking aside on desktop; **ThemeToggle** in header on index/privacy/not-found.
+- Layout concepts (implemented): **Home hero banner** (`prototype/assets/banners/light-banner.svg` as full-bleed visual with subtle grid overlay, mix-blend for light/dark; “Intelligence Integrated” + PRD headline, navy “How we work” card, compact campaign strip); Services ruled list with problem/outcome columns; Approach numbered 1–4 track; About two-column text without portrait; Contact form-first with booking aside on desktop; **ThemeToggle** in header on index/privacy/not-found; site logo `prototype/assets/logos/primary-logo.svg` (dark header/footer: `white-horizontal-logo.svg` swap).
 - Simulated: form submit latency **~800 ms** (`DDPrototypeMocks.inquiryLatencyMs` in shell mocks only; story pages use static HTML for each state). E3 spam-rejected story (`contact-spam-rejected.html`) shows **no success confirmation** per BR-07; final copy/mechanism still for architect (R3). Placeholders `[INQUIRY_EMAIL]`, `[PUBLIC_EMAIL]`, `[BOOKING_URL]`, `[PUBLIC_PHONE]`, `[LINKEDIN_URL]` per BR-09. Privacy text is a structural draft (FR-11). No analytics script in the prototype.
 - **G3 Revise D11 (2026-11-25):** rebuilt Home for Figma banner fidelity; added dark theme tokens + toggle; downloaded wave asset from Figma banners board; re-captured screenshots including `home-idle-dark-*`.
+- **G3 Revise D12 (2026-11-25):** per human — hero banner `prototype/assets/banners/light-banner.svg`; logo `prototype/assets/logos/primary-logo.svg` site-wide (dark: `white-horizontal-logo.svg` in header/footer); re-captured `home-idle-*` screenshots.
 - API data assumed: unchanged from S2.1 plan (`{ name, email, phone?, message }` → sent | field errors | delivery failure | spam-rejected; Cal.com URL; static section copy).
 - UI checks: `docs/ENGINEERING-STANDARDS.md` does not exist — **no named UI checks**; manual walk-through of shell flows and viewport screenshots at 390px and 1440px widths.
 - Screenshots: `docs/company-branding-website/ux/screens/*-{mobile,desktop}.png` (key states listed in orchestrator handoff).
 - Catalog: `docs/COMPONENTS.md` regenerated from `prototype/components/catalog.html` and tokens.
-- Assets from Figma: `prototype/assets/logo-mark.svg`, `prototype/assets/banners/wave-motif.svg` (node `8:2282` / newsletter wave), `prototype/assets/banners/brand-banner-reference.png` (design reference only, not shipped in UI).
+- Assets (shipped): `prototype/assets/logos/primary-logo.svg`, `prototype/assets/logos/white-horizontal-logo.svg` (dark header/footer swap), `prototype/assets/banners/light-banner.svg` (Home hero). Legacy/reference only: `prototype/assets/logo-mark.svg`, `prototype/assets/banners/wave-motif.svg`, `prototype/assets/banners/brand-banner-reference.png`.
 - Affected by design-system change: all T2 screens above (restyled from Figma foundations).
 
 ## G. Open items for G2
