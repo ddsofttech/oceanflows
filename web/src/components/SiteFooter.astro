@@ -1,0 +1,38 @@
+---
+interface Props {
+  showLogo?: boolean;
+}
+
+const { showLogo = true } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    {
+      showLogo ? (
+        <>
+          <img
+            class="site-footer__logo"
+            src="/assets/logos/primary-logo.svg"
+            width="464"
+            height="366"
+            alt=""
+          />
+          <img
+            class="site-footer__logo site-footer__logo--on-dark"
+            src="/assets/logos/white-horizontal-logo.svg"
+            width="232"
+            height="71"
+            alt=""
+            aria-hidden="true"
+          />
+        </>
+      ) : null
+    }
+    <p class="caption muted">
+      © {year} DD Software Solutions Inc. · <a href="/privacy">Privacy notice</a
+      >
+    </p>
+  </div>
+</footer>

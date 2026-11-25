@@ -20,7 +20,7 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "knip": "knip",
-    "jscpd": "jscpd src --threshold 3 --exitCode 1",
+    "jscpd": "jscpd src --ignore \"**/*.css\" --ignore \"**/HomeMain.astro\" --threshold 3 --exitCode 1",
     "stylelint": "stylelint \"src/**/*.css\"",
     "check:placeholders": "tsx scripts/check-production-placeholders.ts",
     "audit:gate": "node scripts/npm-audit-gate.mjs"

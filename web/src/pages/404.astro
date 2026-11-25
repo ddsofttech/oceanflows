@@ -1,0 +1,23 @@
+---
+export const prerender = true;
+
+import SiteLayout from "../components/SiteLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+
+const title = "Page not found — DD Software Solutions Inc.";
+---
+
+<SiteLayout title={title} skipTarget="#content">
+  <SiteHeader slot="header" variant="not-found" homeHref="/#home" />
+  <main id="content" class="section">
+    <div class="container not-found stack">
+      <h1 class="h1">This page is not available</h1>
+      <p class="muted">
+        The link may be outdated or the address may be mistyped.
+      </p>
+      <p><a class="btn btn--primary" href="/#home">Go to home</a></p>
+    </div>
+  </main>
+  <SiteFooter slot="footer" showLogo={false} />
+</SiteLayout>

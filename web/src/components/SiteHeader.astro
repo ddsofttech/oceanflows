@@ -1,0 +1,145 @@
+---
+import ThemeToggle from "./ThemeToggle.astro";
+
+interface Props {
+  variant?: "home" | "minimal" | "not-found";
+  homeHref?: string;
+}
+
+const { variant = "home", homeHref = "/#home" } = Astro.props;
+const contactHref = variant === "home" ? "#contact" : "/#contact";
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="site-header__brand" href={homeHref}>
+      <img
+        class="site-header__logo"
+        src="/assets/logos/primary-logo.svg"
+        width="464"
+        height="366"
+        alt="DD Software Solutions Inc."
+      />
+      <img
+        class="site-header__logo site-header__logo--on-dark"
+        src="/assets/logos/white-horizontal-logo.svg"
+        width="232"
+        height="71"
+        alt=""
+        aria-hidden="true"
+      />
+    </a>
+    {
+      variant === "home" ? (
+        <nav aria-label="Primary">
+          <ul class="primary-nav">
+            <li>
+              <a data-section-link href="#services" aria-current="false">
+                Services
+              </a>
+            </li>
+            <li>
+              <a data-section-link href="#approach" aria-current="false">
+                Approach
+              </a>
+            </li>
+            <li>
+              <a data-section-link href="#use-cases" aria-current="false">
+                Use cases
+              </a>
+            </li>
+            <li>
+              <a data-section-link href="#about" aria-current="false">
+                About
+              </a>
+            </li>
+            <li>
+              <a data-section-link href="#contact" aria-current="false">
+                Contact
+              </a>
+            </li>
+          </ul>
+        </nav>
+      ) : null
+    }
+    {
+      variant === "not-found" ? (
+        <nav aria-label="Primary">
+          <ul class="primary-nav">
+            <li>
+              <a href="/#home">Home</a>
+            </li>
+            <li>
+              <a href="/#services">Services</a>
+            </li>
+            <li>
+              <a href="/#approach">Approach</a>
+            </li>
+            <li>
+              <a href="/#about">About</a>
+            </li>
+            <li>
+              <a href="/#contact">Contact</a>
+            </li>
+          </ul>
+        </nav>
+      ) : null
+    }
+    <div class="site-header__actions">
+      <ThemeToggle />
+      {
+        variant !== "not-found" ? (
+          <a class="btn btn--primary" href={contactHref}>
+            Book a consultation
+          </a>
+        ) : null
+      }
+      {
+        variant === "home" ? (
+          <button
+            class="nav-toggle"
+            type="button"
+            data-nav-toggle
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+          >
+            <span class="visually-hidden">Menu</span>☰
+          </button>
+        ) : null
+      }
+    </div>
+  </div>
+  {
+    variant === "home" ? (
+      <div id="mobile-nav" class="mobile-nav" data-mobile-nav>
+        <ul>
+          <li>
+            <a data-section-link href="#services">
+              Services
+            </a>
+          </li>
+          <li>
+            <a data-section-link href="#approach">
+              Approach
+            </a>
+          </li>
+          <li>
+            <a data-section-link href="#use-cases">
+              Use cases
+            </a>
+          </li>
+          <li>
+            <a data-section-link href="#about">
+              About
+            </a>
+          </li>
+          <li>
+            <a data-section-link href="#contact">
+              Contact
+            </a>
+          </li>
+        </ul>
+      </div>
+    ) : null
+  }
+</header>

@@ -1,7 +1,8 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
-const PLACEHOLDER = /\[[A-Z0-9_]+\]/g;
+/** Owner copy placeholders like [BOOKING_URL], not JS array literals. */
+const PLACEHOLDER = /\[[A-Z][A-Z0-9_]+\]/g;
 const OUT_DIR = path.resolve("dist");
 
 async function* walk(dir: string): AsyncGenerator<string> {

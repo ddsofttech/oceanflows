@@ -1,3 +1,3 @@
-export function sitePhase(): "scaffold" {
-  return "scaffold";
+export function sitePhase(): "preview" {
+  return "preview";
 }
