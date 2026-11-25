@@ -229,8 +229,8 @@ jobs:
           python-version: '3.12'
       - name: ui-catalog check
         run: |
+          # Production catalog: Astro components only (prototype/ is S2 throwaway, not on release).
           python .cursor/sdlc/scripts/ui-catalog.py \
-            --src prototype/components \
             --src web/src/components \
             --tokens design/tokens/design-tokens.json \
             --check
