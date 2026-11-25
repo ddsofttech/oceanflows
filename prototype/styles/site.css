@@ -134,14 +134,14 @@ a:hover { color: var(--color-action-primary-hover); }
 .theme-toggle__icon::before { content: "◐"; }
 [data-theme="dark"] .theme-toggle__icon::before { content: "◑"; }
 
-/* Hero banner — art keeps 1304∶848; box height follows that ratio (capped) */
+/* Hero banner — full SVG visible at native 1304∶848 (no crop, no distort) */
 .section--flush { padding-block: 0; }
 .hero-banner {
   position: relative;
   overflow: hidden;
   width: 100%;
-  /* Native banner ratio, capped so the page isn't one giant empty field */
-  height: min(36rem, calc(100vw * 848 / 1304));
+  aspect-ratio: 1304 / 848;
+  height: auto;
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--color-border-default);
@@ -157,14 +157,14 @@ a:hover { color: var(--color-action-primary-hover); }
   z-index: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: right center;
+  max-width: none;
+  object-fit: fill; /* box ratio matches SVG → full art, no crop */
   pointer-events: none;
   user-select: none;
 }
 [data-theme="dark"] .hero-banner__art {
-  opacity: 0.72;
-  filter: saturate(1.05) brightness(0.88);
+  opacity: 0.85;
+  filter: saturate(1.05) brightness(0.9);
 }
 .hero-banner::after {
   content: "";
@@ -172,33 +172,33 @@ a:hover { color: var(--color-action-primary-hover); }
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  /* Light readability only — do not hide the wave */
   background: linear-gradient(
     90deg,
-    #fff 0%,
-    rgba(255, 255, 255, 0.9) 26%,
-    rgba(255, 255, 255, 0.28) 48%,
-    transparent 62%
+    rgba(255, 255, 255, 0.88) 0%,
+    rgba(255, 255, 255, 0.55) 34%,
+    rgba(255, 255, 255, 0.12) 52%,
+    transparent 64%
   );
 }
 [data-theme="dark"] .hero-banner::after {
   background: linear-gradient(
     90deg,
-    var(--color-navy-950) 0%,
-    color-mix(in srgb, var(--color-navy-950) 90%, transparent) 28%,
-    color-mix(in srgb, var(--color-navy-950) 25%, transparent) 52%,
-    transparent 68%
+    color-mix(in srgb, var(--color-navy-950) 88%, transparent) 0%,
+    color-mix(in srgb, var(--color-navy-950) 45%, transparent) 36%,
+    transparent 60%
   );
 }
+/* Keep .container gutters — do not set width:100% here (that was clipping the headline) */
 .hero-banner__layout {
   position: relative;
   z-index: 1;
-  width: 100%;
   display: flex;
   align-items: center;
-  padding-block: var(--space-6);
+  padding-block: clamp(1.5rem, 4vw, 3rem);
 }
 .hero-banner__content {
-  max-width: 32rem;
+  max-width: min(34rem, 48%);
 }
 .hero-banner__eyebrow {
   font-size: var(--text-caption-size); font-weight: 600; letter-spacing: 0.08em;
@@ -208,8 +208,8 @@ a:hover { color: var(--color-action-primary-hover); }
 .hero-banner__brand-line {
   margin: 0 0 var(--space-3);
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4.8vw, 3rem);
-  line-height: 1.08;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  line-height: 1.1;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--color-text-primary);
@@ -217,7 +217,7 @@ a:hover { color: var(--color-action-primary-hover); }
 .hero-banner__accent { font-style: normal; color: var(--color-brand-cyan); }
 .hero-banner__message {
   margin: 0 0 var(--space-3);
-  font-size: clamp(1.125rem, 2vw, 1.35rem);
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
   line-height: 1.45;
   font-weight: 600;
   color: var(--color-text-primary);
@@ -234,24 +234,21 @@ a:hover { color: var(--color-action-primary-hover); }
 }
 [data-theme="dark"] .hero-banner__tagline { color: var(--color-brand-cyan); }
 @media (max-width: 639px) {
-  .hero-banner {
-    height: min(28rem, calc(100vw * 848 / 1304 + 4rem));
-  }
-  .hero-banner__art { object-position: 72% center; }
+  .hero-banner__content { max-width: 100%; }
   .hero-banner::after {
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.97) 0%,
-      rgba(255, 255, 255, 0.9) 42%,
-      rgba(255, 255, 255, 0.4) 72%,
+      rgba(255, 255, 255, 0.94) 0%,
+      rgba(255, 255, 255, 0.75) 40%,
+      rgba(255, 255, 255, 0.25) 70%,
       transparent 100%
     );
   }
   [data-theme="dark"] .hero-banner::after {
     background: linear-gradient(
       180deg,
-      var(--color-navy-950) 0%,
-      color-mix(in srgb, var(--color-navy-950) 88%, transparent) 48%,
+      color-mix(in srgb, var(--color-navy-950) 92%, transparent) 0%,
+      color-mix(in srgb, var(--color-navy-950) 55%, transparent) 50%,
       transparent 100%
     );
   }
