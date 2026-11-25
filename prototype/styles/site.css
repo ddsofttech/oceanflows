@@ -251,11 +251,10 @@ a:hover { color: var(--color-action-primary-hover); }
   }
 }
 
-/* How we work stays below the banner (own section; requires scroll after hero) */
-
-/* How we work — outside banner, three clear columns */
+/* How we work — inside Services, above the service list */
 .how-we-work {
-  background: var(--color-surface-card);
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-7);
   border-bottom: 1px solid var(--color-border-default);
 }
 .how-we-work__grid {
