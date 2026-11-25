@@ -50,6 +50,22 @@ test.describe("marketing site", () => {
     expect(stored).toBe(after);
   });
 
+  test("Cloudflare Web Analytics beacon when token is configured", async ({
+    page,
+  }) => {
+    const beaconScript = page.locator(
+      'script[src*="static.cloudflareinsights.com/beacon.min.js"]',
+    );
+    await page.goto("/");
+    await expect(beaconScript).toHaveCount(1);
+    await expect(beaconScript).toHaveAttribute(
+      "data-cf-beacon",
+      /e2e-test-beacon-token/,
+    );
+    await page.goto("/privacy");
+    await expect(beaconScript).toHaveCount(1);
+  });
+
   test("home and privacy have title and meta description", async ({ page }) => {
     await page.goto("/");
     await expect(page).toHaveTitle(/AI consulting and integration/);
@@ -60,6 +76,7 @@ test.describe("marketing site", () => {
 
     await page.goto("/privacy");
     await expect(page).toHaveTitle(/Privacy notice/);
+    await expect(page.getByText(/Cloudflare Web Analytics/i)).toBeVisible();
     const privacyDesc = await page
       .locator('meta[name="description"]')
       .getAttribute("content");

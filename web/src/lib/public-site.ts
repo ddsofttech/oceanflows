@@ -34,6 +34,11 @@ export function publicSiteConfig() {
   };
 }
 
+/** Cloudflare Web Analytics site token (PUBLIC_CF_ANALYTICS_TOKEN). */
+export function cfAnalyticsToken(): string | undefined {
+  return trimPublicEnv("PUBLIC_CF_ANALYTICS_TOKEN");
+}
+
 export function publicSiteLinks() {
   const site = publicSiteConfig();
   return {

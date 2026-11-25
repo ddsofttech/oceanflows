@@ -183,6 +183,8 @@ jobs:
         working-directory: web
       - run: npm run build
         working-directory: web
+        env:
+          PUBLIC_CF_ANALYTICS_TOKEN: e2e-test-beacon-token
       - run: npm run test:e2e
         working-directory: web
 
@@ -260,5 +262,5 @@ jobs:
           git fetch origin ux/company-branding-website || true
           python .cursor/sdlc/scripts/sdlc-check.py \
             --request company-branding-website \
-            --part cbw-fe-02 \
+            --part cbw-fe-04 \
             --base origin/ux/company-branding-website
