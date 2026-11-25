@@ -1,0 +1,268 @@
+name: web-ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - ux/company-branding-website
+      - 'feature/**'
+
+concurrency:
+  group: web-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  CI: true
+  WORKING_DIR: web
+  REQUEST: company-branding-website
+  BASE_BRANCH: origin/ux/company-branding-website
+
+jobs:
+  format:
+    name: gate / format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --no-audit
+        working-directory: web
+      - run: npm run format
+        working-directory: web
+
+  lint:
+    name: gate / lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --no-audit
+        working-directory: web
+      - run: npm run lint
+        working-directory: web
+
+  types:
+    name: gate / types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --no-audit
+        working-directory: web
+      - run: npm run check
+        working-directory: web
+
+  duplication:
+    name: gate / duplication
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --no-audit
+        working-directory: web
+      - run: npm run jscpd
+        working-directory: web
+
+  unused:
+    name: gate / unused
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --no-audit
+        working-directory: web
+      - run: npm run knip
+        working-directory: web
+
+  audit:
+    name: gate / dependency-audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --no-audit
+        working-directory: web
+      - run: npm run audit:gate
+        working-directory: web
+
+  sast:
+    name: gate / sast
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --no-audit
+        working-directory: web
+      - run: npm run lint
+        working-directory: web
+
+  secrets:
+    name: gate / secrets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  unit-tests:
+    name: gate / unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --no-audit
+        working-directory: web
+      - run: npm run test:coverage
+        working-directory: web
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install diff-cover
+      - run: |
+          git fetch origin ux/company-branding-website || true
+          diff-cover web/coverage/lcov.info \
+            --compare-branch=origin/ux/company-branding-website \
+            --fail-under=80
+        working-directory: .
+
+  e2e:
+    name: gate / playwright-smoke
+    runs-on: ubuntu-latest
+    needs: [types]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --no-audit
+        working-directory: web
+      - run: npx playwright install chromium --with-deps
+        working-directory: web
+      - run: npm run build
+        working-directory: web
+        env:
+          PUBLIC_CF_ANALYTICS_TOKEN: e2e-test-beacon-token
+      - run: npm run test:e2e
+        working-directory: web
+
+  placeholders:
+    name: gate / build-placeholders
+    runs-on: ubuntu-latest
+    needs: [types]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --no-audit
+        working-directory: web
+      - run: npm run build && npm run check:placeholders
+        working-directory: web
+
+  stylelint:
+    name: gate / design-tokens-stylelint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --no-audit
+        working-directory: web
+      - run: npm run stylelint
+        working-directory: web
+
+  ui-catalog:
+    name: gate / ui-catalog
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: ui-catalog check
+        run: |
+          # Production catalog: Astro components only (prototype/ is S2 throwaway, not on release).
+          python .cursor/sdlc/scripts/ui-catalog.py \
+            --src web/src/components \
+            --tokens design/tokens/design-tokens.json \
+            --check
+
+  sdlc-process:
+    name: gate / sdlc-process
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python .cursor/sdlc/scripts/sdlc-check.py --request company-branding-website
+
+  change-size:
+    name: gate / change-size
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          BASE_REF="${{ github.base_ref }}"
+          git fetch origin "$BASE_REF" || true
+          # Default L budget for release-branch catch-up / large site PRs (cbw-fe-01).
+          python .cursor/sdlc/scripts/sdlc-check.py \
+            --request company-branding-website \
+            --part cbw-fe-01 \
+            --base "origin/$BASE_REF"

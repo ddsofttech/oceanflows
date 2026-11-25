@@ -1,0 +1,89 @@
+<svg width="1200" height="400" viewBox="0 0 1200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_32_9955)">
+<path d="M0 12C0 5.37257 5.37258 0 12 0H1188C1194.63 0 1200 5.37258 1200 12V388C1200 394.627 1194.63 400 1188 400H12C5.37257 400 0 394.627 0 388V12Z" fill="#081F59"/>
+<g opacity="0.18">
+<rect width="12" height="12" transform="translate(818 57)" fill="#06B6D4"/>
+</g>
+<g opacity="0.26">
+<rect width="16" height="16" transform="translate(810 114)" fill="#1E40AF"/>
+</g>
+<g opacity="0.34">
+<rect width="24" height="24" transform="translate(818 171)" fill="#06B6D4"/>
+</g>
+<g opacity="0.1">
+<rect width="12" height="12" transform="translate(818 285)" fill="#06B6D4"/>
+</g>
+<g opacity="0.34">
+<rect width="12" height="12" transform="translate(884)" fill="#06B6D4"/>
+</g>
+<g opacity="0.1">
+<rect width="24" height="24" transform="translate(884 114)" fill="#06B6D4"/>
+</g>
+<g opacity="0.18">
+<rect width="8" height="8" transform="translate(892 171)" fill="#1E40AF"/>
+</g>
+<g opacity="0.26">
+<rect width="12" height="12" transform="translate(884 228)" fill="#06B6D4"/>
+</g>
+<g opacity="0.18">
+<rect width="16" height="16" transform="translate(958)" fill="#1E40AF"/>
+</g>
+<g opacity="0.26">
+<rect width="24" height="24" transform="translate(966 57)" fill="#06B6D4"/>
+</g>
+<g opacity="0.42">
+<rect width="12" height="12" transform="translate(966 171)" fill="#06B6D4"/>
+</g>
+<g opacity="0.1">
+<rect width="16" height="16" transform="translate(958 228)" fill="#1E40AF"/>
+</g>
+<g opacity="0.18">
+<rect width="24" height="24" transform="translate(966 285)" fill="#06B6D4"/>
+</g>
+<g opacity="0.42">
+<rect width="24" height="24" transform="translate(1032)" fill="#06B6D4"/>
+</g>
+<g opacity="0.1">
+<rect width="8" height="8" transform="translate(1040 57)" fill="#1E40AF"/>
+</g>
+<g opacity="0.18">
+<rect width="12" height="12" transform="translate(1032 114)" fill="#06B6D4"/>
+</g>
+<g opacity="0.34">
+<rect width="24" height="24" transform="translate(1032 228)" fill="#06B6D4"/>
+</g>
+<g opacity="0.42">
+<rect width="8" height="8" transform="translate(1040 285)" fill="#1E40AF"/>
+</g>
+<g opacity="0.34">
+<rect width="12" height="12" transform="translate(1114 57)" fill="#06B6D4"/>
+</g>
+<g opacity="0.42">
+<rect width="16" height="16" transform="translate(1106 114)" fill="#1E40AF"/>
+</g>
+<g opacity="0.1">
+<rect width="24" height="24" transform="translate(1114 171)" fill="#06B6D4"/>
+</g>
+<g opacity="0.26">
+<rect width="12" height="12" transform="translate(1114 285)" fill="#06B6D4"/>
+</g>
+<g opacity="0.1">
+<rect width="12" height="12" transform="translate(1180)" fill="#06B6D4"/>
+</g>
+<g opacity="0.26">
+<rect width="24" height="24" transform="translate(1180 114)" fill="#06B6D4"/>
+</g>
+<g opacity="0.34">
+<rect width="8" height="8" transform="translate(1188 171)" fill="#1E40AF"/>
+</g>
+<g opacity="0.42">
+<rect width="12" height="12" transform="translate(1180 228)" fill="#06B6D4"/>
+</g>
+<rect width="1204" height="4" transform="translate(0 396)" fill="#06B6D4"/>
+</g>
+<defs>
+<clipPath id="clip0_32_9955">
+<path d="M0 12C0 5.37257 5.37258 0 12 0H1188C1194.63 0 1200 5.37258 1200 12V388C1200 394.627 1194.63 400 1188 400H12C5.37257 400 0 394.627 0 388V12Z" fill="white"/>
+</clipPath>
+</defs>
+</svg>

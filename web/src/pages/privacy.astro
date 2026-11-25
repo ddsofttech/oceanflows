@@ -1,0 +1,62 @@
+---
+export const prerender = true;
+
+import SiteLayout from "../components/SiteLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { publicSiteLinks } from "../lib/public-site";
+
+const { publicEmail, inquiryEmail } = publicSiteLinks();
+
+const title = "Privacy notice — DD Software Solutions Inc.";
+const description =
+  "How DD Software Solutions Inc. collects and uses inquiry, booking, and analytics data.";
+---
+
+<SiteLayout title={title} description={description} skipTarget="#content">
+  <SiteHeader slot="header" variant="minimal" homeHref="/#home" />
+  <main id="content" class="section">
+    <div class="container prose">
+      <h1 style="font-size: 2.25rem; line-height: 2.75rem;">Privacy notice</h1>
+      <p style="font-size: 1rem; line-height: 1.5rem;" class="muted">
+        <strong>Draft for owner approval.</strong> DD Software Solutions Inc. is based
+        in Alberta, Canada and serves visitors in Canada and the United States.
+      </p>
+      <h2 style="font-size: 1.25rem; line-height: 1.75rem;">What we collect</h2>
+      <p style="font-size: 1rem; line-height: 1.5rem;">
+        When you use the inquiry form we collect your name, email, optional
+        phone number, and message. When you book a consultation through Cal.com,
+        Cal.com collects scheduling details under their privacy policy. We use
+        privacy-friendly analytics that do not set cookies.
+      </p>
+      <h2 style="font-size: 1.25rem; line-height: 1.75rem;">
+        Why we collect it
+      </h2>
+      <p style="font-size: 1rem; line-height: 1.5rem;">
+        We use inquiry data to respond to your request. Booking data is used to
+        schedule consultations. Analytics help us understand site usage in
+        aggregate.
+      </p>
+      <h2 style="font-size: 1.25rem; line-height: 1.75rem;">Who receives it</h2>
+      <p style="font-size: 1rem; line-height: 1.5rem;">
+        Inquiries are sent to <code>{inquiryEmail}</code>. Cal.com processes
+        booking data as a third-party service. Analytics data is processed by
+        Cloudflare Web Analytics, which does not use cookies for site
+        measurement.
+      </p>
+      <h2 style="font-size: 1.25rem; line-height: 1.75rem;">Your choices</h2>
+      <p style="font-size: 1rem; line-height: 1.5rem;">
+        You may request access to or deletion of personal data we hold by
+        emailing{" "}
+        <code>{publicEmail}</code>.
+      </p>
+      <h2 style="font-size: 1.25rem; line-height: 1.75rem;">Updates</h2>
+      <p style="font-size: 1rem; line-height: 1.5rem;">
+        We may update this notice. The current version is always published on
+        this page.
+      </p>
+      <p><a class="btn btn--secondary" href="/">Back to home</a></p>
+    </div>
+  </main>
+  <SiteFooter slot="footer" showLogo={false} />
+</SiteLayout>
