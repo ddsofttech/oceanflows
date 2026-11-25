@@ -1,7 +1,7 @@
 # UX Brief
 
 - Started by: G1 decision D9 (2026-11-24) confirmed design **trigger 1, Greenfield UI**: the product has no UI and no design system. Baseline: `docs/baselines/prds/PRD-v1.0.md`. Profile: Standard. G2 stops for the design system and visual identity (trigger 1); no T3 screen; tiers are not a G2 decision in Standard but are listed for the human.
-- Status: S2.1 done; S2.2 (G2) package prepared, awaiting the human. Nothing built.
+- Status: S2.1 done; S2.2 (G2) approved (D10, option A); S2.3 build complete on `ux/company-branding-website`. Awaiting S2.4 design-lead validation.
 - `docs/COMPONENTS.md`: does not exist (greenfield). Every component below is new.
 
 ## A. Screens and tiers
@@ -91,24 +91,41 @@ None: no screen is T1.
 None: the PRD fixes the structure (single page, five sections), and the brand comes from the owner's Figma system, so no screen's direction is open.
 
 - Screenshots: none.
-- Chosen at G2: pending.
+- Chosen at G2: **Option A — owner's Figma file** `LkfGLRJsrCSCoYdu9m0hyf` (node `8:1953`). Light theme only. No founder portrait. Signature layout from the brief applies where it does not conflict with Figma (Figma wins).
 
 ## F. Build record (T2 and T3 screens, design-system changes)
-Filled in S2.3. Planned now:
 
-- UX branch: `ux/company-branding-website` (not created yet).
-- Prototype (planned): plain HTML, CSS, and JS pages (greenfield, no scaffold), linked by a prototype shell in its own folder that walks W1 (CTA → form → sent), W1b (CTA → booking), E1 (field errors), E2 (delivery failure), E7 (booking unavailable), E4 (not found), and the privacy link.
-- Screens and their stories: pending S2.3.
-- Layout concept and pattern per screen: pending S2.3 (the page structure in section B is the starting concept).
-- Simulated (planned): form submit latency (~800 ms), success, delivery failure, and a spam-flagged result (no confirmation shown; how it appears to the visitor waits on the architect's mechanism, BR-07, R3). Booking-unavailable toggle. Optional phone and LinkedIn on/off. All contact values stay as placeholders (`[INQUIRY_EMAIL]`, `[PUBLIC_EMAIL]`, `[BOOKING_URL]`, `[PUBLIC_PHONE]`, `[LINKEDIN_URL]`) per BR-09. Copy drafted from the sources, pending the owner's review (A4). The privacy notice text is a structural draft, not the owner-approved text (FR-11). No analytics in the prototype.
-- API data each screen assumes: Contact form sends `{ name, email, phone?, message }` and gets one of: sent, field errors (keyed by field), delivery failure, spam-rejected (D5, architect in S3). Booking is an external Cal.com URL, no API. All section content is static in source files (NFR-05). Analytics is a third-party script with no data back to the UI.
-- UI checks run and results: pending; `docs/ENGINEERING-STANDARDS.md` does not exist yet, so no UI checks are named.
-- Out of scope: blog, chatbot, newsletter, pricing, testimonials, logos, case studies, dark mode (unless G2-Q2), multi-language.
+- UX branch: `ux/company-branding-website`.
+- Open locally: from the repo root run `python3 -m http.server 8765 --directory prototype`, then visit `http://127.0.0.1:8765/shell/index.html` (flow index) or `http://127.0.0.1:8765/pages/index.html` (single-page site).
+- Prototype: plain HTML, CSS, and JS under `prototype/` — `design/tokens/design-tokens.json` plus `design/tokens/tokens.css` mirror; presentational markup in `prototype/pages/` and component doc blocks in `prototype/components/catalog.html`; navigation behavior in `prototype/js/site.js`; flow shell in `prototype/shell/` (mocks in `prototype/shell/mocks.js` — not imported by pages).
+- Flows linked from the shell: W1 (idle → sending → sent; E1 field errors; E2 delivery failure), W1b (booking available vs E7 unavailable), privacy link, E4 not found; optional contact details with phone/LinkedIn story.
+- Screens / states built:
+
+| Screen | States | Story path |
+|---|---|---|
+| Design system tokens + CSS | light theme | `design/tokens/*` |
+| Single-page site (Home, Services, Approach, About, Contact, header/footer) | default | `prototype/pages/index.html` |
+| Privacy notice | default (draft copy) | `prototype/pages/privacy.html` |
+| Not found | default | `prototype/pages/not-found.html` |
+| Contact inquiry form | idle, sending, sent, field errors, delivery failure | `prototype/pages/index.html#contact`, `prototype/stories/contact-*.html` |
+| Booking panel | available, unavailable | `prototype/pages/index.html#contact`, `prototype/stories/contact-booking-unavailable.html` |
+| Contact details | without optional fields, with phone + LinkedIn | index vs `prototype/stories/contact-details-full.html` |
+| Primary navigation | desktop current-section, mobile open | `prototype/pages/index.html`, `prototype/stories/mobile-nav-open.html` |
+| Button | primary, secondary, link, disabled, loading | `prototype/stories/button-states.html` |
+
+- Layout concepts (implemented): typography-led Home hero (no hero image); Services ruled list with problem/outcome columns; Approach numbered 1–4 track; About two-column text without portrait; Contact form-first with booking aside on desktop.
+- Simulated: form submit latency **~800 ms** (`DDPrototypeMocks.inquiryLatencyMs` in shell mocks only; story pages use static HTML for each state). Spam-rejected (BR-07, R3) **not shown** — awaits architect mechanism. Placeholders `[INQUIRY_EMAIL]`, `[PUBLIC_EMAIL]`, `[BOOKING_URL]`, `[PUBLIC_PHONE]`, `[LINKEDIN_URL]` per BR-09. Privacy text is a structural draft (FR-11). No analytics script in the prototype.
+- API data assumed: unchanged from S2.1 plan (`{ name, email, phone?, message }` → sent | field errors | delivery failure | spam-rejected; Cal.com URL; static section copy).
+- UI checks: `docs/ENGINEERING-STANDARDS.md` does not exist — **no named UI checks**; manual walk-through of shell flows and viewport screenshots at 390px and 1440px widths.
+- Screenshots: `docs/company-branding-website/ux/screens/*-{mobile,desktop}.png` (key states listed in orchestrator handoff).
+- Catalog: `docs/COMPONENTS.md` regenerated from `prototype/components/catalog.html` and tokens.
+- Assets from Figma: `prototype/assets/logo-mark-export.png`, `prototype/assets/logo.png`.
+- Affected by design-system change: all T2 screens above (restyled from Figma foundations).
 
 ## G. Open items for G2
 | ID | Item | Severity | Owner | Needed by |
 |---|---|---|---|---|
-| G2-B1 | Figma file unreadable from the agent environment: page and REST API both return 403, and no Figma MCP server or token is configured. Brand tokens, logo, and typefaces cannot be imported. To resolve, either (a) enable and authenticate the Figma MCP server in Cursor with an account that can view the file, or (b) export into `docs/company-branding-website/sources/figma/`: the variables/styles (JSON, for example via a Variables or Tokens export plugin), the logo as SVG, typeface names with their licence or source, and PNGs of the design-system frames (node `8-1953`) | Blocking for S2.3 (not for the G2 decision itself) | Duong (D4, Q20) | Before S2.3 |
+| G2-B1 | Resolved for S2.3: Figma MCP readable (D10). Tokens and logo imported from foundations node `8:1957` and brand mark export | — | — | — |
 | G2-Q1 | Choose the design system: A (recommended), A-interim, B, or C | Decision | Duong | G2 |
 | G2-Q2 | Light theme only for this release? (Recommended: yes, unless Figma defines dark values) | Non-blocking | Duong | G2 |
 | G2-Q3 | Will you supply a real founder portrait for About? (Recommended: optional; About works without it, and no placeholder face ships) | Non-blocking | Duong | Before S2.3 |
