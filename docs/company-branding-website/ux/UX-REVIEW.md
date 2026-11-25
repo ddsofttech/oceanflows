@@ -1,9 +1,9 @@
 # UX Review
 
 ## A. What was reviewed
-- UX brief: `docs/company-branding-website/ux/UX-BRIEF.md` (G2 option A; **G3 Revise D11** — Figma hero banner, light + dark themes; build record §F).
-- UX branch and commit: `ux/company-branding-website` @ `42d9b28b7fb879fed94a4417d7f46c9b571d23e9` (`03b07434fa570f7eab6e98efcb5f2314a3fb2eee` — Rebuild UX prototype for Figma fidelity and dual themes, G3 D11). Prior review: `56f6d56` (pre–D11).
-- Human revise (D11) to verify: light **and** dark themes; landing hero with Figma banner language (wave, navy card, campaign strip); visual closeness to Figma; no invented testimonials or industry-report downloads.
+- UX brief: `docs/company-branding-website/ux/UX-BRIEF.md` (G2 option A; **G3 Revise D12** asset wiring; prior D11 banner/themes).
+- UX branch and commit: `ux/company-branding-website` @ `183f322ff7c387711a78c361ec3f7c611cf37242` (D12 hero + logo assets). Prior build: `42d9b28` (D11).
+- **This pass (S2.4 quick, post–D12):** verify hero `prototype/assets/banners/light-banner.svg`; logos `prototype/assets/logos/primary-logo.svg` (dark header/footer: `white-horizontal-logo.svg`); re-read `home-idle-desktop.png` and `home-idle-dark-desktop.png`.
 - Evidence type: **owner walkthrough** — read `home-idle-*.png` and `home-idle-dark-*.png` as images; markup/CSS/JS (`index.html`, `site.css`, `theme.js`, `site.js`, tokens); full screenshot set at 390/1440; no live browser toggle session this pass.
 - Requirements baseline: `docs/baselines/prds/PRD-v1.0.md` (v1.0, G1 approved).
 
@@ -33,7 +33,7 @@
 | UQ11 | **Answered** | `privacy.html` prose layout; link from form and footer. Draft legal copy flagged in page. Owner walkthrough (markup). |
 | UQ12 | **Answered** | `not-found.html`: full primary nav + button to home (hash link). No mobile menu on this page (see UQ2). Owner walkthrough (markup). |
 | UQ13 | **Answered (code)** | `prefers-reduced-motion` disables scroll-behavior and loading animation; mobile nav uses class toggle without required motion. Not exercised in browser this session. Owner walkthrough (CSS + JS). |
-| UQ14 | **Answered** | D11 hero: wave SVG, grid decor, navy `hero-feature-card`, gradient `campaign-banner` (`index.html` + `site.css`). Figma palette (`#0B1746`, `#081F59`, `#1E40AF`, `#06B6D4`), Montserrat/Inter via Google Fonts; dark theme evidenced in `home-idle-dark-*`. No stock/AI clichés; no testimonial or report-download CTAs in prototype markup. Header tagline beside logo retained. Owner walkthrough (screenshots + code). |
+| UQ14 | **Answered** | D12: hero visual wired to `light-banner.svg` + grid decor; navy card + campaign strip unchanged. Header/footer/footer use `primary-logo.svg`; dark theme shows `white-horizontal-logo.svg` swap (`index.html`, CSS). Palette/type per D11; `home-idle-desktop.png` (light primary logo + light banner) and `home-idle-dark-desktop.png` (white horizontal logo + banner on dark). No fake proof CTAs. Owner walkthrough (screenshots + markup). |
 | UQ15 | **Partially answered** (defer at G3) | Styled screenshots at **390** and **1440**; no overflow visible in reviewed shots. Widths 320, 360, 768, 1024 not all captured. Owner walkthrough (screenshots). |
 
 ## D. Scenario results
@@ -53,10 +53,10 @@
 | Screen | Area | Observation | Finding type | Severity | Owner and action |
 |---|---|---|---|---|---|
 | All (screenshots) | Identity / design system | **D11 pass:** 24 PNGs including `home-idle-dark-*`; styled Figma tokens, ruled services, numbered approach. Repo-root serve per UX brief §F. | — | — | — |
-| Home (`index.html`) | Hero / Figma banner | **D11 pass:** wave motif, grid overlay, “Intelligence *Integrated*” treatment, navy “How we work” card, campaign strip — matches brief §E/F and human D11 ask (not type-only). Light: `home-idle-desktop.png`; dark: `home-idle-dark-desktop.png` (wave/grid visible). | — | — | — |
+| Home (`index.html`) | Hero / banner asset | **D12 pass:** `../assets/banners/light-banner.svg` in hero decor; grid overlay + copy/card/strip per brief. Screenshots: light shows full primary logo + blue/teal banner art; dark shows white logo + banner with cyan accents. | — | — | — |
 | Home | Theme | Light default + dark overrides; toggle in header; dark full-page captures confirm surfaces and CTAs. | — | — | — |
 | Home / Contact (`index.html`) | States / copy | No invented industry-report download or testimonial blocks; consultation CTAs only (BR-01 / brief §E). | — | — | — |
-| All | Design system | Logo is SVG (`prototype/assets/logo-mark.svg`). | — | — | — |
+| All | Design system | **D12 pass:** `primary-logo.svg` in header/footer (light); `white-horizontal-logo.svg` on dark via `--on-dark` classes. Legacy `logo-mark.svg` not used on main pages. | — | — | — |
 | Services | Copy | AI agents plain-language in outcome column (NFR-07). | — | — | — |
 | Header / Nav | Accessibility | Mobile menu focus trap, Tab wrap, focus return, Escape; hidden "Menu" label on toggle. Not keyboard-tested live this session. | — | — | QA at S5 |
 | Home | Responsiveness (UQ1) | Full-page mobile captures include content below fold; first-screen fit at 320/360 not isolated. | Usability concern | Non-blocking | Owner confirm at G3 or `designer`: optional 320/360 first-viewport shots |
@@ -75,7 +75,7 @@
 
 ## G. Recommendation and handoff note
 
-- Ready for G3? **Yes** — human **D11** material ask met: dual themes (toggle + tokens + `home-idle-dark-*`), Figma-style landing banner (wave, navy card, campaign strip), Figma foundations and type, no invented testimonials or report downloads. Recommend **Approve** with deferred Figma pixel deltas below.
+- Ready for G3? **Yes** — **D12** human asset ask met (`light-banner.svg` hero, `primary-logo.svg` + dark horizontal swap); **D11** themes/banner structure still hold. Recommend **Approve** at G3 with same deferred non-blocking items below (unchanged by D12).
 - Material questions still open or contradicted: none **blocking**; **defer at G3:** UQ1 (320/360 first viewport), UQ15 (additional breakpoints), UQ2 not-found mobile nav, light-mobile wave prominence, story pages without theme toggle.
 - Requirement changes (Class C): none identified.
 - UX constraints that bind architecture:
@@ -111,26 +111,22 @@
 
 ## G3 package (human — HITL stop)
 
-### What was validated (post–D11 @ `42d9b28`)
-- T2 prototype on `ux/company-branding-website`: Figma hero banner, **light + dark** themes, contact stories, privacy, not-found, **24** screenshots (incl. `home-idle-dark-*`).
-- **D11 human revise — verified:**
+### What was validated (post–D12 @ `183f322`)
+- **D12 quick S2.4 (assets only):**
 
 | Check | Result | Evidence |
 |---|---|---|
-| Light and dark themes (toggle + tokens) | **Met** | `[data-theme="dark"]` in `tokens.css`; `theme.js` + `site.js` (`dd-theme`); header toggle; `home-idle-dark-{mobile,desktop}.png` |
-| Landing banner (not type-only) | **Met** | Wave SVG, grid decor, “Intelligence Integrated”, navy feature card, campaign strip — `index.html` / `site.css`; `home-idle-{mobile,desktop}.png` |
-| Visual closeness to Figma | **Met (material)** | Foundations colors, Montserrat/Inter, logo mark, banner motifs; dark hero shows grid/wave. **Defer:** light-mobile wave subtler than desktop/Figma board |
-| No invented testimonials / report downloads | **Met** | Markup walk + screenshots: consultation CTAs only; BR-01 |
+| Hero uses `prototype/assets/banners/light-banner.svg` | **Met** | `index.html` line 49 `hero-banner__visual`; `home-idle-desktop.png` + `home-idle-dark-desktop.png` show branded banner art (not legacy wave-only) |
+| Logos use `primary-logo.svg` | **Met** | Header/footer `../assets/logos/primary-logo.svg` on light captures |
+| Dark may use white horizontal logo | **Met** | `white-horizontal-logo.svg` via `site-header__logo--on-dark` / `site-footer__logo--on-dark`; `home-idle-dark-desktop.png` header/footer |
 
-- UX questions UQ3–UQ12 answered; UQ14 reflects D11 banner; UQ1/UQ15 partial (390/1440). PRD flows W1, W1b, E1–E4, E7; E3 story (no screenshot in package).
+- Prior **D11** validation @ `42d9b28` still applies: dual themes, banner composition (card/strip), stories, 24 screenshots; UQ3–UQ12; deferred UQ1/UQ15/not-found nav.
 
 ### Blocking remaining for designer
-**None.**
+**None** for D12.
 
 ### Designer tasks (only if human chooses **Revise**)
-1. Increase wave/grid visibility on **light mobile** hero for closer Figma banners-board match.
-2. Optional: theme toggle on contact **story** pages.
-3. Optional: not-found mobile header parity.
+1. *(D12 scope closed.)* Prior optional: light-mobile banner prominence; story-page theme toggle; not-found mobile header parity — only if owner reopens D11 deferrals.
 
 ### Open / deferred (human may accept at G3)
 | Item | Disposition |
@@ -145,7 +141,7 @@
 | Privacy / owner copy sign-off | Owner / RA |
 
 ### How to preview
-Branch `ux/company-branding-website` @ latest. From **repo root**:
+Branch `ux/company-branding-website` @ `183f322`. From **repo root**:
 
 ```bash
 python3 -m http.server 8765 --directory .
@@ -156,17 +152,17 @@ python3 -m http.server 8765 --directory .
 Do **not** serve with `--directory prototype` only (token CSS breaks).
 
 ### Screenshots for decision
-On **Approve**, `docs/company-branding-website/ux/screens/*-{mobile,desktop}.png` — prioritize `home-idle-*` and `home-idle-dark-*` for D11. Regenerate via `capture-screenshots.py` with repo-root server.
+On **Approve**, prioritize `home-idle-desktop.png` and `home-idle-dark-desktop.png` for D12 asset sign-off.
 
 ### Design-lead recommendation to human
-**Approve** — D11 material ask met (dual themes, Figma-style banner, brand tokens/type, no fake proof/report offers). **Revise** if you need closer Figma-board pixel parity or dark theme on story pages before G4. **Reject** only if brand direction or scope is wrong.
+**Approve** — D12 asset wiring verified (hero `light-banner.svg`, primary + dark horizontal logos; desktop screenshots match). **Revise** only if shipped SVGs are wrong files or dark logo swap should apply elsewhere. **Reject** only if brand asset choice contradicts approved direction.
 
 ### Decision requested
-Reply **Approve**, **Revise**, or **Reject**. If Approve: accept deferred Figma deltas and 390px mobile evidence for UQ1/UQ15?
+Reply **Approve**, **Revise**, or **Reject** on D12 assets. On **Approve**, prior D11 deferrals (UQ1/UQ15 breakpoints, optional pixel tweaks) remain accepted unless you reopen them.
 
 ### Commit status
-- Validated: `42d9b28b7fb879fed94a4417d7f46c9b571d23e9` (build `03b0743`) on `ux/company-branding-website`.
-- `UX-REVIEW.md` updated in working tree (design-lead); not committed unless orchestrator requests.
+- Validated: `183f322ff7c387711a78c361ec3f7c611cf37242` on `ux/company-branding-website`.
+- `UX-REVIEW.md` updated (design-lead S2.4 post–D12).
 
 ### Handoff note for architecture (S3.1)
 See §G: inquiry `{ name, email, phone?, message }`; spam-rejected UX (R3); booking (R6); reuse tokens, `site.css`, `theme.js`, `site.js`, page markup; **ship light + dark** via `data-theme` / `dd-theme`; regenerate `docs/COMPONENTS.md`; ENGINEERING-STANDARDS at S3.1.
