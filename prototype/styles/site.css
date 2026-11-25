@@ -155,15 +155,17 @@ a:hover { color: var(--color-action-primary-hover); }
 .theme-toggle__icon::before { content: "◐"; }
 [data-theme="dark"] .theme-toggle__icon::before { content: "◑"; }
 
-/* Hero banner — full page width, ~half viewport height */
+/* Hero banner — full width, scale entire SVG (contain, no crop) */
 .section--flush { padding-block: 0; }
 .hero-banner {
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: 50svh;
-  min-height: 18rem;
-  max-height: 50vh;
+  /* Match banner_new / dark-banner2 artboard 1200∶400 */
+  aspect-ratio: 1200 / 400;
+  height: auto;
+  min-height: 12rem;
+  max-height: none;
   display: flex;
   align-items: center;
   scroll-margin-top: var(--header-height);
@@ -177,12 +179,13 @@ a:hover { color: var(--color-action-primary-hover); }
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: url("../assets/banners/banner.svg?v=1200x400") center right / cover no-repeat;
+  background: url("../assets/banners/banner_new.svg?v=1") center center / contain no-repeat;
   pointer-events: none;
   user-select: none;
 }
 [data-theme="dark"] .hero-banner::before {
-  background-image: url("../assets/banners/dark-banner2.svg");
+  background-image: url("../assets/banners/dark-banner2.svg?v=1");
+  background-size: contain;
   opacity: 1;
   filter: none;
 }
@@ -280,7 +283,7 @@ a:hover { color: var(--color-action-primary-hover); }
   .hero-banner__content { max-width: 100%; }
   .hero-banner__tags,
   .hero-banner__actions { display: none; }
-  .hero-banner::before { background-position: 68% center; }
+  .hero-banner::before { background-position: center center; }
   .hero-banner::after {
     background: linear-gradient(
       180deg,
