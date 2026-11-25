@@ -177,7 +177,7 @@ a:hover { color: var(--color-action-primary-hover); }
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: url("../assets/banners/banner.svg") center right / cover no-repeat;
+  background: url("../assets/banners/banner.svg?v=1200x400") center right / cover no-repeat;
   pointer-events: none;
   user-select: none;
 }
