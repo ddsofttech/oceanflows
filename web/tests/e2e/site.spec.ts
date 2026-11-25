@@ -77,11 +77,11 @@ test.describe("marketing site", () => {
     await expect(page.getByRole("link", { name: /go to home/i })).toBeVisible();
   });
 
-  test("contact form submit is disabled on preview", async ({ page }) => {
+  test("contact form is enabled for live inquiry", async ({ page }) => {
     await page.goto("/#contact");
     await expect(
       page.getByRole("button", { name: "Send inquiry" }),
-    ).toBeDisabled();
+    ).toBeEnabled();
   });
 
   test("axe: no serious violations on index", async ({ page }) => {
