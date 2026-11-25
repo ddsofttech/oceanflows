@@ -155,69 +155,38 @@ a:hover { color: var(--color-action-primary-hover); }
 .theme-toggle__icon::before { content: "◐"; }
 [data-theme="dark"] .theme-toggle__icon::before { content: "◑"; }
 
-/* Hero banner — full width, scale entire SVG (contain, no crop) */
+/* Hero banner — copy + art share one container grid (aligned with sections) */
 .section--flush { padding-block: 0; }
 .hero-banner {
-  position: relative;
-  overflow: hidden;
   width: 100%;
-  aspect-ratio: 1200 / 400;
-  height: auto;
-  min-height: 12rem;
-  max-height: none;
-  display: flex;
-  align-items: center;
   scroll-margin-top: var(--header-height);
   background-color: #fff;
+  padding-block: var(--space-6);
 }
 [data-theme="dark"] .hero-banner {
   background-color: var(--color-navy-950);
 }
+.hero-banner__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: var(--space-6);
+  align-items: center;
+}
+.hero-banner__layout {
+  min-width: 0;
+}
+.hero-banner__content {
+  max-width: 34rem;
+}
 .hero-banner__art {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: url("../assets/banners/light_banner.svg?v=3") center center / contain no-repeat;
+  width: 100%;
+  aspect-ratio: 1200 / 400;
+  background: url("../assets/banners/light_banner.svg?v=4") center center / contain no-repeat;
   pointer-events: none;
   user-select: none;
 }
 [data-theme="dark"] .hero-banner__art {
-  background-image: url("../assets/banners/dark_banner.svg?v=3");
-}
-.hero-banner::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.92) 0%,
-    rgba(255, 255, 255, 0.62) 32%,
-    rgba(255, 255, 255, 0.15) 50%,
-    transparent 62%
-  );
-}
-[data-theme="dark"] .hero-banner::after {
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--color-navy-950) 90%, transparent) 0%,
-    color-mix(in srgb, var(--color-navy-950) 48%, transparent) 34%,
-    transparent 58%
-  );
-}
-/* Keep .container gutters — do not set width:100% here */
-.hero-banner__layout {
-  position: relative;
-  z-index: 1;
-  flex: 1 1 auto;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  padding-block: clamp(1rem, 3vh, 2.5rem);
-}
-.hero-banner__content {
-  max-width: min(34rem, 46%);
+  background-image: url("../assets/banners/dark_banner.svg?v=4");
 }
 @media (prefers-reduced-motion: no-preference) {
   .hero-banner__content {
@@ -276,30 +245,13 @@ a:hover { color: var(--color-action-primary-hover); }
   padding: 0.35rem 0.7rem;
 }
 .hero-banner__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
-@media (max-width: 639px) {
-  /* Stack: aligned copy, then full-width banner (contain, no crop) */
+@media (max-width: 767px) {
   .hero-banner {
-    aspect-ratio: auto;
-    min-height: 0;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .hero-banner__art {
-    position: relative;
-    inset: auto;
-    order: 2;
-    width: 100%;
-    aspect-ratio: 1200 / 400;
-    background-position: center center;
-    background-size: contain;
-  }
-  .hero-banner::after { display: none; }
-  .hero-banner__layout {
-    order: 1;
-    align-items: flex-start;
     padding-block: var(--space-5) var(--space-4);
+  }
+  .hero-banner__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
   }
   .hero-banner__content { max-width: 100%; }
   .hero-banner__brand-line {
@@ -312,6 +264,10 @@ a:hover { color: var(--color-action-primary-hover); }
   }
   .hero-banner__tags,
   .hero-banner__actions { display: none; }
+  .hero-banner__art {
+    width: 100%;
+    aspect-ratio: 1200 / 400;
+  }
 }
 
 [data-theme="dark"] .pull-quote { color: var(--color-brand-cyan); }
