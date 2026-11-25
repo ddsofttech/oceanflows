@@ -28,7 +28,7 @@
   const toggle = document.querySelector("[data-nav-toggle]");
   const mobileNav = document.querySelector("[data-mobile-nav]");
   const sectionLinks = document.querySelectorAll("[data-section-link]");
-  const sections = ["home", "services", "approach", "about", "contact"];
+  const sections = ["home", "services", "approach", "use-cases", "about", "contact"];
 
   const FOCUSABLE =
     'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
