@@ -32,6 +32,9 @@ Each rule: one line, one example, the tool that enforces it (or "review"), and w
 | API returns OpenAPI error shapes; no stack traces in responses | `{ error: "validation_failed", fields: { email: "..." } }` | contract tests | proposed |
 | Client maps 502 to delivery-failure UX (FR-08); spam `rejected` shows idle (BR-07) | No success `StatusMessage` on rejected | e2e test | proposed |
 | Never swallow fetch errors; show user-safe copy | `catch` → delivery failure panel | ESLint | proposed |
+| Inquiry spam checks before Resend: empty honeypot `hp`, rate limit 5/min per client IP | Non-empty `hp` or over limit → no email; contract shapes | vitest contract + unit | proposed |
+| HTML-escape all user fields in Resend email body | `message` with `<` sent as entity | unit test | proposed |
+| When `TURNSTILE_SECRET_KEY` is set, verify Turnstile token server-side; when unset, skip | No client-only CAPTCHA trust | unit test with mock | proposed |
 
 ## 4. Logging and observability
 | Rule | Example | Enforced by | Status |
