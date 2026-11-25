@@ -580,15 +580,70 @@ a:hover { color: var(--color-action-primary-hover); }
 }
 
 /* About */
-.about-grid { display: grid; gap: var(--space-6); }
-@media (min-width: 768px) { .about-grid { grid-template-columns: 1fr 1fr; } }
-.expertise-list { list-style: none; margin: var(--space-4) 0 0; padding: 0; }
-.expertise-list li { padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border-default); }
-.expertise-list li:last-child { border-bottom: none; }
-.pull-quote {
-  font-family: var(--font-display); font-size: var(--text-h2-size); line-height: var(--text-h2-lh);
-  color: var(--color-action-primary); margin: var(--space-6) 0 0; max-width: 20ch;
+.section-heading--about { max-width: 40rem; }
+.about-title { max-width: 22ch; }
+.about-intro {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 46rem;
+  margin-bottom: var(--space-8);
 }
+.about-intro p {
+  margin: 0;
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-lh);
+  color: var(--color-text-secondary);
+}
+.about-bring { margin-bottom: var(--space-8); }
+.about-bring__heading {
+  margin: 0 0 var(--space-5);
+  font-family: var(--font-display);
+  font-size: var(--text-h3-size);
+  line-height: var(--text-h3-lh);
+  font-weight: 700;
+}
+.about-bring__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-4);
+}
+@media (min-width: 768px) {
+  .about-bring__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+}
+.about-bring__grid li {
+  padding: var(--space-5);
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border-default);
+  border-radius: 14px;
+}
+.about-bring__title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-label-size);
+  line-height: 1.35;
+  font-weight: 700;
+  color: var(--color-brand-deep-blue);
+}
+[data-theme="dark"] .about-bring__title { color: var(--color-brand-cyan); }
+.about-bring__grid p {
+  margin: 0;
+  font-size: var(--text-label-size);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+.about-philosophy { max-width: 40rem; }
+.about-philosophy .label { margin-bottom: var(--space-3); }
+.pull-quote {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, var(--text-h2-size));
+  line-height: 1.25;
+  color: var(--color-action-primary);
+  margin: 0 0 var(--space-4);
+  max-width: 22ch;
+}
+.about-philosophy .muted { margin: 0; max-width: 40rem; }
 
 /* Contact */
 .contact-layout { display: grid; gap: var(--space-7); }
