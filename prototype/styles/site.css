@@ -277,7 +277,8 @@ a:hover { color: var(--color-action-primary-hover); }
 .hero-banner__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
 @media (max-width: 639px) {
   .hero-banner__content { max-width: 100%; }
-  .hero-banner__tags { display: none; }
+  .hero-banner__tags,
+  .hero-banner__actions { display: none; }
   .hero-banner::before { background-position: 68% center; }
   .hero-banner::after {
     background: linear-gradient(
