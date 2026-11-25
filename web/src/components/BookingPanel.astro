@@ -1,0 +1,38 @@
+---
+interface Props {
+  bookingUrl?: string;
+  bookingAvailable: boolean;
+  publicEmail: string;
+}
+
+const { bookingUrl, bookingAvailable, publicEmail } = Astro.props;
+---
+
+{
+  bookingAvailable && bookingUrl ? (
+    <div class="booking-panel" id="booking-panel">
+      <h3 class="h3">Book a 30-minute consultation</h3>
+      <p class="muted">
+        Pick a time that works for you. Confirmation is handled by Cal.com.
+      </p>
+      <p>
+        <a
+          class="btn btn--secondary"
+          href={bookingUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open booking calendar
+        </a>
+      </p>
+    </div>
+  ) : (
+    <div class="booking-panel is-unavailable" id="booking-panel">
+      <h3 class="h3">Booking is temporarily unavailable</h3>
+      <p class="muted">
+        Use the form or email{" "}
+        <a href={`mailto:${publicEmail}`}>{publicEmail}</a>.
+      </p>
+    </div>
+  )
+}

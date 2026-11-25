@@ -2,10 +2,15 @@
   "$schema": "https://unpkg.com/knip@5/schema.json",
   "entry": [
     "src/pages/**/*.{astro,ts,js}",
+    "src/scripts/**/*.{ts,js}",
     "astro.config.mjs",
     "scripts/**/*.{ts,js}"
   ],
-  "project": ["src/**/*.{astro,ts,js}", "scripts/**/*.{ts,js}"],
+  "project": [
+    "src/**/*.{astro,ts,js}",
+    "src/scripts/**/*.{ts,js}",
+    "scripts/**/*.{ts,js}"
+  ],
   "ignore": ["tests/**"],
   "ignoreDependencies": ["wrangler", "@eslint/js", "serve"]
 }
