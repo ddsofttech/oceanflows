@@ -396,18 +396,132 @@ a:hover { color: var(--color-action-primary-hover); }
   .services-table__arrow { display: none; }
 }
 
-/* Approach */
-.approach-track { display: grid; gap: var(--space-5); counter-reset: stage; border-top: 1px solid var(--color-border-default); padding-top: var(--space-5); }
-@media (min-width: 1024px) {
-  .approach-track { grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
+/* Approach — timeline with deliverable cards */
+.approach-track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-6);
 }
-.approach-stage { position: relative; padding-top: var(--space-5); border-top: 3px solid var(--color-border-default); }
-.approach-stage::before {
-  counter-increment: stage; content: counter(stage);
-  position: absolute; top: calc(-1 * var(--space-5) - 2px); left: 0;
-  font-family: var(--font-display); font-weight: 700; color: var(--color-action-primary);
+@media (min-width: 900px) {
+  .approach-track {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-4);
+    align-items: stretch;
+  }
 }
-.approach-stage__deliverable { margin-top: var(--space-3); font-size: var(--text-label-size); }
+.approach-stage {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: var(--space-4);
+  min-width: 0;
+}
+.approach-stage__marker {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-block: var(--space-2);
+}
+@media (min-width: 900px) {
+  .approach-stage__marker::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: color-mix(in srgb, var(--color-brand-deep-blue) 22%, transparent);
+    transform: translateY(-50%);
+    z-index: 0;
+  }
+  .approach-stage:first-child .approach-stage__marker::before { left: 50%; }
+  .approach-stage:last-child .approach-stage__marker::before { right: 50%; }
+}
+.approach-stage__icon {
+  position: relative;
+  z-index: 1;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--color-surface-card);
+  border: 2px solid color-mix(in srgb, var(--color-brand-deep-blue) 28%, transparent);
+  color: var(--color-brand-deep-blue);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--color-brand-deep-blue) 12%, transparent);
+}
+[data-theme="dark"] .approach-stage__icon {
+  border-color: color-mix(in srgb, var(--color-brand-cyan) 40%, transparent);
+  color: var(--color-brand-cyan);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+.approach-stage__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border-default);
+  border-radius: 16px;
+  padding: var(--space-5);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--color-brand-deep-blue) 8%, transparent);
+  overflow: hidden;
+}
+.approach-stage__num {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-4);
+  font-family: var(--font-display);
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1;
+  color: color-mix(in srgb, var(--color-brand-deep-blue) 12%, transparent);
+  pointer-events: none;
+}
+[data-theme="dark"] .approach-stage__num {
+  color: color-mix(in srgb, var(--color-brand-cyan) 18%, transparent);
+}
+.approach-stage__title {
+  margin: 0 0 var(--space-3);
+  padding-right: 2.5rem;
+  font-family: var(--font-display);
+  font-size: var(--text-h3-size);
+  line-height: var(--text-h3-lh);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+.approach-stage__body {
+  margin: 0 0 var(--space-5);
+  flex: 1;
+  font-size: var(--text-label-size);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+.approach-stage__deliverable {
+  margin-top: auto;
+  padding: var(--space-3) var(--space-4);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-brand-cyan) 10%, var(--color-surface-card));
+}
+[data-theme="dark"] .approach-stage__deliverable {
+  background: color-mix(in srgb, var(--color-brand-cyan) 12%, var(--color-surface-card));
+}
+.approach-stage__deliverable-label {
+  margin: 0 0 var(--space-1);
+  font-size: var(--text-caption-size);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-brand-cyan);
+}
+.approach-stage__deliverable-value {
+  margin: 0;
+  font-size: var(--text-label-size);
+  line-height: 1.4;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
 
 /* About */
 .about-grid { display: grid; gap: var(--space-6); }
