@@ -29,7 +29,7 @@ Official refs: [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/
 | **Name** | `oceanflows-company-site` (must match `name` in `web/wrangler.toml`) |
 | **Git branch** (production) | `main` (D24 — production Workers Builds track `main`) |
 | **Root directory** | `web` |
-| **Build command** | `npm ci && CHECK_PRODUCTION_ENV=1 npm run check:production-env && npm run build && npm run check:placeholders` (set build vars in §A2 first) |
+| **Build command** | `npm ci && CHECK_PRODUCTION_ENV=1 npm run check:production-env && CHECK_PRODUCTION_ENV=1 npm run check:production-wrangler-kv && npm run build && npm run check:placeholders` (set build vars in §A2 first; §A8) |
 | **Deploy command** | `npx wrangler deploy` (default — keep this) |
 | **Preview command** | `npx wrangler preview` (default) |
 
@@ -144,11 +144,11 @@ Per-email caps (max **3** POSTs per normalized email per **UTC calendar day**) u
 ```toml
 [[kv_namespaces]]
 binding = "INQUIRY_DAILY_LIMIT"
-id = "<your-production-namespace-id>"
-preview_id = "<your-preview-namespace-id>"
+id = "<production-namespace-id>"
+preview_id = "<preview-namespace-id>"
 ```
 
-Replace both placeholders with the real IDs from §A8.1. **Production deploy must not keep angle-bracket placeholders** — `npm run check:production-wrangler-kv` (with `CHECK_PRODUCTION_ENV=1`) fails deploy if `id` is still a placeholder (see `.github/workflows/web-deploy.yml`). Workers Builds: append `&& npm run check:production-wrangler-kv` to the build command when `CHECK_PRODUCTION_ENV=1` is already set (§A1).
+Replace both placeholders with the real IDs from §A8.1. **Production deploy must not keep angle-bracket placeholders** — `CHECK_PRODUCTION_ENV=1 npm run check:production-wrangler-kv` fails the build when `id` is still a placeholder (see `.github/workflows/web-deploy.yml`). Shell env vars apply only to the command they prefix; they do **not** carry across `&&`. Workers Builds runs the same explicit chain as §A1 (each production guard gets its own `CHECK_PRODUCTION_ENV=1`).
 
 #### A8.3 Hash pepper (owner, TM-15)
 
