@@ -6,7 +6,7 @@
 - Route: Normal
 - PRD version: v2.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; D5 Approve (2026-11-26)
-- Last updated: 2026-11-26 (S5.1 devops; #16 open)
+- Last updated: 2026-11-26 (G5 D6)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
@@ -17,7 +17,7 @@
 | Part ID | Slice | Owner | Release point | Depends on | Status (Planned / In progress / In review / Merged / Checked) | PR | Review class (Routine / Important / Sensitive) | Review rounds | Notes |
 |---|---|---|---|---|---|---|---|---|---|
 | iedl-devops-01 | KV platform | devops | RP1 | — | Checked | [#15](https://github.com/ddsofttech/oceanflows/pull/15) merge `c7053160` | Important | 2 | S5.1 pass (TEST-REPORT); H1 env still open |
-| iedl-be-01 | Daily limit API | backend-developer | RP1 | iedl-devops-01 | In review | [#16](https://github.com/ddsofttech/oceanflows/pull/16) @ `6a8a053e` | Sensitive | 2 | S4.3+S4.4 pass; awaiting G5 |
+| iedl-be-01 | Daily limit API | backend-developer | RP1 | iedl-devops-01 | Merged | [#16](https://github.com/ddsofttech/oceanflows/pull/16) (G5 D6) | Sensitive | 2 | Merging; S5.1 pending |
 | iedl-fe-01 | Contact UX + privacy | frontend-developer | RP1 | iedl-be-01 | Planned | — | Important | 0 | — |
 
 - **PR:** the PR number and, once merged, its merge commit.
