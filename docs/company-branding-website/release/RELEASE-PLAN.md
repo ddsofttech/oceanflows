@@ -93,7 +93,8 @@ Mapped to RP2 material ACs + RP1 regression smoke; **hosted column green** (2026
 
 - **Dashboards and alerts:** Cloudflare Worker `oceanflows-company-site` deploy status; GitHub Actions `web-ci` and `web-deploy-production` on `main`; Cloudflare Web Analytics (FR-14) for traffic after go-live.
 - **KPIs to watch (PRD §3 IDs):** O5 inquiry/booking — site reachable, booking link live; O1–O4 owner content still pending human review; FR-07 live Resend delivery still not proven in QA.
-- **Observation window:** **48h soak** after **G7 Go** — **start:** pending G7; **end:** start + 48h; **owner:** `devops` + human spot-check.
+- **Observation window:** **48h soak** after **G7 Go (D27)** — **start:** `2026-11-26T20:11:00Z`; **end:** `2026-11-28T20:11:00Z`; **owner:** `devops` + human spot-check; **status:** **started** (S7.1 initial snapshot below).
+- **S7.1 initial snapshot (2026-11-26T20:15:00Z):** Release **RP2** @ RC `12bf29b3`. **Redeploy:** not required (confirm-only S6.4). Reachability: `https://oceanflows.net/` → **HTTP 200**; `http://oceanflows.net/` → **301** → HTTPS; `/privacy/` → **200**; FR-14 **beacon** on home, privacy, 404; booking `https://cal.com/young-dang/30min`; **no bracket placeholders**; `POST /api/inquiry` `{}` → **400** `validation_failed`; 404 smoke path with `primary-nav`. `npm run smoke:production` exit **0**. **Incidents:** none.
 
 ### Go decision (G7) — RP2 production go-live
 
@@ -113,13 +114,15 @@ RP2 G7 asks the human for **Go** to mark **production released** at RC `12bf29b3
 
 **Rollback plan pointer:** RP2 → Rollback subsection above (Worker deployment promote; HTTPS/DNS repair; git revert + redeploy if needed).
 
+- **G7 decision:** **Go** — **D27** (2026-11-26) — mark RP2 **Released** @ `12bf29b3` on `https://oceanflows.net`; S6.4 confirm-only; start 48h observation. Verbatim archive: orchestrator `DECISION-LOG.md` (not written by devops).
+
 ### Deploy record
 
 | Environment | Date | Version | Result | Rollback run? |
 |---|---|---|---|---|
 | Cloudflare Worker (production apex) | 2026-11-26 | `12bf29b3` (RC) | **Deployed** — Action [45879006142](https://github.com/ddsofttech/oceanflows/actions/runs/45879006142) success | N/A |
 | Staging verify (S6.2) | 2026-11-26 | `12bf29b3` | **Pass** — verify-only; smoke + curl evidence | N/A |
-| Production (S6.4) | — | — | **Pending G7 Go** | N/A |
+| Production (S6.4) | 2026-11-26 | `12bf29b3` | **Confirmed** — health re-verified; **no redeploy** (drift none vs RC `12bf29b361e6a0acc2469f17ae17830d02f63176`) | N/A |
 
 ### Release status
 
@@ -127,10 +130,10 @@ RP2 G7 asks the human for **Go** to mark **production released** at RC `12bf29b3
 |---|---|
 | S6.1 | Complete — this section |
 | S6.2 | Complete — **Pass** (verify-only); evidence 2026-11-26 |
-| S6.3 / G7 | **Pending** — package below for human |
-| S6.4 production | **Awaiting G7 Go** (expected confirm-only @ `12bf29b3`) |
-| S7.1 observation | **Not started** — begins after G7 Go |
-| **Board: release status** | Orchestrator — RP2 ready for G7 |
+| S6.3 / G7 | **Complete** — **Go** (D27, 2026-11-26); RP2 **Released** on `https://oceanflows.net` @ `12bf29b3` |
+| S6.4 production | **Complete** — confirm-only @ `12bf29b3`; health pass 2026-11-26T20:15Z |
+| S7.1 observation | **In progress** — window `2026-11-26T20:11:00Z` → `2026-11-28T20:11:00Z` |
+| **Board: release status** | **Released** (RP2) — orchestrator synced per D27 |
 
 ---
 
