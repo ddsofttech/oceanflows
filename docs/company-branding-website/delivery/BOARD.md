@@ -6,7 +6,7 @@
 - Route: Normal
 - PRD version: 1.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; G4 Approve D17
-- Last updated: 2026-11-25 (D23 G7 Go — RP1 Released)
+- Last updated: 2026-11-25 (D23 Go; S7.1 started; cbw-fe-04 Checked)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
@@ -19,12 +19,13 @@
 | Part ID | Slice | Owner | Release point | Depends on | Status (Planned / In progress / In review / Merged / Checked) | PR | Review class (Routine / Important / Sensitive) | Review rounds | Notes |
 |---|---|---|---|---|---|---|---|---|---|
 | cbw-devops-01 | Platform | devops | RP0 | — | Checked | [#1](https://github.com/ddsofttech/oceanflows/pull/1) `05ec0c5` | Important | 1 | G6 D18; no G7 (scaffold) |
-| cbw-fe-04 | Analytics | frontend-developer | RP2 | cbw-fe-01 | Merged | [#8](https://github.com/ddsofttech/oceanflows/pull/8) | Routine | 0 | Set PUBLIC_CF_ANALYTICS_TOKEN + redeploy; S5.1 next |
-| cbw-devops-02 | Production launch | devops | RP2 | cbw-fe-02, cbw-fe-04 | Planned | — | Important | 0 | Placeholders/HTTP→HTTPS/www; DNS H3 closed (D22) |
+| cbw-fe-04 | Analytics | frontend-developer | RP2 | cbw-fe-01 | Checked | [#8](https://github.com/ddsofttech/oceanflows/pull/8) | Routine | 0 | S5.1 Pass code; hosted FR-14 → H4 |
+| cbw-devops-02 | Production launch | devops | RP2 | cbw-fe-02, cbw-fe-04 | In progress | — | Important | 0 | Placeholders/HTTPS/www; include H4 token |
 
 ## Open handoffs
 | ID | From | To | Type (consult / defect / finding / contract / environment) | About (part, PR, or defect) | Asked | Status | Answer or link |
 |---|---|---|---|---|---|---|---|
+| H4 | qa | devops | environment | FR-14 CF analytics token | Set `PUBLIC_CF_ANALYTICS_TOKEN` + redeploy so hosted beacon appears | Open | `testing/handoffs/ENV-FR14-CF-ANALYTICS-TOKEN.md` |
 
 ## Environments
 | Pipeline or environment | Ready | Evidence |
@@ -32,10 +33,10 @@
 | Git host (GitHub) | Yes | github.com/ddsofttech/oceanflows.git |
 | PR CI (gates) | Yes | `web-ci` green |
 | GitHub Cloudflare secrets | Yes | Owner set |
-| Cloudflare live site | Yes | S6.2 Pass; G7 D23 — https://oceanflows.net |
+| Cloudflare live site | Yes | https://oceanflows.net — G7 D23 |
 | Test plan | Yes | `testing/TEST-PLAN.md` |
 | RP1 RC | Yes | `8f974c60` |
-| RP1 observation | Started | 48h soak after D23; owner devops + human |
+| RP1 observation | Started | 2026-11-26T02:45:00Z → 2026-11-28T02:45:00Z; S7.2 after end |
 
 ## Escalations
 | Date | Part or defect | Reason (retest failed twice / three handoffs / three fix rounds) | Sent to | Outcome |
