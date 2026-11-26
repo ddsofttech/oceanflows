@@ -24,6 +24,7 @@ export type InquiryUiOutcome =
   | { kind: "delivery-failure" }
   | { kind: "rejected" }
   | { kind: "rate-limited" }
+  | { kind: "daily-limit-reached" }
   | { kind: "unknown-error" };
 
 export function validateInquiryClient(values: {
@@ -74,6 +75,12 @@ export function classifyInquiryResponse(
     return { kind: "delivery-failure" };
   }
   if (status === 429) {
+    if (isRateLimitBody(body)) {
+      if (body.error === "daily_limit_reached") {
+        return { kind: "daily-limit-reached" };
+      }
+      return { kind: "rate-limited" };
+    }
     return { kind: "rate-limited" };
   }
   if (status === 200 && isInquiryResult(body)) {
@@ -108,6 +115,15 @@ function isInquiryResult(
     isRecord(value) &&
     typeof value.sent === "boolean" &&
     typeof value.rejected === "boolean"
+  );
+}
+
+function isRateLimitBody(
+  value: unknown,
+): value is { error: "rate_limited" | "daily_limit_reached" } {
+  return (
+    isRecord(value) &&
+    (value.error === "rate_limited" || value.error === "daily_limit_reached")
   );
 }
 
@@ -232,6 +248,18 @@ function applyInquiryOutcome(
       role: "alert",
       className: "status-message status-message--error",
     });
+    return;
+  }
+
+  if (outcome.kind === "daily-limit-reached") {
+    renderStatus(
+      statusSlot,
+      `<strong>Daily inquiry limit reached</strong><p>You have reached the daily limit for inquiries from this email address. Try again after midnight UTC, or email us at <a href="mailto:${publicEmail}">${publicEmail}</a>.</p>`,
+      {
+        role: "alert",
+        className: "status-message status-message--error",
+      },
+    );
     return;
   }
 
