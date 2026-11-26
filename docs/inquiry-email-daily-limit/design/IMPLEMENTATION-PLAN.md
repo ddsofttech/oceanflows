@@ -11,7 +11,7 @@
 | Part ID | Slice | AC IDs | Part | Owner | Depends on | Release point | Size | Review class | Part plan |
 |---|---|---|---|---|---|---|---|---|---|
 | iedl-devops-01 | KV platform | NFR-11, D7 | back-end | devops | — | RP1 | S | Important | `parts/iedl-devops-01.md` |
-| iedl-be-01 | Daily limit API | FR-15, BR-10–BR-14, BR-12, BR-13, NFR-11, NFR-06 | back-end | backend-developer | iedl-devops-01 | RP1 | M | **Sensitive** | `parts/iedl-be-01.md` |
+| iedl-be-01 | Daily limit API | FR-15, BR-10–BR-14, BR-12, BR-13, NFR-11, NFR-06 | back-end | backend-developer | iedl-devops-01 | RP1 | M | Sensitive | `parts/iedl-be-01.md` |
 | iedl-fe-01 | Contact UX + privacy | FR-08, FR-11, FR-15 (copy) | front-end | frontend-developer | iedl-be-01 | RP1 | S | Important | `parts/iedl-fe-01.md` |
 
 - **Deferred:** None in scope.
@@ -33,7 +33,7 @@
 No spike required; pattern is standard KV on existing Worker.
 
 ## 4. Release points
-| Release point | Parts | What the user gets | Why |
+| Release point | Slice parts | What the user gets | Why |
 |---|---|---|---|
 | RP1 | iedl-devops-01, iedl-be-01, iedl-fe-01 | Production Worker enforces 3 inquiries/email/UTC day, IP 1/min, updated errors and privacy draft | Single cohesive abuse-control change |
 

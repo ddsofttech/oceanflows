@@ -2,8 +2,8 @@
 
 ## Document control
 - Status: Approved
-- Version: `1.1`
-- Last approved version: `1.1` (`docs/baselines/prds/PRD-v1.1.md`)
+- Version: `2.0`
+- Last approved version: `2.0` (`docs/baselines/prds/PRD-v2.0.md`)
 - Owner: Duong (Young) Dang, Founder, DD Software Solutions Inc. (named approver, D8). PRD content maintained by `requirements-analyst`
 - Stakeholder approvers: Duong (Young) Dang
 - Approval date: 2026-11-26
@@ -229,4 +229,4 @@ List items with severity priority: **Blocking** -> **Important** -> **Non-blocki
 | 1.1 (draft) | inquiry-email-daily-limit | S1.1–S1.7: per-email daily cap (FR-15, NFR-11, BR-10), scope, §8 E6/E8, §9 criteria, §10 R8/D7/A5, §11 Q21–Q26 (Blocking/Important). Baseline remains v1.0 until G1 | — (pending G1) | 2026-11-26 |
 | 1.1 (draft) | inquiry-email-daily-limit | D2 applied: BR-11–BR-13; FR-11/FR-15; §4 in-scope IP 1/min + privacy; §8 E9; §9 ACs; §10 D8, A5 confirmed; §11 Q21/Q23–Q26 closed → requirements; **Q22a** Blocking (Q22 ambiguous). G1 held | — (pending G1) | 2026-11-26 |
 | 1.1 (draft) | inquiry-email-daily-limit | D3 Q22a (b): BR-14 (trim, lowercase, plus-tags, Gmail/googlemail dots); §6 FR-15, §8 BR-10, §9 FR-15 AC updated; §11 Q22a closed; §1 refreshed. S1.7 complete → S1.8 G1 package | — (pending G1) | 2026-11-26 |
-| 1.1 | inquiry-email-daily-limit | G1 Approve (D4). v1.1 draft promoted to baseline: document control Approved; §6 FR-15 and §7 NFR-11 set to Approved. No design trigger; route S3.1 | Duong | 2026-11-26 |
+| 2.0 | inquiry-email-daily-limit | G1 Approve (D4). Content approved as next baseline; numbered **v2.0** per sdlc-check (approved baselines end in .0). FR-15/NFR-11 Approved. No design trigger; route S3.1 | Duong | 2026-11-26 |
