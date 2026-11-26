@@ -27,12 +27,10 @@ describe("getInquiryClientIp (TM-12)", () => {
 });
 
 describe("consumeInquiryRateLimit (TM-01)", () => {
-  it("allows 5 requests per minute then rejects", () => {
+  it("allows 1 request per minute then rejects (BR-13)", () => {
     resetInquiryRateLimit();
     const ip = "203.0.113.44";
-    for (let i = 0; i < 5; i += 1) {
-      expect(consumeInquiryRateLimit(ip)).toEqual({ allowed: true });
-    }
+    expect(consumeInquiryRateLimit(ip)).toEqual({ allowed: true });
     expect(consumeInquiryRateLimit(ip)).toEqual({ allowed: false });
   });
 
@@ -40,9 +38,7 @@ describe("consumeInquiryRateLimit (TM-01)", () => {
     resetInquiryRateLimit();
     const blocked = "203.0.113.1";
     const other = "203.0.113.2";
-    for (let i = 0; i < 5; i += 1) {
-      consumeInquiryRateLimit(blocked);
-    }
+    expect(consumeInquiryRateLimit(blocked)).toEqual({ allowed: true });
     expect(consumeInquiryRateLimit(blocked)).toEqual({ allowed: false });
     expect(consumeInquiryRateLimit(other)).toEqual({ allowed: true });
   });

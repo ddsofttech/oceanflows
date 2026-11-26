@@ -1,7 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
+import { createMemoryInquiryDailyLimitStore } from "../../src/lib/inquiry-daily-limit";
 import { resetInquiryRateLimit } from "../../src/lib/inquiry-rate-limit";
 import { verifyTurnstileToken } from "../../src/lib/inquiry-turnstile";
 import { submitInquiry } from "../../src/pages/api/inquiry";
+
+const turnstileDailyStore = createMemoryInquiryDailyLimitStore();
 
 describe("verifyTurnstileToken", () => {
   it("rejects empty token", async () => {
@@ -48,8 +51,9 @@ describe("submitInquiry with Turnstile", () => {
         INQUIRY_EMAIL: "inbox@example.com",
         RESEND_API_KEY: "re_test",
         TURNSTILE_SECRET_KEY: "turnstile_secret",
+        INQUIRY_LIMIT_HASH_PEPPER: "turnstile-test-pepper",
       },
-      { fetchImpl: fetchMock },
+      { fetchImpl: fetchMock, dailyLimitStore: turnstileDailyStore },
     );
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ sent: false, rejected: true });
