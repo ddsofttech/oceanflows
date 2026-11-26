@@ -180,6 +180,83 @@ describe("POST /api/inquiry contract", () => {
     expect(await response.json()).toEqual({ error: "rate_limited" });
   });
 
+  it("returns 502 delivery_failed without daily increment when Resend is not configured (BR-12)", async () => {
+    const fetchMock = vi.fn();
+    const envWithoutResend = {
+      INQUIRY_LIMIT_HASH_PEPPER: testEnv.INQUIRY_LIMIT_HASH_PEPPER,
+    };
+    const response = await submitInquiry(
+      postRequest(validBody),
+      envWithoutResend,
+      defaultDeps(fetchMock),
+    );
+    expect(response.status).toBe(502);
+    expect(await response.json()).toEqual({ error: "delivery_failed" });
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(
+      await dailyStore.peekCount(
+        "jane@example.com",
+        testEnv.INQUIRY_LIMIT_HASH_PEPPER,
+      ),
+    ).toBe(0);
+  });
+
+  it("returns 502 delivery_failed without increment when KV store is unavailable", async () => {
+    const fetchMock = vi.fn();
+    const response = await submitInquiry(postRequest(validBody), testEnv, {
+      fetchImpl: fetchMock,
+    });
+    expect(response.status).toBe(502);
+    expect(await response.json()).toEqual({ error: "delivery_failed" });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("returns 502 delivery_failed without daily increment when pepper is missing", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response("{}", { status: 200 }));
+    const envWithoutPepper = {
+      INQUIRY_EMAIL: testEnv.INQUIRY_EMAIL,
+      RESEND_API_KEY: testEnv.RESEND_API_KEY,
+    };
+    const response = await submitInquiry(
+      postRequest(validBody),
+      envWithoutPepper,
+      defaultDeps(fetchMock),
+    );
+    expect(response.status).toBe(502);
+    expect(await response.json()).toEqual({ error: "delivery_failed" });
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(
+      await dailyStore.peekCount(
+        "jane@example.com",
+        testEnv.INQUIRY_LIMIT_HASH_PEPPER,
+      ),
+    ).toBe(0);
+  });
+
+  it("returns 502 delivery_failed without daily increment when pepper is whitespace-only (SEC-02)", async () => {
+    const fetchMock = vi.fn();
+    const envWhitespacePepper = {
+      ...testEnv,
+      INQUIRY_LIMIT_HASH_PEPPER: "   \t  ",
+    };
+    const response = await submitInquiry(
+      postRequest(validBody),
+      envWhitespacePepper,
+      defaultDeps(fetchMock),
+    );
+    expect(response.status).toBe(502);
+    expect(await response.json()).toEqual({ error: "delivery_failed" });
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(
+      await dailyStore.peekCount(
+        "jane@example.com",
+        testEnv.INQUIRY_LIMIT_HASH_PEPPER,
+      ),
+    ).toBe(0);
+  });
+
   it("does not increment daily count on validation failure (BR-12)", async () => {
     await submitInquiry(
       postRequest({ ...validBody, email: "bad" }),

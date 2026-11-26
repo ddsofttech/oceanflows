@@ -83,7 +83,7 @@ async function enforceDailyInquiryLimit(
   env: InquiryRuntimeEnv,
   deps: InquiryDeps,
 ): Promise<Response | undefined> {
-  const pepper = env.INQUIRY_LIMIT_HASH_PEPPER;
+  const pepper = env.INQUIRY_LIMIT_HASH_PEPPER?.trim();
   const dailyStore = resolveDailyLimitStore(env, deps);
   if (!pepper || !dailyStore) {
     logInquiryEvent(requestId, "delivery_failed", "inquiry.kv_unavailable");
@@ -173,6 +173,13 @@ export async function submitInquiry(
     }
   }
 
+  const inquiryEmail = env.INQUIRY_EMAIL;
+  const resendKey = env.RESEND_API_KEY;
+  if (!inquiryEmail || !resendKey) {
+    logInquiryEvent(requestId, "delivery_failed", "inquiry.delivery_failed");
+    return jsonResponse({ error: "delivery_failed" }, 502);
+  }
+
   const dailyBlocked = await enforceDailyInquiryLimit(
     requestId,
     validated.data.email,
@@ -181,13 +188,6 @@ export async function submitInquiry(
   );
   if (dailyBlocked) {
     return dailyBlocked;
-  }
-
-  const inquiryEmail = env.INQUIRY_EMAIL;
-  const resendKey = env.RESEND_API_KEY;
-  if (!inquiryEmail || !resendKey) {
-    logInquiryEvent(requestId, "delivery_failed", "inquiry.delivery_failed");
-    return jsonResponse({ error: "delivery_failed" }, 502);
   }
 
   const delivery = await sendInquiryViaResend(
