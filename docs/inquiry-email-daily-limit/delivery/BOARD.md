@@ -6,7 +6,7 @@
 - Route: Normal
 - PRD version: v2.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; D5 Approve (2026-11-26)
-- Last updated: 2026-11-26 (be Checked; fe #17)
+- Last updated: 2026-11-26 (fe #17 merged)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
@@ -18,7 +18,7 @@
 |---|---|---|---|---|---|---|---|---|---|
 | iedl-devops-01 | KV platform | devops | RP1 | — | Checked | [#15](https://github.com/ddsofttech/oceanflows/pull/15) merge `c7053160` | Important | 2 | S5.1 pass; H1 env still open |
 | iedl-be-01 | Daily limit API | backend-developer | RP1 | iedl-devops-01 | Checked | [#16](https://github.com/ddsofttech/oceanflows/pull/16) merge `9cf0660a` (G5 D6) | Sensitive | 2 | S5.1 pass |
-| iedl-fe-01 | Contact UX + privacy | frontend-developer | RP1 | iedl-be-01 | Merged | [#17](https://github.com/ddsofttech/oceanflows/pull/17) @ `18814f59` | Important | 1 | S4.3 pass; merging |
+| iedl-fe-01 | Contact UX + privacy | frontend-developer | RP1 | iedl-be-01 | Merged | [#17](https://github.com/ddsofttech/oceanflows/pull/17) merge `bf98188b` | Important | 1 | S5.1 pending |
 
 - **PR:** the PR number and, once merged, its merge commit.
 - **Notes:** one sentence. Review rounds, CI runs, and evidence stay in the PR, the reviews, and the test report.
