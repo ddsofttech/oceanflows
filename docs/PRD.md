@@ -1,12 +1,12 @@
 # Product Requirements Document
 
 ## Document control
-- Status: Pending approval
+- Status: Approved
 - Version: `1.1`
-- Last approved version: `1.0` (`docs/baselines/prds/PRD-v1.0.md`)
+- Last approved version: `1.1` (`docs/baselines/prds/PRD-v1.1.md`)
 - Owner: Duong (Young) Dang, Founder, DD Software Solutions Inc. (named approver, D8). PRD content maintained by `requirements-analyst`
 - Stakeholder approvers: Duong (Young) Dang
-- Approval date: 2026-11-24
+- Approval date: 2026-11-26
 
 ## 1. Executive summary
 - Purpose (what and why): A responsive, single-page company branding and marketing website for DD Software Solutions Inc., an Alberta, Canada AI consulting and integration firm founded in 2023 that serves small and medium-sized businesses in Canada and the US. Its core message is "We help businesses turn AI opportunities into working solutions." The site explains what the company does, who it helps, why it can be trusted, and how to engage it. It is positioned "consulting first, implementation second" and makes no invented claims (sources: `docs/company-branding-website/sources/2026-11-24-project-request.md` §§1, 7, 8; `sources/2026-11-24-s17-answers.md`).
@@ -79,7 +79,7 @@
 | FR-12 | Requesting a URL that does not exist shows a not-found page with the primary navigation and a link to Home | Should | Approved |
 | FR-13 | Contact offers online booking of a 30-minute consultation through Cal.com (free tier), as a link or embed alongside the inquiry form. The booking link is `[BOOKING_URL]` until the owner's Cal.com account exists (Q2; D6) | Must | Approved |
 | FR-14 | The site measures visits with privacy-friendly analytics that set no cookies (for example Cloudflare Web Analytics or equivalent), so no cookie-consent banner is needed for analytics (Q7) | Should | Approved |
-| FR-15 | The inquiry API enforces a maximum of **3** counted inquiry submissions per **UTC calendar day** (BR-11) for each submitted email address after normalization (BR-14). Submissions over the cap are not delivered to the inbox and do not show the visitor a success confirmation (same abuse posture as BR-07). The daily counter increments per BR-12. When the cap is hit, the visitor sees error copy that clearly states the **daily inquiry limit** was reached, distinct from the IP burst message (D2 Q24). Both BR-13 and FR-15 apply; IP check runs first (D2 Q25) (`docs/inquiry-email-daily-limit/sources/2026-11-26-project-request.md`) | Must | Proposed |
+| FR-15 | The inquiry API enforces a maximum of **3** counted inquiry submissions per **UTC calendar day** (BR-11) for each submitted email address after normalization (BR-14). Submissions over the cap are not delivered to the inbox and do not show the visitor a success confirmation (same abuse posture as BR-07). The daily counter increments per BR-12. When the cap is hit, the visitor sees error copy that clearly states the **daily inquiry limit** was reached, distinct from the IP burst message (D2 Q24). Both BR-13 and FR-15 apply; IP check runs first (D2 Q25) (`docs/inquiry-email-daily-limit/sources/2026-11-26-project-request.md`) | Must | Approved |
 
 Status: Proposed/Approved/Implemented
 ## 7. Non-functional requirements
@@ -95,7 +95,7 @@ Status: Proposed/Approved/Implemented
 | NFR-08 | Visual identity | Logo, colors, typography, and other brand artifacts come from the owner's Figma design system "DD Software Solutions Branding" (file key `LkfGLRJsrCSCoYdu9m0hyf`); no alternate brand assets are invented. Clean, minimalist, sophisticated, with strong typographic hierarchy. No generic stock imagery, no AI clichés (e.g. robots, glowing brains, futuristic circuitry), no overly complex animation (source §5; Q10). Judged at UX review | Approved |
 | NFR-09 | Browser support | Works in current versions of Chrome, Safari, Firefox, and Edge on desktop and mobile (assumption A3) | Approved |
 | NFR-10 | Discoverability | The main page and the privacy notice each have a unique title and meta description and are indexable by search engines (source §8 "production-ready") | Approved |
-| NFR-11 | Abuse control (cross-isolate) | The per-email daily limit (FR-15) is enforced consistently for the same email across all inquiry API instances (not only within one Worker isolate). Mechanism is for architecture (impact analysis flags need for durable edge storage such as Cloudflare KV) | Must | Proposed |
+| NFR-11 | Abuse control (cross-isolate) | The per-email daily limit (FR-15) is enforced consistently for the same email across all inquiry API instances (not only within one Worker isolate). Mechanism is for architecture (impact analysis flags need for durable edge storage such as Cloudflare KV) | Must | Approved |
 
 Status: Proposed/Approved/Implemented
 ## 8. Business rules and workflows
@@ -229,3 +229,4 @@ List items with severity priority: **Blocking** -> **Important** -> **Non-blocki
 | 1.1 (draft) | inquiry-email-daily-limit | S1.1–S1.7: per-email daily cap (FR-15, NFR-11, BR-10), scope, §8 E6/E8, §9 criteria, §10 R8/D7/A5, §11 Q21–Q26 (Blocking/Important). Baseline remains v1.0 until G1 | — (pending G1) | 2026-11-26 |
 | 1.1 (draft) | inquiry-email-daily-limit | D2 applied: BR-11–BR-13; FR-11/FR-15; §4 in-scope IP 1/min + privacy; §8 E9; §9 ACs; §10 D8, A5 confirmed; §11 Q21/Q23–Q26 closed → requirements; **Q22a** Blocking (Q22 ambiguous). G1 held | — (pending G1) | 2026-11-26 |
 | 1.1 (draft) | inquiry-email-daily-limit | D3 Q22a (b): BR-14 (trim, lowercase, plus-tags, Gmail/googlemail dots); §6 FR-15, §8 BR-10, §9 FR-15 AC updated; §11 Q22a closed; §1 refreshed. S1.7 complete → S1.8 G1 package | — (pending G1) | 2026-11-26 |
+| 1.1 | inquiry-email-daily-limit | G1 Approve (D4). v1.1 draft promoted to baseline: document control Approved; §6 FR-15 and §7 NFR-11 set to Approved. No design trigger; route S3.1 | Duong | 2026-11-26 |
