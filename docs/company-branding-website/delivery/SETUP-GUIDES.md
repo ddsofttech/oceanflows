@@ -72,6 +72,7 @@ Worker → **Settings → Variables and Secrets** (request time — not only Bui
 | `RESEND_API_KEY` | Secret | From Resend (see §B) |
 | `RESEND_FROM_EMAIL` | Secret / Variable | Verified sender address |
 | `TURNSTILE_SECRET_KEY` | Secret | Optional |
+| `INQUIRY_LIMIT_HASH_PEPPER` | Secret | Required for per-email daily cap (`inquiry-email-daily-limit`); see §A8 |
 
 Key list also in `web/.env.example` and `web/.dev.vars.example`. Never commit values.
 
@@ -124,6 +125,51 @@ Post-deploy smoke (from repo): `cd web && npm run smoke:production` (checks HTTP
 ### A7. Branch protection (GitHub)
 
 Mark required checks from `.github/workflows/web-ci.yml` after a green PR.
+
+### A8. KV daily limit (`INQUIRY_DAILY_LIMIT`, D7, TM-16)
+
+Per-email caps (max **3** POSTs per normalized email per **UTC calendar day**) use a dedicated Cloudflare KV namespace bound as **`INQUIRY_DAILY_LIMIT`** on Worker `oceanflows-company-site`. KV stores **peppered SHA-256 keys + integer counts only** — never plaintext email. See `docs/inquiry-email-daily-limit/delivery/ENVIRONMENTS.md` for CI/deploy notes.
+
+#### A8.1 Create KV namespaces (owner)
+
+1. Dashboard → **Workers & Pages** → **KV**.
+2. Create **`INQUIRY_DAILY_LIMIT_PRODUCTION`** → copy **Namespace ID**.
+3. Create **`INQUIRY_DAILY_LIMIT_PREVIEW`** (separate namespace for previews/QA) → copy **Namespace ID**.
+4. Optional CLI: `cd web && npx wrangler kv namespace list`.
+
+#### A8.2 Bind namespaces in `web/wrangler.toml`
+
+`web/wrangler.toml` declares:
+
+```toml
+[[kv_namespaces]]
+binding = "INQUIRY_DAILY_LIMIT"
+id = "<your-production-namespace-id>"
+preview_id = "<your-preview-namespace-id>"
+```
+
+Replace both placeholders with the real IDs from §A8.1. **Production deploy must not keep angle-bracket placeholders** — `npm run check:production-wrangler-kv` (with `CHECK_PRODUCTION_ENV=1`) fails deploy if `id` is still a placeholder (see `.github/workflows/web-deploy.yml`). Workers Builds: append `&& npm run check:production-wrangler-kv` to the build command when `CHECK_PRODUCTION_ENV=1` is already set (§A1).
+
+#### A8.3 Hash pepper (owner, TM-15)
+
+1. Generate high-entropy secret (≥32 bytes), e.g. `openssl rand -base64 32`.
+2. Worker → **Settings → Variables and Secrets** → add secret **`INQUIRY_LIMIT_HASH_PEPPER`** (runtime, not `PUBLIC_*`).
+3. For local `wrangler dev` / preview only, copy the name into gitignored `web/.dev.vars` (template: `web/.dev.vars.example`). Never commit values.
+
+#### A8.4 API token scope (TM-16)
+
+Deploy tokens (**Edit Cloudflare Workers**) should be limited to this account, Worker `oceanflows-company-site`, and the two KV namespaces above. Avoid broad account KV admin on CI tokens unless unavoidable.
+
+#### A8.5 Production deploy checklist
+
+| Step | Owner | Done when |
+|---|---|---|
+| KV namespace IDs exist | Human | `wrangler kv namespace list` shows prod + preview |
+| `wrangler.toml` ids replaced | Human | No `<production-namespace-id>` in committed config for prod path |
+| `INQUIRY_DAILY_LIMIT` binding live | devops + Human | Binding name matches NFR-11 |
+| `INQUIRY_LIMIT_HASH_PEPPER` set (prod + preview) | Human | Secret present in Worker runtime |
+| Placeholder guard green | Human | `CHECK_PRODUCTION_ENV=1 npm run check:production-wrangler-kv` exits 0 |
+| Inquiry delivery (existing) | Human | §B4 smoke still passes |
 
 ---
 
@@ -226,3 +272,4 @@ https://cal.com/<your-username>/<event-slug>
 | Resend domain + secrets | Inquiry form delivers to `INQUIRY_EMAIL` |
 | Cal.com Link URL | `PUBLIC_BOOKING_URL` opens a 30‑minute slot picker |
 | Web Analytics token | Beacon present; no analytics cookies |
+| KV daily limit | `INQUIRY_DAILY_LIMIT` bound; pepper set; placeholder KV guard passes |
