@@ -6,13 +6,13 @@
 - Route: Normal
 - PRD version: 1.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; G4 Approve D17
-- Last updated: 2026-11-25 (PR #9 merged — production web/ on release/)
+- Last updated: 2026-11-25 (S6.2 Pass; G7 package ready)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
 |---|---|---|---|---|
 | RP0 | cbw-devops-01 | Signed off | D18 Approve | N/A (scaffold; no prod deploy) |
-| RP1 | cbw-fe-01, cbw-be-01, cbw-fe-02, cbw-fe-03 | Signed off | D20 Approve | Hold — DNS |
+| RP1 | cbw-fe-01, cbw-be-01, cbw-fe-02, cbw-fe-03 | Signed off | D20 Approve | Ready — Go recommended |
 | RP2 | cbw-fe-04, cbw-devops-02 | Building | — | — |
 
 ## Slice parts
@@ -29,7 +29,6 @@
 ## Open handoffs
 | ID | From | To | Type (consult / defect / finding / contract / environment) | About (part, PR, or defect) | Asked | Status | Answer or link |
 |---|---|---|---|---|---|---|---|
-| H3 | devops | human | environment | DNS oceanflows.net | Apex has CF NS only — no A/AAAA/CNAME; S6.2 Fail | Open | Attach Worker custom domain / DNS records |
 
 ## Environments
 | Pipeline or environment | Ready | Evidence |
@@ -37,7 +36,7 @@
 | Git host (GitHub) | Yes | github.com/ddsofttech/oceanflows.git |
 | PR CI (gates) | Yes | `web-ci` green |
 | GitHub Cloudflare secrets | Yes | Owner set |
-| Cloudflare live site | No | `web/` now on `release/`; rebuild CF on that branch, then custom domain (H3) |
+| Cloudflare live site | Yes | S6.2 Pass 2026-11-26 — https://oceanflows.net (home/privacy 200, 404+nav, inquiry API) |
 | Test plan | Yes | `testing/TEST-PLAN.md` |
 | RP1 RC | Yes | `8f974c60` |
 
