@@ -30,7 +30,7 @@ Request: `company-branding-website`. One section per release point, newest first
 
 ### Rollback
 
-- **Rollback criteria (concrete signals and thresholds):**
+- Rollback criteria (concrete signals and thresholds): Home or contact section returns 5xx for more than 5 minutes after an RP1 deploy; browser certificate error on apex; inquiry API sustained 5xx on valid submissions; or axe serious or critical regression on home, privacy, 404, or contact after deploy.
   - Home or `/contact` returns 5xx for >5 minutes after a deploy attributed to RP1 RC; or
   - HTTPS not enforced (browser shows certificate error on apex); or
   - Inquiry API returns sustained 5xx on valid submissions during soak; or
@@ -68,14 +68,14 @@ Mapped to PRD / TEST-PLAN RP1 smoke; **hosted column green** (2026-11-26).
 
 | Check (smoke set mapped to AC IDs) | Result | Evidence |
 |---|---|---|
-| NFR-06 — HTTPS on home | **pass** | TLS 200 on `https://oceanflows.net/` |
-| FR-01–05 — home loads marketing content | **pass** | 200; marketing title and section anchors in HTML |
-| FR-12 — unknown URL shows 404 + nav | **pass** | 404 on `/does-not-exist-rp1-smoke`; nav present |
-| FR-11 — `/privacy` loads | **pass** | 200 |
-| FR-06–08 — contact form present on site | **pass** | Inquiry form on home; `/api/inquiry` responds 400 (validation) |
-| NFR-05 — Cloudflare Worker host | **pass** | Apex on Cloudflare anycast; Worker `oceanflows-company-site` (owner deploy) |
-| TM-04 — no secrets in deploy artifact | **pass** (CI) | `gate / secrets` on merge CI |
-| Playwright integrated (local build) | **pass** | QA / RC `8f974c60` |
+| NFR-06 — HTTPS on home | pass | TLS 200 on `https://oceanflows.net/` |
+| FR-01–05 — home loads marketing content | pass | 200; marketing title and section anchors in HTML |
+| FR-12 — unknown URL shows 404 + nav | pass | 404 on `/does-not-exist-rp1-smoke`; nav present |
+| FR-11 — `/privacy` loads | pass | 200 |
+| FR-06–08 — contact form present on site | pass | Inquiry form on home; `/api/inquiry` responds 400 (validation) |
+| NFR-05 — Cloudflare Worker host | pass | Apex on Cloudflare anycast; Worker `oceanflows-company-site` (owner deploy) |
+| TM-04 — no secrets in deploy artifact | pass — CI gate | `gate / secrets` on merge CI |
+| Playwright integrated (local build) | pass | QA / RC `8f974c60` |
 
 **S6.2 outcome:** **Pass** — hosted staging green after D22 DNS fix. **Non-blocking:** `www` hostname not published; HTTP not forced to HTTPS until RP2.
 
