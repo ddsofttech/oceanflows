@@ -1,6 +1,6 @@
 /**
  * Validates owner-supplied build/deploy env before production release (cbw-devops-02).
- * Run with CHECK_PRODUCTION_ENV=1 (see web-deploy.yml and CLOUDFLARE-PAGES-SETUP.md).
+ * Run with CHECK_PRODUCTION_ENV=1 (see web-deploy.yml and delivery/SETUP-GUIDES.md).
  */
 
 export const GENERIC_BOOKING = new Set(["https://cal.com", "https://cal.com/"]);
