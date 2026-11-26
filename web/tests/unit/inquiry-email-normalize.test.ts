@@ -3,7 +3,9 @@ import { normalizeInquiryEmail } from "../../src/lib/inquiry-email-normalize";
 
 describe("normalizeInquiryEmail (BR-14)", () => {
   it("trims and lowercases", () => {
-    expect(normalizeInquiryEmail("  Jane@Example.COM ")).toBe("jane@example.com");
+    expect(normalizeInquiryEmail("  Jane@Example.COM ")).toBe(
+      "jane@example.com",
+    );
   });
 
   it("strips plus-tags in the local part", () => {

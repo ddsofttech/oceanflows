@@ -24,6 +24,15 @@ export interface InquiryDailyLimitStore {
   ): Promise<DailyLimitReserveResult>;
 }
 
+type KeyValueStore = {
+  get(key: string): Promise<string | null>;
+  put(
+    key: string,
+    value: string,
+    options?: { expirationTtl?: number },
+  ): Promise<void>;
+};
+
 /** Seconds until next UTC midnight (minimum 60 for KV TTL). */
 export function secondsUntilNextUtcMidnight(now = new Date()): number {
   const next = Date.UTC(
@@ -60,6 +69,19 @@ export function buildDailyLimitKvKey(
   return `inquiry:daily:${daySegment}:${hashHex}`;
 }
 
+async function resolveDailyLimitKeyAndTtl(
+  pepper: string,
+  normalizedEmail: string,
+  now: Date,
+): Promise<{ key: string; ttlSeconds: number }> {
+  const day = utcDayKeySegment(now);
+  const hash = await hashedDailyLimitKeyPart(pepper, normalizedEmail);
+  return {
+    key: buildDailyLimitKvKey(day, hash),
+    ttlSeconds: secondsUntilNextUtcMidnight(now),
+  };
+}
+
 function parseCount(raw: string | null): number {
   if (raw === null || raw.trim().length === 0) {
     return 0;
@@ -69,14 +91,7 @@ function parseCount(raw: string | null): number {
 }
 
 async function reserveOnKey(
-  store: {
-    get(key: string): Promise<string | null>;
-    put(
-      key: string,
-      value: string,
-      options?: { expirationTtl?: number },
-    ): Promise<void>;
-  },
+  store: KeyValueStore,
   key: string,
   ttlSeconds: number,
 ): Promise<DailyLimitReserveResult> {
@@ -103,20 +118,35 @@ export class KvInquiryDailyLimitStore implements InquiryDailyLimitStore {
     pepper: string,
     now = new Date(),
   ): Promise<DailyLimitReserveResult> {
-    const day = utcDayKeySegment(now);
-    const hash = await hashedDailyLimitKeyPart(pepper, normalizedEmail);
-    const key = buildDailyLimitKvKey(day, hash);
-    const ttl = secondsUntilNextUtcMidnight(now);
-    return reserveOnKey(this.kv, key, ttl);
+    const { key, ttlSeconds } = await resolveDailyLimitKeyAndTtl(
+      pepper,
+      normalizedEmail,
+      now,
+    );
+    return reserveOnKey(this.kv, key, ttlSeconds);
   }
 }
 
 /** Shared in-memory backend for unit tests (NFR-11 cross-call cap). */
 export function createMemoryInquiryDailyLimitStore(): InquiryDailyLimitStore & {
   reset(): void;
-  peekCount(normalizedEmail: string, pepper: string, now?: Date): Promise<number>;
+  peekCount(
+    normalizedEmail: string,
+    pepper: string,
+    now?: Date,
+  ): Promise<number>;
 } {
   const values = new Map<string, number>();
+
+  const backend: KeyValueStore = {
+    get: async (key) => {
+      const count = values.get(key);
+      return count === undefined ? null : String(count);
+    },
+    put: async (key, value) => {
+      values.set(key, parseCount(value));
+    },
+  };
 
   return {
     reset(): void {
@@ -127,9 +157,11 @@ export function createMemoryInquiryDailyLimitStore(): InquiryDailyLimitStore & {
       pepper: string,
       now = new Date(),
     ): Promise<number> {
-      const day = utcDayKeySegment(now);
-      const hash = await hashedDailyLimitKeyPart(pepper, normalizedEmail);
-      const key = buildDailyLimitKvKey(day, hash);
+      const { key } = await resolveDailyLimitKeyAndTtl(
+        pepper,
+        normalizedEmail,
+        now,
+      );
       return values.get(key) ?? 0;
     },
     async reserveDailyInquirySlot(
@@ -137,20 +169,12 @@ export function createMemoryInquiryDailyLimitStore(): InquiryDailyLimitStore & {
       pepper: string,
       now = new Date(),
     ): Promise<DailyLimitReserveResult> {
-      const day = utcDayKeySegment(now);
-      const hash = await hashedDailyLimitKeyPart(pepper, normalizedEmail);
-      const key = buildDailyLimitKvKey(day, hash);
-      const ttl = secondsUntilNextUtcMidnight(now);
-      const backend = {
-        get: async (k: string) => {
-          const count = values.get(k);
-          return count === undefined ? null : String(count);
-        },
-        put: async (k: string, v: string, _opts?: { expirationTtl?: number }) => {
-          values.set(k, parseCount(v));
-        },
-      };
-      return reserveOnKey(backend, key, ttl);
+      const { key, ttlSeconds } = await resolveDailyLimitKeyAndTtl(
+        pepper,
+        normalizedEmail,
+        now,
+      );
+      return reserveOnKey(backend, key, ttlSeconds);
     },
   };
 }

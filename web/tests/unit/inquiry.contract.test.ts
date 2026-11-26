@@ -108,7 +108,12 @@ describe("POST /api/inquiry contract", () => {
     );
     expect(response.status).toBe(502);
     expect(await response.json()).toEqual({ error: "delivery_failed" });
-    expect(await dailyStore.peekCount("jane@example.com", testEnv.INQUIRY_LIMIT_HASH_PEPPER)).toBe(1);
+    expect(
+      await dailyStore.peekCount(
+        "jane@example.com",
+        testEnv.INQUIRY_LIMIT_HASH_PEPPER,
+      ),
+    ).toBe(1);
   });
 
   it("returns 429 rate_limited on second request in a minute (BR-13)", async () => {
@@ -164,7 +169,10 @@ describe("POST /api/inquiry contract", () => {
       defaultDeps(fetchMock),
     );
     const response = await submitInquiry(
-      postRequest({ ...validBody, email: "not-an-email" }, { "CF-Connecting-IP": ip }),
+      postRequest(
+        { ...validBody, email: "not-an-email" },
+        { "CF-Connecting-IP": ip },
+      ),
       testEnv,
       defaultDeps(fetchMock),
     );
@@ -179,7 +187,10 @@ describe("POST /api/inquiry contract", () => {
       defaultDeps(fetch),
     );
     expect(
-      await dailyStore.peekCount("jane@example.com", testEnv.INQUIRY_LIMIT_HASH_PEPPER),
+      await dailyStore.peekCount(
+        "jane@example.com",
+        testEnv.INQUIRY_LIMIT_HASH_PEPPER,
+      ),
     ).toBe(0);
   });
 
@@ -188,7 +199,11 @@ describe("POST /api/inquiry contract", () => {
     const fetchMock = vi
       .fn()
       .mockResolvedValue(new Response("{}", { status: 200 }));
-    await submitInquiry(postRequest(validBody), testEnv, defaultDeps(fetchMock));
+    await submitInquiry(
+      postRequest(validBody),
+      testEnv,
+      defaultDeps(fetchMock),
+    );
     const combined = logSpy.mock.calls
       .map((call) => JSON.stringify(call))
       .join(" ");

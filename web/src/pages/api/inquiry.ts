@@ -77,6 +77,41 @@ function resolveDailyLimitStore(
   return resolveInquiryDailyLimitStore(env.INQUIRY_DAILY_LIMIT);
 }
 
+async function enforceDailyInquiryLimit(
+  requestId: string,
+  email: string,
+  env: InquiryRuntimeEnv,
+  deps: InquiryDeps,
+): Promise<Response | undefined> {
+  const pepper = env.INQUIRY_LIMIT_HASH_PEPPER;
+  const dailyStore = resolveDailyLimitStore(env, deps);
+  if (!pepper || !dailyStore) {
+    logInquiryEvent(requestId, "delivery_failed", "inquiry.kv_unavailable");
+    return jsonResponse({ error: "delivery_failed" }, 502);
+  }
+
+  const daily = await reserveInquiryDailySlot(dailyStore, email, pepper);
+  if (daily.ok) {
+    return undefined;
+  }
+
+  if (daily.reason === "daily_limit_reached") {
+    logInquiryEvent(
+      requestId,
+      "daily_limit_reached",
+      "inquiry.daily_limit_reached",
+    );
+    return jsonResponse({ error: "daily_limit_reached" }, 429);
+  }
+
+  logInquiryEvent(
+    requestId,
+    "delivery_failed",
+    "inquiry.daily_limit_store_error",
+  );
+  return jsonResponse({ error: "delivery_failed" }, 502);
+}
+
 export async function submitInquiry(
   request: Request,
   env: InquiryRuntimeEnv,
@@ -138,33 +173,14 @@ export async function submitInquiry(
     }
   }
 
-  const pepper = env.INQUIRY_LIMIT_HASH_PEPPER;
-  const dailyStore = resolveDailyLimitStore(env, deps);
-  if (!pepper || !dailyStore) {
-    logInquiryEvent(requestId, "delivery_failed", "inquiry.kv_unavailable");
-    return jsonResponse({ error: "delivery_failed" }, 502);
-  }
-
-  const daily = await reserveInquiryDailySlot(
-    dailyStore,
+  const dailyBlocked = await enforceDailyInquiryLimit(
+    requestId,
     validated.data.email,
-    pepper,
+    env,
+    deps,
   );
-  if (!daily.ok) {
-    if (daily.reason === "daily_limit_reached") {
-      logInquiryEvent(
-        requestId,
-        "daily_limit_reached",
-        "inquiry.daily_limit_reached",
-      );
-      return jsonResponse({ error: "daily_limit_reached" }, 429);
-    }
-    logInquiryEvent(
-      requestId,
-      "delivery_failed",
-      "inquiry.daily_limit_store_error",
-    );
-    return jsonResponse({ error: "delivery_failed" }, 502);
+  if (dailyBlocked) {
+    return dailyBlocked;
   }
 
   const inquiryEmail = env.INQUIRY_EMAIL;
