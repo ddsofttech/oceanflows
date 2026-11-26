@@ -6,7 +6,7 @@
 - Route: Normal
 - PRD version: v2.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; D5 Approve (2026-11-26)
-- Last updated: 2026-11-26 (G5 D6)
+- Last updated: 2026-11-26 (be Checked; fe #17)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
@@ -16,9 +16,9 @@
 ## Slice parts
 | Part ID | Slice | Owner | Release point | Depends on | Status (Planned / In progress / In review / Merged / Checked) | PR | Review class (Routine / Important / Sensitive) | Review rounds | Notes |
 |---|---|---|---|---|---|---|---|---|---|
-| iedl-devops-01 | KV platform | devops | RP1 | — | Checked | [#15](https://github.com/ddsofttech/oceanflows/pull/15) merge `c7053160` | Important | 2 | S5.1 pass (TEST-REPORT); H1 env still open |
-| iedl-be-01 | Daily limit API | backend-developer | RP1 | iedl-devops-01 | Merged | [#16](https://github.com/ddsofttech/oceanflows/pull/16) merge `9cf0660a` (G5 D6) | Sensitive | 2 | S5.1 pending |
-| iedl-fe-01 | Contact UX + privacy | frontend-developer | RP1 | iedl-be-01 | In progress | — | Important | 0 | S4.1 started | — | Important | 0 | S4.1 started |
+| iedl-devops-01 | KV platform | devops | RP1 | — | Checked | [#15](https://github.com/ddsofttech/oceanflows/pull/15) merge `c7053160` | Important | 2 | S5.1 pass; H1 env still open |
+| iedl-be-01 | Daily limit API | backend-developer | RP1 | iedl-devops-01 | Checked | [#16](https://github.com/ddsofttech/oceanflows/pull/16) merge `9cf0660a` (G5 D6) | Sensitive | 2 | S5.1 pass |
+| iedl-fe-01 | Contact UX + privacy | frontend-developer | RP1 | iedl-be-01 | In review | [#17](https://github.com/ddsofttech/oceanflows/pull/17) @ `18814f59` | Important | 0 | CI green; S4.3 next |
 
 - **PR:** the PR number and, once merged, its merge commit.
 - **Notes:** one sentence. Review rounds, CI runs, and evidence stay in the PR, the reviews, and the test report.
@@ -31,8 +31,8 @@
 ## Environments
 | Pipeline or environment | Ready | Evidence |
 |---|---|---|
-| web-ci (PR gates) | Yes | PR #15 gates green |
-| Local (wrangler + .dev.vars) | Partial | Binding in PR; pepper local-only |
+| web-ci (PR gates) | Yes | PR #15–#17 gates |
+| Local (wrangler + .dev.vars) | Partial | Binding present; pepper local-only |
 | Cloudflare preview / production | No | H1: real KV `id`s + pepper required |
 
 ## Escalations
