@@ -6,7 +6,7 @@
 - Route: Normal
 - PRD version: 1.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; G4 Approve D17
-- Last updated: 2026-11-25 (D23 Go; PR #12 devops-02 In review; H4 owner)
+- Last updated: 2026-11-25 (D23 Go; S7.1 started; cbw-fe-04 Checked)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
@@ -20,12 +20,12 @@
 |---|---|---|---|---|---|---|---|---|---|
 | cbw-devops-01 | Platform | devops | RP0 | — | Checked | [#1](https://github.com/ddsofttech/oceanflows/pull/1) `05ec0c5` | Important | 1 | G6 D18; no G7 (scaffold) |
 | cbw-fe-04 | Analytics | frontend-developer | RP2 | cbw-fe-01 | Checked | [#8](https://github.com/ddsofttech/oceanflows/pull/8) | Routine | 0 | S5.1 Pass code; hosted FR-14 → H4 |
-| cbw-devops-02 | Production launch | devops | RP2 | cbw-fe-02, cbw-fe-04 | In review | [#12](https://github.com/ddsofttech/oceanflows/pull/12) | Important | 0 | Awaiting S4.3; owner env Qs open |
+| cbw-devops-02 | Production launch | devops | RP2 | cbw-fe-02, cbw-fe-04 | In progress | — | Important | 0 | Placeholders/HTTPS/www; include H4 token |
 
 ## Open handoffs
 | ID | From | To | Type (consult / defect / finding / contract / environment) | About (part, PR, or defect) | Asked | Status | Answer or link |
 |---|---|---|---|---|---|---|---|
-| H4 | qa | devops | environment | FR-14 CF analytics token | Set `PUBLIC_CF_ANALYTICS_TOKEN` + redeploy | Open | Owner must set token; steps in `testing/handoffs/ENV-FR14-CF-ANALYTICS-TOKEN.md` |
+| H4 | qa | devops | environment | FR-14 CF analytics token | Set `PUBLIC_CF_ANALYTICS_TOKEN` + redeploy so hosted beacon appears | Open | `testing/handoffs/ENV-FR14-CF-ANALYTICS-TOKEN.md` |
 
 ## Environments
 | Pipeline or environment | Ready | Evidence |
