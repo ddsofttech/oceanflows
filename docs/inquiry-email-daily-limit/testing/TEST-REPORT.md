@@ -3,7 +3,7 @@
 ## Metadata
 - PRD version: `2.0`
 - Test plan: `docs/inquiry-email-daily-limit/testing/TEST-PLAN.md`
-- Author: qa (S5.1 — iedl-devops-01, iedl-be-01)
+- Author: qa (S5.1 all RP1 slices; S5.2 RP1 release test)
 - Date: 2026-11-26
 
 ## Slice checks
@@ -11,6 +11,7 @@
 |---|---|---|---|---|
 | iedl-devops-01 | `c7053160` | 2026-11-26 | pass | — |
 | iedl-be-01 | `9cf0660a` | 2026-11-26 | pass | — |
+| iedl-fe-01 | `bf98188b` | 2026-11-26 | pass | — |
 
 ### iedl-devops-01 — evidence (TEST-PLAN §2)
 
@@ -54,12 +55,47 @@
 - Deviations from test plan: Hosted KV / preview runtime checks (TEST-PLAN §1 NFR-11 manual) not executed; all CI-automated §1 rows for iedl-be-01 executed. No dedicated OpenAPI schema validator in repo — slice §2 satisfied via `inquiry.contract.test.ts` shapes vs v1.1 contract doc.
 - Flaky tests and environment issues: none affecting iedl-be-01 product verdict.
 
+### iedl-fe-01 — evidence (TEST-PLAN §2)
+
+| Check | Result | Evidence |
+|---|---|---|
+| CI `web-ci` green on merge PR #17 | pass | `gh pr checks 17` — all gates pass (incl. `unit-tests`, `playwright-smoke`) |
+| `classifyInquiryResponse` daily vs IP (FR-08, FR-15) | pass | `vitest run tests/unit/inquiry-form.test.ts` — 6/6; maps `daily_limit_reached` → `daily-limit-reached`, `rate_limited` → `rate-limited` |
+| Daily-limit UI copy distinct from burst | pass | `web/src/scripts/inquiry-form.ts` `renderStatus` — daily: “Daily inquiry limit reached”; burst: “Please wait a moment and try again.” |
+| Privacy FR-11 disclosure (hashed counters, UTC day) | pass | `web/src/pages/privacy.astro` §“Inquiry rate limiting”; e2e `site.spec.ts` privacy meta `/inquiry/i` |
+| Full `web` vitest @ integrated tree | pass | `npm run test` — 10 files, 55 tests pass |
+
+- Deviations from test plan: No dedicated privacy string unit snapshot; FR-11 verified via source + e2e meta. FR-11 owner sign-off (D8) not recorded in repo — tracked as H1/G6 known issue (not blocking slice §2 code presence).
+- Flaky tests and environment issues: none affecting iedl-fe-01 product verdict.
+
 ## Release test
-- Build under test (commit or release candidate): `9cf0660a` (merge #16 iedl-be-01); integrated HEAD `40aae49c` includes devops + backend; release E2E pending iedl-fe-01.
-- Environment: local macOS; CI status via `gh pr checks 15`
+- Build under test (commit or release candidate): `bf98188b` (merge #17 iedl-fe-01; integrated RP1 = devops `c7053160` + be `9cf0660a` + fe `bf98188b`)
+- Environment: local macOS; CI via `gh pr checks 17`; vitest + Playwright against local `astro build` + `serve dist`
 - Date: 2026-11-26
 
-*(Release test — RP1 end-to-end / regression — not started; pending iedl-fe-01 merge and slice check.)*
+### RP1 flows (TEST-PLAN §3)
+
+| AC / flow | Test or check | Result | Evidence |
+|---|---|---|---|
+| W1 normal inquiry under cap | `contact.spec.ts` stub 200 sent | pass | Playwright “shows success when inquiry is accepted” |
+| E8 4th same email → daily limit, no success | Contract 4th POST + classifier | pass | `inquiry.contract.test.ts` “fourth same-email POST”; `inquiry-form.test.ts` FR-15 |
+| E9 2nd same IP &lt;60s → burst | Contract + classifier | pass | `inquiry.contract.test.ts` BR-13; `inquiry-form.test.ts` FR-08 |
+| E1 invalid email unchanged | Client + API validation | pass | `inquiry-form.test.ts` `validateInquiryClient`; `contact.spec.ts` validation_failed |
+| Optional stubbed 429 in contact e2e | — | not run | TEST-PLAN optional; classifier + copy verified in unit/source |
+
+### Regression and non-functional (TEST-PLAN §3–§4)
+
+| Suite | Passed | Failed | Not run | Evidence |
+|---|---|---|---|---|
+| Inquiry regression (§4) | 44 | 0 | 0 | `vitest run tests/unit/inquiry*.test.ts` — 7 files |
+| Site smoke Home → Contact / privacy | 18 | 0 | 0 | `playwright test tests/e2e/site.spec.ts tests/e2e/contact.spec.ts` |
+| Full web vitest | 55 | 0 | 0 | `npm run test` |
+| NFR-11 preview Worker KV + pepper smoke | — | — | H1 | No `CLOUDFLARE_API_TOKEN`; KV IDs/pepper not provisioned (same as slice checks) |
+| Fail-closed KV missing on hosted Worker | — | — | H1 | Covered in CI via contract (missing pepper → 502, no increment); preview runtime not exercised |
+| FR-11 D8 owner privacy approval before prod | — | — | H1 | Text present in build; human D8 sign-off not recorded for G7 |
+
+- Deviations from test plan: E8/E9 visitor copy not exercised via stubbed 429 Playwright (optional); API + unit + distinct `renderStatus` copy used instead. All automated §4 regression rows executed. Hosted §3 NFR-11 and D8 deferred per H1.
+- Flaky tests and environment issues: none affecting RP1 product verdict.
 
 ## Defects
 | Defect ID | Severity | Type | Owner | Status |
@@ -67,6 +103,9 @@
 | — | — | — | — | — |
 
 ## Recommendation for G6
-- Recommendation: *(slices iedl-devops-01, iedl-be-01)* — pass for both slice checks; RP1 release recommendation pending iedl-fe-01.
-- Known issues proposed for acceptance (Important or Non-blocking only): H1 — hosted KV namespace IDs and production pepper not provisioned (environment; owner human per BOARD).
-- Open Blocking defects (must be none to pass): none for iedl-devops-01 or iedl-be-01 slice scope.
+- Recommendation: **Pass with known issues** — all three RP1 slice checks pass; automated release regression and planned local e2e pass on `bf98188b`. Not ready for production deploy until H1 hosted checks and D8 are closed (G7 scope).
+- Known issues proposed for acceptance (Important or Non-blocking only):
+  - **H1 — Cloudflare runtime:** `INQUIRY_DAILY_LIMIT` KV namespace IDs + `INQUIRY_LIMIT_HASH_PEPPER` on preview/prod; `wrangler kv namespace list` (TM-16); preview smoke POST (NFR-11 manual). Owner: human + `devops`. Severity: Important (environment).
+  - **H1 — D8:** Privacy rate-limit paragraph owner approval before production. Owner: human (Duong). Severity: Non-blocking for G6 code completeness; **blocking for G7 prod** per TEST-PLAN §7 exit.
+  - **Residual (documented):** TM-01 KV race 4th send; TM-12 IP across isolates — accepted per TEST-PLAN §1 deferred table.
+- Open Blocking defects (must be none to pass): none.
