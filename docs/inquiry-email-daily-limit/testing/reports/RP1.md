@@ -109,3 +109,4 @@
   - **H1 — D8:** Privacy rate-limit paragraph owner approval before production. Owner: human (Duong). Severity: Non-blocking for G6 code completeness; **blocking for G7 prod** per TEST-PLAN §7 exit.
   - **Residual (documented):** TM-01 KV race 4th send; TM-12 IP across isolates — accepted per TEST-PLAN §1 deferred table.
 - Open Blocking defects (must be none to pass): none.
+- G6 decision: **D7 Approve** (2026-11-26). Known issues accepted: H1 Cloudflare runtime (Important env), H1/D8 privacy sign-off deferred to G7, TM-01/TM-12 residuals.

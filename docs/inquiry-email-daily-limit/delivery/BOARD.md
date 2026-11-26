@@ -6,12 +6,12 @@
 - Route: Normal
 - PRD version: v2.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; D5 Approve (2026-11-26)
-- Last updated: 2026-11-26 (RP1 Verifying; G6)
+- Last updated: 2026-11-26 (G6 D7; S6.1)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
 |---|---|---|---|---|
-| RP1 | iedl-devops-01, iedl-be-01, iedl-fe-01 | Verifying | awaiting | — |
+| RP1 | iedl-devops-01, iedl-be-01, iedl-fe-01 | Signed off | D7 Approve | — |
 
 ## Slice parts
 | Part ID | Slice | Owner | Release point | Depends on | Status (Planned / In progress / In review / Merged / Checked) | PR | Review class (Routine / Important / Sensitive) | Review rounds | Notes |
@@ -26,7 +26,7 @@
 ## Open handoffs
 | ID | From | To | Type (consult / defect / finding / contract / environment) | About (part, PR, or defect) | Asked | Status | Answer or link |
 |---|---|---|---|---|---|---|---|
-| H1 | devops | human | environment | KV namespace IDs + `INQUIRY_LIMIT_HASH_PEPPER` for hosted QA/prod | 2026-11-26 | Open | Owner creates namespaces and sets pepper (SETUP-GUIDES §A8) |
+| H1 | devops | human | environment | KV namespace IDs + `INQUIRY_LIMIT_HASH_PEPPER` for hosted QA/prod | 2026-11-26 | Open | Accepted at G6 D7 as known issue; required before G7 Go |
 
 ## Environments
 | Pipeline or environment | Ready | Evidence |

@@ -10,5 +10,6 @@ One row per human decision, answer, or routing event, oldest first. `sdlc-check.
 | D4 | 2026-11-26 | G1 | S1.8 | Approve | v2.0 | Approve, no design trigger | human | Baseline PRD v2.0 (content from G1 package; numbered .0 per process). No S2. Next: S3.1. |
 | D5 | 2026-11-26 | G4 | S3.3 | Approve | design + plan | Approve | human | Design, ADRs, system architecture, engineering standards, plan, part plans, and review classes locked. Next: open BOARD; S3.4 + S3.5; S4 for iedl-devops-01. |
 | D6 | 2026-11-26 | G5 | S4.5 | Approve | #16 | Approve | human | Sensitive merge allowed for iedl-be-01 @ `6a8a053e`. H1 env (KV + pepper) remains open. Next: merge → S5.1; start iedl-fe-01 after merge. |
+| D7 | 2026-11-26 | G6 | S5.3 | Approve | RP1 | Approve | human | QA sign-off Pass with known issues. Accepts H1 (KV+pepper hosted), D8 privacy sign-off deferred to G7, TM-01/TM-12 residuals. Next: S6.1. |
 
-Next ID: **D7**.
+Next ID: **D8**.
