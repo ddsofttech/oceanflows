@@ -15,4 +15,5 @@ Unchanged from PRD §5; owner decides open rules (§11).
 
 ## Scope decisions recorded
 - In: email daily cap on inquiry API.
-- Out: broad backend, admin tools, IP parameter change unless Q25.
+- Out: broad backend, admin tools.
+- In (D2): IP limit **1/min** (BR-13); privacy notice for counters (Q26).
