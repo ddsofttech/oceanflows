@@ -3,14 +3,16 @@
 - Title: iedl-be-01: inquiry daily limit and IP tighten
 - Slice part: `iedl-be-01`
 - Sensitive: PII-derived rate limiting (peppered SHA-256 KV keys), abuse controls (IP + per-email caps), Worker secrets (`INQUIRY_LIMIT_HASH_PEPPER`), Cloudflare KV binding
-- Reviewed head (commit): `a2d701f084a3db21a111a9f1f975b072a0abfe2c`
-- Reviewer: security-engineer (S4.4)
+- Reviewed head (commit): `6a8a053ed001f5754776c2e83e4aa03aecd46199`
+- Prior reviewed head: `a2d701f084a3db21a111a9f1f975b072a0abfe2c`
+- Reviewer: security-engineer (S4.4 re-check)
 - Date: 2026-11-26
 
 ## Checked
 | Check | Result | Evidence |
 |---|---|---|
-| CI security gates green on the reviewed head | pass | `gh pr view 16` — secrets, sast, dependency-audit SUCCESS on `a2d701f0` |
+| CI security gates green on the reviewed head | pass | `gh pr checks 16` — secrets, sast, dependency-audit SUCCESS on `6a8a053e` |
+| Re-check delta (`a2d701f..6a8a053`) | pass | Resend config guard before daily reserve (BR-12); pepper `trim()`; fail-closed contract tests; no auth/IP/rate-limit regressions |
 | Security requirements (IDs) | pass | TM-01/BR-13/FR-15 contract + unit tests; TM-15 hash/key tests; TM-03 log contract test; fail-closed in `enforceDailyInquiryLimit` |
 | Dependencies carrying sensitive scope | pass | No new crypto/auth packages; `crypto.subtle.digest` (platform) |
 | Exceptions to security gates | pass | None added in PR |
@@ -18,8 +20,8 @@
 ## Findings
 | ID | Finding | Severity | Fix owner | Status | Verified at commit |
 |---|---|---|---|---|---|
-| SEC-01 | No contract test asserts fail-closed (`502` + `inquiry.kv_unavailable`) when `INQUIRY_LIMIT_HASH_PEPPER` or KV store is absent; implementation is correct (`!pepper \|\| !dailyStore`) | Non-blocking | `iedl-be-01` owner | open — follow-up test recommended | `a2d701f0` |
-| SEC-02 | Whitespace-only pepper passes truthiness check; weak operational pepper weakens TM-15 preimage resistance | Non-blocking | devops / human (H1) | open — document min-length/trim in SETUP-GUIDES §A8; optional runtime `trim()` + length guard | `a2d701f0` |
+| SEC-01 | No contract test asserts fail-closed (`502` + `inquiry.kv_unavailable`) when `INQUIRY_LIMIT_HASH_PEPPER` or KV store is absent; implementation is correct (`!pepper \|\| !dailyStore`) | Non-blocking | `iedl-be-01` owner | fixed — four contract tests in `inquiry.contract.test.ts` | `6a8a053e` |
+| SEC-02 | Whitespace-only pepper passes truthiness check; weak operational pepper weakens TM-15 preimage resistance | Non-blocking | devops / human (H1) | fixed — runtime `trim()` fail-closed; optional SETUP-GUIDES §A8 min-length note remains H1 ops (no runtime length guard) | `6a8a053e` |
 
 ## Merge status
 - Blocked by an unresolved Blocking finding: **no**
