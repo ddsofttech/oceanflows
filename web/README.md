@@ -14,7 +14,7 @@ Astro + `@astrojs/cloudflare` scaffold for **company-branding-website** (RP0).
 
 ## Environment
 
-Copy `.env.example` and `.dev.vars.example` (never commit secrets). Production values live in **Cloudflare Pages** env settings — see `docs/company-branding-website/delivery/CLOUDFLARE-PAGES-SETUP.md`.
+Copy `.env.example` and `.dev.vars.example` (never commit secrets). Production values live in Cloudflare Worker env settings — see `docs/company-branding-website/delivery/SETUP-GUIDES.md` (Cloudflare, Resend, Cal.com).
 
 ## Stack note (RP0)
 

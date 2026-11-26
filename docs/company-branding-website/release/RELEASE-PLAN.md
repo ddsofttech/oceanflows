@@ -16,7 +16,7 @@ Request: `company-branding-website`. One section per release point, newest first
 - **Technical:**
   - Astro 5 on `@astrojs/cloudflare`; inquiry API via Worker runtime; CI `web-ci` on feature merges.
   - Hosted target **accepted at G6:** `https://oceanflows.net` (production custom domain used as RP1 soak host; RP2 still covers analytics, placeholder guard, and formal production sign-off per IMPLEMENTATION-PLAN).
-  - Deploy path: Cloudflare **Worker application** `oceanflows-company-site` (Workers Builds / `npx wrangler deploy`); see `delivery/CLOUDFLARE-PAGES-SETUP.md`.
+  - Deploy path: Cloudflare **Worker application** `oceanflows-company-site` (Workers Builds / `npx wrangler deploy`); see `delivery/SETUP-GUIDES.md`.
 - **Known issues accepted at G6:** SR-01 (rate-limit residual), SR-02 (subject CRLF), FR-07/Resend live inbox not proven in QA, owner content sign-off gaps (FR-03/05/NFR-07), G3 waivers — per `testing/reports/RP1.md`.
 
 ### Rollout
@@ -140,14 +140,14 @@ RP1 uses G7 to **accept `https://oceanflows.net` as the RP1 release host** and m
 - **Technical:**
   - Adds `web/` Astro 5 scaffold with `@astrojs/cloudflare`, `wrangler.toml`, env examples, placeholder guard script.
   - Adds `.github/workflows/web-ci.yml` (engineering-standard PR gates) and `web-deploy.yml` (production deploy workflow; secrets not yet wired).
-  - Documents Cloudflare setup in `docs/company-branding-website/delivery/CLOUDFLARE-PAGES-SETUP.md`.
+  - Documents Cloudflare setup in `docs/company-branding-website/delivery/SETUP-GUIDES.md`.
 - **Known issues accepted at G6:** None (Important/Blocking). Open **environment handoff H2**: Cloudflare Pages project / API credentials not yet provisioned by owner — does not block RP0 closure; blocks hosted preview deploy and RP1 staging soak on Cloudflare.
 
 ### Rollout
 
 1. **Scope:** Git-only + CI. No production or customer-facing URL for RP0.
 2. **Already completed (G6 evidence):** Merge `cbw-devops-01`; verify `web-ci` success on RC `05ec0c5` ([run 45694850445](https://github.com/ddsofttech/oceanflows/actions/runs/45694850445)).
-3. **Optional (blocked on H2):** First Cloudflare Pages preview or project-linked build — owner completes `delivery/CLOUDFLARE-PAGES-SETUP.md` and GitHub secrets `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` (or dashboard Git integration). **Not required to mark RP0 released.**
+3. **Optional (blocked on H2):** First Cloudflare Pages preview or project-linked build — owner completes `delivery/SETUP-GUIDES.md` and GitHub secrets `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` (or dashboard Git integration). **Not required to mark RP0 released.**
 4. **Migrations, in order:** None.
 5. **Feature flags and their default:** None.
 
