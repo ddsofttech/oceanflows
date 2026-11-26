@@ -33,7 +33,7 @@ describe("validateProductionWranglerKv", () => {
   });
 
   it("fails when binding block is missing", () => {
-    const errors = validateProductionWranglerKv("name = \"test\"\n");
+    const errors = validateProductionWranglerKv('name = "test"\n');
     expect(errors[0]).toContain("missing");
   });
 });

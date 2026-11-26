@@ -9,7 +9,9 @@ import { resolve } from "node:path";
 const PLACEHOLDER = /<[^>]+>/;
 const BINDING = "INQUIRY_DAILY_LIMIT";
 
-export function findInquiryDailyLimitKvId(wranglerToml: string): string | undefined {
+export function findInquiryDailyLimitKvId(
+  wranglerToml: string,
+): string | undefined {
   const blockRe =
     /\[\[kv_namespaces\]\][\s\S]*?binding\s*=\s*["']INQUIRY_DAILY_LIMIT["'][\s\S]*?id\s*=\s*["']([^"']+)["']/g;
   let match: RegExpExecArray | null;
