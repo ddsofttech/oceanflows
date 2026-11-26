@@ -44,4 +44,16 @@ describe("classifyInquiryResponse", () => {
       fields: { email: "Enter a valid email address." },
     });
   });
+
+  it("maps IP burst 429 rate_limited (FR-08)", () => {
+    expect(
+      classifyInquiryResponse(429, { error: "rate_limited" }),
+    ).toEqual({ kind: "rate-limited" });
+  });
+
+  it("maps per-email daily cap 429 daily_limit_reached (FR-15)", () => {
+    expect(
+      classifyInquiryResponse(429, { error: "daily_limit_reached" }),
+    ).toEqual({ kind: "daily-limit-reached" });
+  });
 });
