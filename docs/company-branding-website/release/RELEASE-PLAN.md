@@ -83,7 +83,8 @@ Mapped to PRD / TEST-PLAN RP1 smoke; **hosted column green** (2026-11-26).
 
 - **Dashboards and alerts:** Cloudflare Worker `oceanflows-company-site` build/deploy status; GitHub Actions `web-ci` on `ux/company-branding-website`; optional Worker analytics after RP2 (`cbw-fe-04`).
 - **KPIs to watch (PRD §3 IDs):** O5 inquiry/booking counts — site reachable; live Resend delivery still not proven in QA (FR-07); O1–O4 owner content review still pending.
-- **Observation window:** Proposed **48h soak** starting after **G7 Go** — **owner:** `devops` + human spot-check; **not started** (awaiting G7).
+- **Observation window:** **48h soak** after **G7 Go (D23)** — **start:** `2026-11-26T02:45:00Z` (aligned to D23 2026-11-25); **end:** `2026-11-28T02:45:00Z`; **owner:** `devops` + human spot-check; **status:** **started** (S7.1 initial snapshot below).
+- **S7.1 initial snapshot (2026-11-26T02:46:00Z):** Release **RP1** @ RC `8f974c60`. Reachability from devops host (`curl`, browser UA): `https://oceanflows.net/` → **HTTP 200**, TLS verify **0**; `https://oceanflows.net/privacy` → **HTTP 307** → `https://oceanflows.net/privacy/` **HTTP 200**, TLS verify **0**. No error-rate or latency baseline beyond response-time ~0.5s on home. **Incidents:** none.
 
 ### Go decision (G7) — RP1 release target
 
@@ -101,7 +102,7 @@ RP1 uses G7 to **accept `https://oceanflows.net` as the RP1 release host** and m
 | **On Hold** | New environment regression (5xx, cert error, DNS loss) — devops reruns S6.2 and refreshes this package. |
 | **On No-go** | Revert Worker deploy per Rollback section; park RP1 public hostname until RC reconfirmed. |
 
-- **Approvers and date:** Pending human G7 (Standard profile — orchestrator records decision in `DECISION-LOG.md`).
+- **G7 decision:** **Go** — **D23** (2026-11-25), **Duong** — accept `https://oceanflows.net` as RP1 release host; mark RP1 **Released**; start 48h observation; no S6.4 for RP1 (formal prod = RP2 / `cbw-devops-02`). Verbatim archive: `decisions/RP1.md`.
 
 **Rollback plan pointer:** RP1 → Rollback subsection above (Worker `oceanflows-company-site` → promote previous deployment; DNS repair in Worker Domains & Routes if misconfigured).
 
@@ -120,9 +121,10 @@ RP1 uses G7 to **accept `https://oceanflows.net` as the RP1 release host** and m
 |---|---|
 | S6.1 | Complete — this section |
 | S6.2 | Complete — **Pass** (hosted); evidence 2026-11-26 |
-| S6.3 / G7 | **Ready** — package above; **Go** recommended |
+| S6.3 / G7 | **Complete** — **Go** (D23, Duong, 2026-11-25); RP1 **Released** on `https://oceanflows.net` |
 | S6.4 production | **Not requested** (RP2) |
-| **Board: ready to mark Released?** | **Yes after G7 Go** — S6.2 green + rollback documented |
+| S7.1 observation | **In progress** — window `2026-11-26T02:45:00Z` → `2026-11-28T02:45:00Z` |
+| **Board: release status** | **Released** (RP1) — orchestrator synced per D23 |
 
 ---
 
