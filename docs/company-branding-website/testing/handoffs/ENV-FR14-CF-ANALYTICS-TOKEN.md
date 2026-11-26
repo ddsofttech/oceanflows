@@ -31,3 +31,30 @@ Production at https://oceanflows.net does not load the Cloudflare Web Analytics 
 
 - Full **FR-14** verification on production URL.
 - RP2 release test row for hosted analytics (not a frontend code defect).
+
+---
+
+## Devops answer (2026-11-26, H4)
+
+**Disposition:** **blocked on owner credentials** — cannot complete redeploy from this agent session.
+
+**Hosted beacon live?** **No.** Verified `curl https://oceanflows.net/` at 2026-11-26: no `static.cloudflareinsights.com/beacon.min.js`, no `data-cf-beacon` in HTML.
+
+**What was checked**
+
+| Check | Result |
+|---|---|
+| Live HTML | Beacon absent |
+| GitHub repo secrets (`gh secret list`) | `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` only — **`PUBLIC_CF_ANALYTICS_TOKEN` not set** |
+| Local `wrangler whoami` | Not authenticated (no `CLOUDFLARE_API_TOKEN` in shell) |
+| Deploy path | Primary production deploy is **Workers Builds** on branch `release/company-branding-website` per `delivery/CLOUDFLARE-PAGES-SETUP.md`; `web-deploy.yml` also needs the secret when used |
+
+**Owner actions (Duong)**
+
+1. Cloudflare Dashboard → **Analytics & Logs** → **Web Analytics** → **Manage site** → add `oceanflows.net` if needed → copy **JS Snippet Beacon token**.
+2. **Workers Builds** → `oceanflows-company-site` → **Settings** → **Builds** → **Build variables and secrets** → add `PUBLIC_CF_ANALYTICS_TOKEN` (build-time; Astro inlines at `npm run build`).
+3. **GitHub** → repo **Settings** → **Secrets** → Actions → create `PUBLIC_CF_ANALYTICS_TOKEN` (same value) for `.github/workflows/web-deploy.yml`.
+4. **Redeploy** the Worker (Workers Builds **Retry deployment**, or merge a no-op commit to `release/company-branding-website`).
+5. Re-run QA hosted FR-14: beacon in page source + network request; no new analytics cookies.
+
+**Devops follow-up in PR `cbw-devops-02`:** production env guard + setup doc updates; deploy workflow runs placeholder + env checks when secrets exist.
