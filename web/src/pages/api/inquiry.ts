@@ -1,4 +1,10 @@
 import type { APIRoute } from "astro";
+import {
+  type InquiryDailyLimitStore,
+  type InquiryKvNamespace,
+  reserveInquiryDailySlot,
+  resolveInquiryDailyLimitStore,
+} from "../../lib/inquiry-daily-limit";
 import { sendInquiryViaResend } from "../../lib/inquiry-email";
 import { logInquiryEvent } from "../../lib/inquiry-log";
 import {
@@ -19,10 +25,13 @@ export type InquiryRuntimeEnv = {
   TURNSTILE_SECRET_KEY?: string;
   RESEND_FROM_EMAIL?: string;
   PUBLIC_PUBLIC_EMAIL?: string;
+  INQUIRY_LIMIT_HASH_PEPPER?: string;
+  INQUIRY_DAILY_LIMIT?: InquiryKvNamespace;
 };
 
 export type InquiryDeps = {
   fetchImpl?: typeof fetch;
+  dailyLimitStore?: InquiryDailyLimitStore;
 };
 
 function jsonResponse(body: unknown, status: number): Response {
@@ -45,6 +54,10 @@ function resolveEnv(locals: App.Locals): InquiryRuntimeEnv {
       runtimeEnv?.RESEND_FROM_EMAIL ?? import.meta.env.RESEND_FROM_EMAIL,
     PUBLIC_PUBLIC_EMAIL:
       runtimeEnv?.PUBLIC_PUBLIC_EMAIL ?? import.meta.env.PUBLIC_PUBLIC_EMAIL,
+    INQUIRY_LIMIT_HASH_PEPPER:
+      runtimeEnv?.INQUIRY_LIMIT_HASH_PEPPER ??
+      import.meta.env.INQUIRY_LIMIT_HASH_PEPPER,
+    INQUIRY_DAILY_LIMIT: runtimeEnv?.INQUIRY_DAILY_LIMIT,
   };
 }
 
@@ -52,6 +65,16 @@ function resolveFromAddress(env: InquiryRuntimeEnv): string {
   return (
     env.RESEND_FROM_EMAIL ?? env.PUBLIC_PUBLIC_EMAIL ?? "onboarding@resend.dev"
   );
+}
+
+function resolveDailyLimitStore(
+  env: InquiryRuntimeEnv,
+  deps: InquiryDeps,
+): InquiryDailyLimitStore | null {
+  if (deps.dailyLimitStore) {
+    return deps.dailyLimitStore;
+  }
+  return resolveInquiryDailyLimitStore(env.INQUIRY_DAILY_LIMIT);
 }
 
 export async function submitInquiry(
@@ -113,6 +136,35 @@ export async function submitInquiry(
       logInquiryEvent(requestId, "rejected", "inquiry.spam_rejected");
       return jsonResponse({ sent: false, rejected: true }, 200);
     }
+  }
+
+  const pepper = env.INQUIRY_LIMIT_HASH_PEPPER;
+  const dailyStore = resolveDailyLimitStore(env, deps);
+  if (!pepper || !dailyStore) {
+    logInquiryEvent(requestId, "delivery_failed", "inquiry.kv_unavailable");
+    return jsonResponse({ error: "delivery_failed" }, 502);
+  }
+
+  const daily = await reserveInquiryDailySlot(
+    dailyStore,
+    validated.data.email,
+    pepper,
+  );
+  if (!daily.ok) {
+    if (daily.reason === "daily_limit_reached") {
+      logInquiryEvent(
+        requestId,
+        "daily_limit_reached",
+        "inquiry.daily_limit_reached",
+      );
+      return jsonResponse({ error: "daily_limit_reached" }, 429);
+    }
+    logInquiryEvent(
+      requestId,
+      "delivery_failed",
+      "inquiry.daily_limit_store_error",
+    );
+    return jsonResponse({ error: "delivery_failed" }, 502);
   }
 
   const inquiryEmail = env.INQUIRY_EMAIL;

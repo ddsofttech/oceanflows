@@ -1,5 +1,5 @@
 const RATE_LIMIT_WINDOW_MS = 60_000;
-const RATE_LIMIT_MAX_PER_WINDOW = 5;
+const RATE_LIMIT_MAX_PER_WINDOW = 1;
 
 const hitsByIp = new Map<string, number[]>();
 
