@@ -24,7 +24,7 @@ Request: `company-branding-website`. One section per release point, newest first
 1. **Scope:** RP1 engineering release on hosted URL `https://oceanflows.net` (same host as future RP2; no separate “preview-only” domain).
 2. **Prerequisite (G6 / H2):** GitHub secrets `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` set; Worker Builds or Wrangler deploy from `ux/company-branding-website`.
 3. **Already completed (G6 evidence):** All four RP1 parts merged; integrated RC `8f974c60` — merge CI [45708536952](https://github.com/ddsofttech/oceanflows/actions/runs/45708536952) success; QA 25/25 unit, 17/17 Playwright on local build.
-4. **S6.2 devops verify:** See staging section below — **hosted checks not green** at time of record.
+4. **S6.2 devops verify:** See staging section below — **Pass** (2026-11-26 UTC rerun after D22 DNS fix).
 5. **Migrations, in order:** None.
 6. **Feature flags and their default:** None; placeholder guard via build/env (full production guard in RP2 / `cbw-devops-02`).
 
@@ -40,50 +40,50 @@ Request: `company-branding-website`. One section per release point, newest first
   2. If bad release came from GitHub Action `web-deploy-production`, re-run prior successful workflow or revert merge on integration branch and redeploy.
   3. If DNS/custom-domain misconfiguration: detach/repair custom hostname in Worker **Settings → Domains & Routes**; do not patch app code outside PR process.
   4. Notify orchestrator; record incident if production traffic impacted (RP1 soak on live domain).
-- **Rollback tested:** **no** — dashboard rollback only; acceptable for RP1 soak once hosted URL is reachable. **Risky until first successful S6.2 pass.**
+- **Rollback tested:** **no** — dashboard rollback only; acceptable for RP1 soak. Pointer: Rollback section above (Worker deployment promote).
 
 ### Staging verification (S6.2)
 
-- **Date:** 2026-11-25
+- **Date:** 2026-11-26 (UTC rerun; prior 2026-11-25 attempt **Fail** on DNS — superseded)
 - **Target URL:** `https://oceanflows.net`
-- **Method:** Authoritative DNS trace + `curl` with browser User-Agent; Cursor IDE browser; Browser Use local Chrome. (No production deploy performed by devops this step — verify only.)
-- **Result:** **Staging verification — Fail** (hosted URL not reachable from devops network; checklist not executable on live host).
+- **Method:** `dig @1.1.1.1` + `dig +trace`; `curl` with browser User-Agent; TLS cert inspect via `openssl s_client`. No deploy performed this step — verify only (D22: DNS/custom domain fixed).
+- **Result:** **Staging verification — Pass** (apex reachable; HTTPS and RP1 smoke checklist green).
 
 **Evidence (authoritative for S6.2):**
 
 | Check | Result | Evidence |
 |---|---|---|
-| DNS apex `oceanflows.net` | **fail** | `dig +trace oceanflows.net A` ends at Cloudflare authoritative NS (`rosa.ns.cloudflare.com`) with **no A/AAAA/CNAME** answer; `dig @8.8.8.8` / `@1.1.1.1` — empty; `curl` → `(6) Could not resolve host` |
-| IDE browser home | **fail** | `chrome-error://chromewebdata/` — “This site can’t be reached” |
-| Browser Use (local Chrome) | **fail** | Same error page on `/`, `/privacy`, `/contact`, smoke 404 path |
-| `WebFetch` | **fail** | HTTP 500 from fetch layer (no usable HTML) |
-| Board note (CI agent) | **inconclusive** | Prior automated `curl` from CI reported **HTTP 403** (possible bot fight when host resolved); contradicts current public DNS NXDOMAIN — treat as **evidence gap**; rerun smoke from GH runner after DNS fixed |
-| QA RC build (corroborating, not hosted) | **pass** | `testing/reports/RP1.md` @ `8f974c60` — 17/17 e2e, merge CI green |
+| DNS apex `oceanflows.net` | **pass** | `A` → `104.21.8.238`, `172.67.158.30`; `AAAA` → Cloudflare anycast; `dig +trace` returns signed A at `terin.ns.cloudflare.com` |
+| DNS `www.oceanflows.net` | **N/A** | No `A`/`CNAME` at `@1.1.1.1`; custom `www` not configured on Worker — out of RP1 apex scope |
+| HTTPS home | **pass** | `curl https://oceanflows.net/` → **HTTP 200**, `ssl_verify_result=0`; cert `CN=oceanflows.net`, Google Trust Services, valid 2026-11-25 → 2027-02-23 |
+| `/privacy` | **pass** | **HTTP 200**; HTML title “Privacy notice — DD Software Solutions Inc.” |
+| Smoke 404 | **pass** | `GET /does-not-exist-rp1-smoke` → **HTTP 404**; custom 404 page with `primary-nav` links |
+| Contact / inquiry API | **pass** | Home `#contact` includes `data-inquiry-form` + `POST /api/inquiry` → **HTTP 400** on empty JSON (handler reachable; not live send) |
+| HTTP apex (note) | **pass with note** | `http://oceanflows.net/` returns **200** without redirect; **HTTPS works** (NFR-06 for RP1). Full HTTP→HTTPS enforce deferred to RP2 / `cbw-devops-02` |
+| QA RC build (corroborating) | **pass** | `testing/reports/RP1.md` @ `8f974c60` — 17/17 e2e, merge CI green |
 
 ### Staging checklist
 
-Mapped to PRD / TEST-PLAN RP1 smoke; **hosted column blocked until DNS + HTTP 200**.
+Mapped to PRD / TEST-PLAN RP1 smoke; **hosted column green** (2026-11-26).
 
 | Check (smoke set mapped to AC IDs) | Result | Evidence |
 |---|---|---|
-| NFR-06 — HTTPS on home | **fail** | No TLS handshake — host does not resolve |
-| FR-01–05 — home loads marketing content | **fail** | Not reachable |
-| FR-12 — unknown URL shows 404 + nav | **fail** | Not reachable (`/does-not-exist-rp1-smoke` not tested live) |
-| FR-11 — `/privacy` loads | **fail** | Not reachable |
-| FR-06–08 — contact form present on site | **fail** | Not reachable; QA e2e passed locally only |
-| NFR-05 — Cloudflare Worker host | **blocked** | Worker name `oceanflows-company-site`; custom domain DNS not published |
+| NFR-06 — HTTPS on home | **pass** | TLS 200 on `https://oceanflows.net/` |
+| FR-01–05 — home loads marketing content | **pass** | 200; marketing title and section anchors in HTML |
+| FR-12 — unknown URL shows 404 + nav | **pass** | 404 on `/does-not-exist-rp1-smoke`; nav present |
+| FR-11 — `/privacy` loads | **pass** | 200 |
+| FR-06–08 — contact form present on site | **pass** | Inquiry form on home; `/api/inquiry` responds 400 (validation) |
+| NFR-05 — Cloudflare Worker host | **pass** | Apex on Cloudflare anycast; Worker `oceanflows-company-site` (owner deploy) |
 | TM-04 — no secrets in deploy artifact | **pass** (CI) | `gate / secrets` on merge CI |
 | Playwright integrated (local build) | **pass** | QA / RC `8f974c60` |
 
-**S6.2 outcome:** **Fail** — cannot mark hosted staging green. **Environment issues (Blocking):**
-1. **Workers Builds deploy** (2026-11-25): build OK; deploy failed — `wrangler.toml` had `pages_build_output_dir` (Pages) while dashboard runs `npx wrangler deploy` → “Missing entry-point”. Fix: Workers `main` + `[assets]` (+ `public/.assetsignore`); see PR #10. Retry then failed again: `sharp`/`detect-libc` unresolved (`child_process`/`fs`). Fix: `imageService: "passthrough"` in Astro Cloudflare adapter so sharp is not bundled into the Worker. After merge, owner **Retry** Cloudflare build.
-2. **DNS:** publish apex/custom domain for `oceanflows.net`, then rerun checklist (use browser UA; if 403 persists, allowlist smoke IP or manual owner screenshot per BOARD).
+**S6.2 outcome:** **Pass** — hosted staging green after D22 DNS fix. **Non-blocking:** `www` hostname not published; HTTP not forced to HTTPS until RP2.
 
 ### Observation
 
 - **Dashboards and alerts:** Cloudflare Worker `oceanflows-company-site` build/deploy status; GitHub Actions `web-ci` on `ux/company-branding-website`; optional Worker analytics after RP2 (`cbw-fe-04`).
-- **KPIs to watch (PRD §3 IDs):** O5 inquiry/booking counts — **not measurable** until site is reachable and Resend path verified (FR-07); O1–O4 owner content review still pending.
-- **Observation window:** Starts after **successful S6.2 rerun** — propose 48h soak, **owner:** `devops` + human spot-check; **not started** (blocked on DNS).
+- **KPIs to watch (PRD §3 IDs):** O5 inquiry/booking counts — site reachable; live Resend delivery still not proven in QA (FR-07); O1–O4 owner content review still pending.
+- **Observation window:** Proposed **48h soak** starting after **G7 Go** — **owner:** `devops` + human spot-check; **not started** (awaiting G7).
 
 ### Go decision (G7) — RP1 release target
 
@@ -93,32 +93,36 @@ RP1 uses G7 to **accept `https://oceanflows.net` as the RP1 release host** and m
 
 | Field | Value |
 |---|---|
-| **Recommendation** | **Hold** |
-| **Staging (S6.2)** | **Fail** |
-| **Rationale** | G6 D20 accepted QA integration at RC `8f974c60`, but devops **cannot verify** live home, HTTPS, `/privacy`, 404, or contact form on `https://oceanflows.net` — apex has **no public DNS address records** at Cloudflare authoritative NS (2026-11-25). Prior CI 403 suggests intermittent reachability or WAF; both must be cleared before Go. |
-| **On Approve (Go)** | Orchestrator may mark RP1 **Released** with human-attested URL + devops rerun evidence; begin RP2 parts; start observation window. |
-| **On Hold** | Fix DNS/custom domain; devops reruns S6.2; optional GH Actions smoke with browser UA against apex. |
-| **On No-go** | Revert Worker deploy or pause public hostname until RC quality reconfirmed. |
+| **Recommendation** | **Go** |
+| **Staging (S6.2)** | **Pass** (2026-11-26 UTC) |
+| **Rationale** | D22 closed H3 (DNS/custom domain fixed). Devops reran S6.2: apex resolves to Cloudflare; **HTTPS 200** on home; `/privacy` **200**; smoke path **404** with nav; inquiry form on home and **`POST /api/inquiry` reachable** (400 on empty body). Rollback plan recorded above (Worker deployment promote). G6 D20 + QA RC `8f974c60` unchanged. RP1 G7 **accepts `https://oceanflows.net` as RP1 release host** — not RP2 formal production guard (`cbw-devops-02`). |
+| **Residual (non-blocking at G7)** | `www` not in DNS; HTTP serves 200 without redirect (HTTPS enforce in RP2); live Resend inbox not proven (FR-07); G6-known SR-01/02 and content waivers. |
+| **On Approve (Go)** | Orchestrator marks RP1 **Released**; start 48h observation; proceed RP2 parts. **No S6.4 prod deploy** for RP1. |
+| **On Hold** | New environment regression (5xx, cert error, DNS loss) — devops reruns S6.2 and refreshes this package. |
+| **On No-go** | Revert Worker deploy per Rollback section; park RP1 public hostname until RC reconfirmed. |
 
-- **Approvers and date:** Pending human G7 — **blocked** on green S6.2 hosted evidence.
+- **Approvers and date:** Pending human G7 (Standard profile — orchestrator records decision in `DECISION-LOG.md`).
+
+**Rollback plan pointer:** RP1 → Rollback subsection above (Worker `oceanflows-company-site` → promote previous deployment; DNS repair in Worker Domains & Routes if misconfigured).
 
 ### Deploy record
 
 | Environment | Date | Version | Result | Rollback run? |
 |---|---|---|---|---|
-| Cloudflare Worker (integration) | 2026-11-25 (owner) | `8f974c60` (intended) | **Unverified** by devops — G6 attests live site; DNS missing from public resolvers at S6.2 | N/A |
-| Staging verify (S6.2) | 2026-11-25 | `8f974c60` | **Fail** — DNS / reachability | N/A |
-| Production (RP2 / G7 prod) | — | — | **Not in scope for RP1 S6.2** | N/A |
+| Cloudflare Worker (live apex) | 2026-11-25+ (owner) | `8f974c60` (RC) | **Verified** by devops S6.2 — site serves at `https://oceanflows.net` | N/A |
+| Staging verify (S6.2) | 2026-11-26 | `8f974c60` | **Pass** — DNS + smoke checklist | N/A |
+| Staging verify (S6.2 prior) | 2026-11-25 | `8f974c60` | **Fail** — DNS NXDOMAIN (superseded) | N/A |
+| Production (RP2 / G7 prod) | — | — | **Not in scope for RP1** | N/A |
 
 ### Release status
 
 | Field | Value |
 |---|---|
 | S6.1 | Complete — this section |
-| S6.2 | Complete — **Fail** (hosted); evidence recorded |
-| S6.3 / G7 | **Hold** — awaiting DNS fix + staging rerun |
+| S6.2 | Complete — **Pass** (hosted); evidence 2026-11-26 |
+| S6.3 / G7 | **Ready** — package above; **Go** recommended |
 | S6.4 production | **Not requested** (RP2) |
-| **Board: ready to mark Released?** | **No** — fix Blocking DNS/custom domain, pass S6.2 hosted checklist, then G7 Go |
+| **Board: ready to mark Released?** | **Yes after G7 Go** — S6.2 green + rollback documented |
 
 ---
 
