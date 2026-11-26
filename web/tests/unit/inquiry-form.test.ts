@@ -46,9 +46,9 @@ describe("classifyInquiryResponse", () => {
   });
 
   it("maps IP burst 429 rate_limited (FR-08)", () => {
-    expect(
-      classifyInquiryResponse(429, { error: "rate_limited" }),
-    ).toEqual({ kind: "rate-limited" });
+    expect(classifyInquiryResponse(429, { error: "rate_limited" })).toEqual({
+      kind: "rate-limited",
+    });
   });
 
   it("maps per-email daily cap 429 daily_limit_reached (FR-15)", () => {
