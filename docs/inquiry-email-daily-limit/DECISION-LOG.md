@@ -9,4 +9,6 @@ One row per human decision, answer, or routing event, oldest first. `sdlc-check.
 | D3 | 2026-11-26 | — | S1.7 | Answer | Q22a email normalization | b | human | Q22a = (b) trim+lowercase and treat `+` aliases and Gmail-style dots as the same address. Next: close §11 Blocking; S1.8 G1 package. |
 | D4 | 2026-11-26 | G1 | S1.8 | Approve | v2.0 | Approve, no design trigger | human | Baseline PRD v2.0 (content from G1 package; numbered .0 per process). No S2. Next: S3.1. |
 
-Next ID: **D5**.
+| D5 | 2026-11-26 | G4 | S3.3 | Approve | design + plan | Approve | human | Design, ADRs, system architecture, engineering standards, plan, part plans, and review classes locked. Next: open BOARD; S3.4 + S3.5; S4 for iedl-devops-01. |
+
+Next ID: **D6**.
