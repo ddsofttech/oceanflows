@@ -11,17 +11,9 @@ interface Props {
 }
 
 const { variant } = Astro.props;
-
-const badge =
-  variant === "sales"
-    ? "Lead scoring motif"
-    : variant === "operations"
-      ? "Knowledge lookup motif"
-      : "Workflow handoff motif";
 ---
 
 <div class={`use-case-demo use-case-demo--${variant}`} data-abstract>
-  <span class="use-case-demo__badge">{badge}</span>
   {
     variant === "sales" && (
       <svg
