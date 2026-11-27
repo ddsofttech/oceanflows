@@ -132,6 +132,10 @@
   /* Portrait: height longer than width (height = 1.25 × width) */
   aspect-ratio: 4 / 5;
   height: auto;
+  /* Match chat card so iframe rounded corners do not flash demo-panel grey */
+  background: var(--color-surface-card);
+  border-radius: 18px;
+  overflow: hidden;
 }
 
 .use-case-chat__idle {
