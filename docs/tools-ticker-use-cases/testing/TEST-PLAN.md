@@ -10,7 +10,7 @@
 | AC or requirement ID | Slice part | Release point | Method (automated / manual / exploratory) | Test or check | Level (unit / integration / end-to-end) |
 |---|---|---|---|---|---|
 | SITE-AC-16 | ttuc-fe-01, ttuc-fe-02 | RP1 | automated + manual | E2E: 12 tool labels in SITE-FR-16 order immediately after `#services`; labels are plain text (no `img` logos). Manual: scroll Services → ticker → Approach; spot-check screen-reader/name exposure. | e2e / manual |
-| SITE-AC-17 | ttuc-fe-01, ttuc-fe-02 | RP1 | automated + manual | E2E: four headings/summaries on `/` without demo interaction. Manual: CS iframe on intersect; owner chat intent; three placeholders. | e2e / manual |
+| SITE-AC-17 | ttuc-fe-01, ttuc-fe-02 | RP1 | automated + manual | E2E: four headings/summaries on `/` without demo click. Manual: CS iframe on intersect; vs owner chat prototype; three placeholders. | e2e / manual |
 | SITE-AC-N04 | ttuc-fe-01, ttuc-fe-02 | RP1 | automated + manual | E2E (optional in ttuc-fe-02): emulate `prefers-reduced-motion: reduce` — no marquee loop, no abstract demo pulse. Manual: OS reduce motion — static ticker list + static CS transcript. | e2e / manual |
 | SITE-BR-06 | ttuc-fe-01 | RP1 | manual | Visual DOM inspection: text-only tool names; no third-party wordmarks or logo images in ticker. | manual |
 | SITE-BR-05 | ttuc-fe-01 | RP1 | manual | Copy review: four workflows qualitative illustrations only; no invented client claims. | manual |
@@ -34,13 +34,13 @@
 ## 2. Slice checks
 | Slice part | Checks run when it merges |
 |---|---|
-| ttuc-fe-01 | PR CI green (`web-ci` gates incl. `sdlc-check.py`). Manual: Services → ticker → Approach; 12 tools in order; copy readable without demos; reduce-motion static. Blocking: wrong tools; missing a11y labels; logos in ticker; axe serious+ on `/`. |
-| ttuc-fe-02 | CI + extended `site.spec.ts` (ticker, four titles, nav, axe). Blocking: SITE-AC-16/17 fail; axe regression; broken nav. Non-blocking: optional reduce-motion e2e → S5 manual. |
+| ttuc-fe-01 | PR CI green (`web-ci` incl. sdlc-check). Manual: Services→ticker→Approach; 12 tools ordered; copy sans demo; reduce-motion static. Blocking: wrong order/count; missing labels; copy needs demo; logos; axe serious+ on `/`. |
+| ttuc-fe-02 | CI + `site.spec.ts`: ticker, four titles, nav, axe index. Blocking: SITE-AC-16/17 fail; axe serious/critical on `/`; nav broken. Non-blocking: optional reduce-motion e2e → S5 manual. |
 
 ## 3. Release tests
 | Release point | End-to-end flows | Regression set | Non-functional checks |
 |---|---|---|---|
-| RP1 | W-3: Home → Services → ticker → Approach → `#use-cases` → Contact. Alt: nav to use cases. Reduce motion: static ticker/demos, copy readable. | §4 on preview. | S5.2: CWV lab; keyboard; viewports; SITE-NFR-04/12. |
+| RP1 (ttuc-fe-01 + ttuc-fe-02) | W-3: Home→Services→ticker→Approach→`#use-cases`→Contact. Nav to Use cases one step. Reduce motion: static ticker/demos. | §4 on preview. | S5.2: CWV; keyboard; NFR-01/04/12. |
 
 ## 4. Regression set *(existing-repo)*
 | Area from the impact analysis | Existing behavior that must not change | Test |
