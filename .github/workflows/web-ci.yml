@@ -267,17 +267,27 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             BASE="${{ github.base_ref }}"
+            REF="${{ github.head_ref }}"
           else
             BASE="${{ github.ref_name }}"
+            REF="${{ github.ref_name }}"
           fi
           case "$BASE" in
             *tools-ticker-use-cases*)
-              echo "request=tools-ticker-use-cases" >> "$GITHUB_OUTPUT"
+              REQUEST=tools-ticker-use-cases
               ;;
             *)
-              echo "request=company-branding-website" >> "$GITHUB_OUTPUT"
+              case "$REF" in
+                feature/ttuc-*)
+                  REQUEST=tools-ticker-use-cases
+                  ;;
+                *)
+                  REQUEST=company-branding-website
+                  ;;
+              esac
               ;;
           esac
+          echo "request=$REQUEST" >> "$GITHUB_OUTPUT"
       - run: python .cursor/sdlc/scripts/sdlc-check.py --request ${{ steps.sdlc.outputs.request }}
 
   change-size:
