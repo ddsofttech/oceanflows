@@ -125,21 +125,25 @@ test.describe("marketing site", () => {
   });
 
   test("axe: no serious violations on index", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
     await expectNoSeriousAxeViolations(page);
   });
 
   test("axe: no serious violations on privacy", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/privacy");
     await expectNoSeriousAxeViolations(page);
   });
 
   test("axe: no serious violations on 404", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/does-not-exist");
     await expectNoSeriousAxeViolations(page);
   });
 
   test("axe: no serious violations on contact", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/#contact");
     await expectNoSeriousAxeViolations(page);
   });
@@ -159,7 +163,7 @@ test.describe("marketing site", () => {
       const tickerInsideServices = services.contains(ticker);
       const order =
         services.compareDocumentPosition(toolsSection) &
-        Node.DOCUMENT_POSITION_FOLLOWING &&
+          Node.DOCUMENT_POSITION_FOLLOWING &&
         toolsSection.compareDocumentPosition(approach) &
           Node.DOCUMENT_POSITION_FOLLOWING;
       return { tickerInsideTools, tickerInsideServices, order: !!order };

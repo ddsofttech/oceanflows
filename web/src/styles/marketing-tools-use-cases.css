@@ -269,7 +269,7 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: #1d8091;
+  background: var(--color-action-primary);
   color: var(--color-brand-white);
   font-size: 0.625rem;
   font-weight: 700;

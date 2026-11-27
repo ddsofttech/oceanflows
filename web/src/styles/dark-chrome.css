@@ -13,7 +13,7 @@
   );
 }
 
-@media (max-width: 767px) {
+@media (width <= 767px) {
   [data-theme="dark"] .hero-banner::after {
     background: linear-gradient(
       180deg,

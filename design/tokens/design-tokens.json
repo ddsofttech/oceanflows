@@ -2,15 +2,15 @@
   "$description": "Audience: SMB owners and executives deciding whether a founder-led AI consultancy is credible. Tone: calm, confident, plain-spoken; low density with generous whitespace. Brand attributes: Clear, Grounded, Considered. Signature: typography-led editorial layout; Services as a ruled problem/outcome list; Approach as a numbered 1–4 sequence. Imagery: type-led, no stock or AI clichés; Lucide-style outline icons only where they carry content. Motion: opacity and transform 150–250ms; disabled under prefers-reduced-motion.",
   "color": {
     "brand": {
-      "deep-blue": { "$value": "#1D8091" },
-      "cyan": { "$value": "#1D8091" },
+      "deep-blue": { "$value": "#187080" },
+      "cyan": { "$value": "#187080" },
       "white": { "$value": "#FFFFFF" }
     },
     "text": {
       "primary": { "$value": "#0B1746" },
       "secondary": { "$value": "#475569" },
       "inverse": { "$value": "#FFFFFF" },
-      "link": { "$value": "#1D8091" }
+      "link": { "$value": "#187080" }
     },
     "surface": {
       "ground": { "$value": "#F8FAFC" },
@@ -44,12 +44,12 @@
     "border": {
       "default": { "$value": "#E2E8F0" },
       "input": { "$value": "#94A3B8" },
-      "focus": { "$value": "#1D8091" }
+      "focus": { "$value": "#187080" }
     },
     "action": {
-      "primary": { "$value": "#1D8091" },
-      "primary-hover": { "$value": "#1A6F7D" },
-      "accent": { "$value": "#1D8091" }
+      "primary": { "$value": "#187080" },
+      "primary-hover": { "$value": "#156570" },
+      "accent": { "$value": "#187080" }
     },
     "status": {
       "success": { "$value": "#15803D" },

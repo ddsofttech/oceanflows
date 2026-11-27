@@ -3,22 +3,22 @@
  * (greenfield — removed when the scaffold reads the JSON tokens file)
  */
 :root {
-  --color-brand-deep-blue: #1d8091;
-  --color-brand-cyan: #1d8091;
+  --color-brand-deep-blue: #187080;
+  --color-brand-cyan: #187080;
   --color-brand-white: #ffffff;
   --color-text-primary: #0b1746;
   --color-text-secondary: #475569;
   --color-text-inverse: #ffffff;
-  --color-text-link: #1d8091;
+  --color-text-link: #187080;
   --color-surface-ground: #f8fafc;
   --color-surface-card: #ffffff;
   --color-surface-navy: #081f59;
   --color-border-default: #e2e8f0;
   --color-border-input: #94a3b8;
-  --color-border-focus: #1d8091;
-  --color-action-primary: #1d8091;
-  --color-action-primary-hover: #1a6f7d;
-  --color-action-accent: #1d8091;
+  --color-border-focus: #187080;
+  --color-action-primary: #187080;
+  --color-action-primary-hover: #156570;
+  --color-action-accent: #187080;
   --color-status-success: #15803d;
   --color-status-success-bg: #f0fdf4;
   --color-status-error: #b91c1c;
