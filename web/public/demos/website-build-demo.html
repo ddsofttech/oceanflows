@@ -158,12 +158,18 @@
         line-height: 0;
       }
       .hero__visual img {
-        width: min(44vw, 168px);
-        height: auto;
-        max-height: 148px;
-        object-fit: contain;
-        object-position: left center;
+        width: min(50vw, 158px);
+        height: min(38vw, 182px);
+        max-height: 182px;
+        object-fit: cover;
+        object-position: top center;
         display: block;
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          #000 55%,
+          transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
       }
       .hero__copy {
         flex: 1 1 0;
@@ -178,9 +184,10 @@
           gap: 8px;
         }
         .hero__visual img {
-          width: min(58vw, 196px);
-          max-height: 158px;
-          object-position: center bottom;
+          width: min(56vw, 188px);
+          height: min(44vw, 172px);
+          max-height: 172px;
+          object-position: top center;
         }
       }
       .kicker {
@@ -376,7 +383,15 @@
         <button type="button" class="nav-cta">Book visit</button>
       </nav>
       <header class="hero">
-       
+        <figure class="hero__visual" aria-hidden="true">
+          <img
+            src="/demos/assets/dental-hero-standing.png"
+            width="864"
+            height="1152"
+            alt=""
+            decoding="async"
+          />
+        </figure>
         <div class="hero__copy">
           <p class="kicker">Patient care</p>
           <h1 class="headline">
