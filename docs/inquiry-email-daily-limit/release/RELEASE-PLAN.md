@@ -7,7 +7,7 @@ Request: `inquiry-email-daily-limit`. One section per release point, newest firs
 ## Release point RP1
 
 - **Slice parts included:** `iedl-devops-01`, `iedl-be-01`, `iedl-fe-01`
-- **Release candidate (commit or build):** `f4473eb25d113b34e83b455f93de97e8f6829eaf` (release branch tip; S6.2 docs + H1 prod KV `id`; feature code @ `aa3bd24d`)
+- **Release candidate (commit or build):** `9bede8424940f186e8437f9be3ba814f7cd0c4c2` (release branch tip incl. S6.2 evidence; feature + H1 KV @ `aa3bd24d`)
 - **QA sign-off (G6 decision):** D7 Approve (2026-11-26) — Pass with known issues; per `testing/reports/RP1.md`
 
 ### Release notes
