@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <title>Website build journey – preview</title>
+    <title>Northfold — services</title>
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Lora:ital,wght@1,500;1,600&display=swap"
@@ -77,10 +77,6 @@
         flex-direction: column;
         align-items: center;
         gap: 12px;
-        transition: opacity 0.4s ease;
-      }
-      .page.dim {
-        opacity: 0.4;
       }
       .nav-pill {
         flex: none;
@@ -182,13 +178,6 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
-        transition:
-          border-color 0.35s,
-          transform 0.35s;
-      }
-      .svc.is-on {
-        border-color: color-mix(in srgb, var(--sky) 55%, var(--line));
-        transform: translateY(-2px);
       }
       .illus {
         width: 100%;
@@ -233,15 +222,13 @@
         justify-content: center;
         padding-top: 2px;
       }
-      .pager button {
+      .pager span {
         width: 7px;
         height: 7px;
-        padding: 0;
-        border: 0;
         border-radius: 50%;
         background: color-mix(in srgb, var(--muted) 35%, transparent);
       }
-      .pager button.on {
+      .pager span.is-active {
         background: var(--navy);
       }
       .foot {
@@ -277,35 +264,38 @@
       .btn-sky svg {
         flex: none;
       }
-      .milestone-slot {
-        flex: none;
-        width: 100%;
-        min-height: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0 4px;
+      @media (prefers-reduced-motion: no-preference) {
+        .page.is-entering .nav-pill,
+        .page.is-entering .hero,
+        .page.is-entering .cards .svc,
+        .page.is-entering .pager,
+        .page.is-entering .foot {
+          animation: rise-in 0.55s ease both;
+        }
+        .page.is-entering .hero {
+          animation-delay: 0.06s;
+        }
+        .page.is-entering .cards .svc:nth-child(1) {
+          animation-delay: 0.12s;
+        }
+        .page.is-entering .cards .svc:nth-child(2) {
+          animation-delay: 0.18s;
+        }
+        .page.is-entering .cards .svc:nth-child(3) {
+          animation-delay: 0.24s;
+        }
+        .page.is-entering .pager {
+          animation-delay: 0.3s;
+        }
+        .page.is-entering .foot {
+          animation-delay: 0.36s;
+        }
       }
-      .milestone {
-        margin: 0;
-        padding: 5px 12px;
-        border-radius: 999px;
-        background: var(--card);
-        border: 1px solid var(--line);
-        font-size: 10px;
-        font-weight: 600;
-        color: var(--navy);
-        opacity: 0;
-        transform: translateY(4px);
-        transition:
-          opacity 0.35s,
-          transform 0.35s;
-        text-align: center;
-        max-width: 100%;
-      }
-      .milestone.show {
-        opacity: 1;
-        transform: translateY(0);
+      @keyframes rise-in {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
       }
       @media (prefers-reduced-motion: reduce) {
         * {
@@ -316,7 +306,10 @@
     </style>
   </head>
   <body>
-    <div class="page" id="page" aria-label="Decorative website preview">
+    <div
+      class="page is-entering"
+      aria-label="Decorative finished website preview"
+    >
       <nav class="nav-pill" aria-hidden="true">
         <div class="brand">
           <span class="brand-mark" aria-hidden="true">N</span>
@@ -329,13 +322,13 @@
         <button type="button" class="nav-cta">Start a project</button>
       </nav>
       <header class="hero">
-        <p class="kicker" id="kick">What we deliver</p>
-        <h1 class="headline" id="hl">
-          Your website is <em id="emph">planned</em> before pixels ship.
+        <p class="kicker">What we do</p>
+        <h1 class="headline">
+          Your brand deserves a site that feels <em>intentional</em> online.
         </h1>
       </header>
       <div class="cards" aria-hidden="true">
-        <article class="svc" data-card="0">
+        <article class="svc">
           <div class="illus">
             <svg viewBox="0 0 80 64" fill="none" aria-hidden="true">
               <rect
@@ -362,11 +355,14 @@
               />
             </svg>
           </div>
-          <h2>Page structure</h2>
-          <p>Sitemaps, templates, and content zones agreed in writing first.</p>
+          <h2>Web experience</h2>
+          <p>
+            Fast, accessible pages with layouts tuned for how people actually
+            read and convert.
+          </p>
           <a href="#">Learn more →</a>
         </article>
-        <article class="svc" data-card="1">
+        <article class="svc">
           <div class="illus">
             <svg viewBox="0 0 80 64" fill="none" aria-hidden="true">
               <circle
@@ -402,11 +398,14 @@
               />
             </svg>
           </div>
-          <h2>Clickable design</h2>
-          <p>Prototype flows you can test before development begins.</p>
+          <h2>Content &amp; messaging</h2>
+          <p>
+            Clear headlines and service stories that explain what you do in
+            plain language.
+          </p>
           <a href="#">Learn more →</a>
         </article>
-        <article class="svc" data-card="2">
+        <article class="svc">
           <div class="illus">
             <svg viewBox="0 0 80 64" fill="none" aria-hidden="true">
               <rect
@@ -455,21 +454,24 @@
               <path d="M54 40 H62" stroke="#2578b8" stroke-width="1.5" />
             </svg>
           </div>
-          <h2>Launch &amp; care</h2>
-          <p>Domain, hosting, analytics, and updates after go-live.</p>
+          <h2>Ongoing care</h2>
+          <p>
+            Hosting, updates, and analytics so the site stays secure and easy to
+            improve.
+          </p>
           <a href="#">Learn more →</a>
         </article>
       </div>
-      <div class="pager" id="pager" aria-hidden="true"></div>
-      <div class="milestone-slot" aria-hidden="true">
-        <p class="milestone" id="mile"></p>
+      <div class="pager" aria-hidden="true">
+        <span class="is-active"></span><span></span><span></span><span></span
+        ><span></span><span></span>
       </div>
       <footer class="foot">
-        <p id="sub">
-          From scope to launch, every step stays visible in one shared plan.
+        <p>
+          From first impression to follow-up, every page works toward one goal.
         </p>
-        <button type="button" class="btn-sky" id="cta">
-          <span id="cta-label">See the process</span>
+        <button type="button" class="btn-sky">
+          Learn more
           <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
             <path
               d="M2 5h6M5 2l3 3-3 3"
@@ -484,154 +486,22 @@
     </div>
     <script>
       (function () {
-        var STEPS = [
-          {
-            kick: "Scope draft",
-            before: "Your goals are ",
-            emph: "mapped",
-            after: " in a clear written plan.",
-            card: 0,
-            dot: 0,
-            sub: "Audience, pages, and must-haves captured before design starts.",
-            cta: "Review scope",
-            mile: "Scope signed off",
-          },
-          {
-            kick: "Prototype",
-            before: "The site is ",
-            emph: "clickable",
-            after: " before code is written.",
-            card: 1,
-            dot: 1,
-            sub: "Test navigation and layouts with your team in a shared preview.",
-            cta: "Open prototype",
-            mile: "Prototype ready",
-          },
-          {
-            kick: "Approval",
-            before: "Changes are ",
-            emph: "agreed",
-            after: " before build begins.",
-            card: 1,
-            dot: 2,
-            sub: "You sign off scope and design so delivery stays predictable.",
-            cta: "Approve to build",
-            mile: "Approved",
-          },
-          {
-            kick: "Build",
-            before: "Tools are ",
-            emph: "integrated",
-            after: " on staging.",
-            card: 2,
-            dot: 3,
-            sub: "Forms, booking, and email connect to what you already use.",
-            cta: "View staging",
-            mile: "QA passing",
-          },
-          {
-            kick: "Launch",
-            before: "Your domain goes ",
-            emph: "live",
-            after: " with confidence.",
-            card: 2,
-            dot: 4,
-            sub: "DNS, certificate, and hosting handled through release day.",
-            cta: "Visit live site",
-            mile: "Launched",
-          },
-          {
-            kick: "Manage",
-            before: "Performance is ",
-            emph: "reported",
-            after: " every month.",
-            card: 0,
-            dot: 5,
-            sub: "Hosting, updates, and analytics with actionable recommendations.",
-            cta: "See report",
-            mile: "Monthly insights",
-          },
-          {
-            kick: "Extend",
-            before: "Add-ons are ",
-            emph: "ready",
-            after: " when you want them.",
-            card: 1,
-            dot: 5,
-            sub: "AI assistants, bookings, and follow-ups plug in when you are.",
-            cta: "Explore add-ons",
-            mile: "Grow with AI",
-          },
-        ];
-        var kick = document.getElementById("kick");
-        var hl = document.getElementById("hl");
-        var sub = document.getElementById("sub");
-        var ctaLabel = document.getElementById("cta-label");
-        var mile = document.getElementById("mile");
-        var page = document.getElementById("page");
-        var pager = document.getElementById("pager");
-        var cards = document.querySelectorAll(".svc");
-        var dots = [];
-        var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
-        var run = 0;
-
-        for (var d = 0; d < 6; d++) {
-          var b = document.createElement("button");
-          b.type = "button";
-          b.setAttribute("aria-hidden", "true");
-          pager.appendChild(b);
-          dots.push(b);
-        }
-
-        function paint(i) {
-          var s = STEPS[i];
-          kick.textContent = s.kick;
-          hl.innerHTML =
-            s.before + '<em id="emph">' + s.emph + "</em>" + s.after;
-          sub.textContent = s.sub;
-          ctaLabel.textContent = s.cta;
-          mile.textContent = s.mile;
-          cards.forEach(function (c, j) {
-            c.classList.toggle("is-on", j === s.card);
-          });
-          dots.forEach(function (dot, j) {
-            dot.classList.toggle("on", j === s.dot);
-          });
-        }
-
-        if (rm) {
-          paint(STEPS.length - 1);
-          mile.classList.add("show");
+        var page = document.querySelector(".page");
+        if (!page) return;
+        if (matchMedia("(prefers-reduced-motion:reduce)").matches) {
+          page.classList.remove("is-entering");
           return;
         }
-
-        function sleep(ms) {
-          return new Promise(function (r) {
-            setTimeout(r, ms);
-          });
+        var foot = page.querySelector(".foot");
+        if (foot) {
+          foot.addEventListener(
+            "animationend",
+            function () {
+              page.classList.remove("is-entering");
+            },
+            { once: true },
+          );
         }
-
-        async function loop() {
-          var id = ++run;
-          mile.classList.remove("show");
-          for (var i = 0; i < STEPS.length; i++) {
-            if (id !== run) return;
-            paint(i);
-            if (i > 0) {
-              page.classList.add("dim");
-              await sleep(100);
-              page.classList.remove("dim");
-            }
-            mile.classList.add("show");
-            await sleep(2400);
-            mile.classList.remove("show");
-            await sleep(300);
-          }
-          await sleep(700);
-          if (id !== run) return;
-          loop();
-        }
-        loop();
       })();
     </script>
   </body>
