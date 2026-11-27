@@ -31,12 +31,11 @@ const tools = [
   <h2 id="tools-ticker-heading" class="visually-hidden">
     Tools and platforms we build with and integrate
   </h2>
-  <ul class="tools-ticker__accessible visually-hidden">
-    {
-      tools.map((tool) => (
-        <li>{tool}</li>
-      ))
-    }
+  <ul
+    class="tools-ticker__accessible visually-hidden"
+    aria-label="Tools and platforms"
+  >
+    {tools.map((tool) => <li>{tool}</li>)}
   </ul>
   <div class="tools-ticker__marquee" aria-hidden="true">
     <div class="tools-ticker__track">
@@ -61,7 +60,7 @@ const tools = [
     </div>
   </div>
   <ul class="tools-ticker__static" aria-hidden="true">
-  {
+    {
       tools.map((tool) => (
         <li class="tools-ticker__item">
           <span class="tools-ticker__label">{tool}</span>

@@ -45,24 +45,18 @@ const otherCases = [
 
 <div class="use-case-stack">
   <article class="use-case-row use-case-row--idle" data-lazy-demo>
-    <div
-      class="use-case-row__demo"
-      aria-hidden="true"
-    >
+    <div class="use-case-row__demo" aria-hidden="true">
       <CustomerSupportDemo />
     </div>
     <div class="use-case-row__copy">
       <p class="use-case-row__tag">Customer support</p>
       <h3 class="use-case-row__title">Inquiry &amp; FAQ assistant</h3>
       <p class="use-case-row__hook">
-        Routine answers from your approved FAQs — exceptions stay with your team.
+        Routine answers from your approved FAQs — exceptions stay with your
+        team.
       </p>
       <ol class="use-case-row__benefits">
-        {
-          customerSupportBenefits.map((item) => (
-            <li>{item}</li>
-          ))
-        }
+        {customerSupportBenefits.map((item) => <li>{item}</li>)}
       </ol>
     </div>
   </article>

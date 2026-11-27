@@ -10,7 +10,7 @@
 | AC or requirement ID | Slice part | Release point | Method (automated / manual / exploratory) | Test or check | Level (unit / integration / end-to-end) |
 |---|---|---|---|---|---|
 | SITE-AC-16 | ttuc-fe-01, ttuc-fe-02 | RP1 | automated + manual | E2E: 12 tool labels in SITE-FR-16 order immediately after `#services`; labels are plain text (no `img` logos). Manual: scroll Services → ticker → Approach; spot-check screen-reader/name exposure. | e2e / manual |
-| SITE-AC-17 | ttuc-fe-01, ttuc-fe-02 | RP1 | automated + manual | E2E: four headings + summaries on `/` without demo click. Manual: CS iframe on intersect; vs owner chat prototype; three placeholders. | e2e / manual |
+| SITE-AC-17 | ttuc-fe-01, ttuc-fe-02 | RP1 | automated + manual | E2E: four headings/summaries on `/` without demo click. Manual: CS iframe on intersect; vs owner chat prototype; three placeholders. | e2e / manual |
 | SITE-AC-N04 | ttuc-fe-01, ttuc-fe-02 | RP1 | automated + manual | E2E (optional in ttuc-fe-02): emulate `prefers-reduced-motion: reduce` — no marquee loop, no abstract demo pulse. Manual: OS reduce motion — static ticker list + static CS transcript. | e2e / manual |
 | SITE-BR-06 | ttuc-fe-01 | RP1 | manual | Visual DOM inspection: text-only tool names; no third-party wordmarks or logo images in ticker. | manual |
 | SITE-BR-05 | ttuc-fe-01 | RP1 | manual | Copy review: four workflows qualitative illustrations only; no invented client claims. | manual |
@@ -34,13 +34,13 @@
 ## 2. Slice checks
 | Slice part | Checks run when it merges |
 |---|---|
-| ttuc-fe-01 | CI: lint, types, Playwright, ui-catalog, sdlc-check. Manual: Services→ticker→Approach; 12 tools ordered; four workflows sans demo; reduce-motion static. Blocking: wrong order/count; missing labels; copy needs demo; logos; axe serious/critical on `/`. |
-| ttuc-fe-02 | CI + `site.spec.ts`: ticker order, four titles, nav, axe index. Blocking: SITE-AC-16/17 fail; new axe serious/critical on `/`; nav broken. Non-blocking: optional reduce-motion e2e → S5 manual. |
+| ttuc-fe-01 | PR CI green (`web-ci` incl. sdlc-check). Manual: Services→ticker→Approach; 12 tools ordered; copy sans demo; reduce-motion static. Blocking: wrong order/count; missing labels; copy needs demo; logos; axe serious+ on `/`. |
+| ttuc-fe-02 | CI + `site.spec.ts`: ticker, four titles, nav, axe index. Blocking: SITE-AC-16/17 fail; axe serious/critical on `/`; nav broken. Non-blocking: optional reduce-motion e2e → S5 manual. |
 
 ## 3. Release tests
 | Release point | End-to-end flows | Regression set | Non-functional checks |
 |---|---|---|---|
-| RP1 (ttuc-fe-01 + ttuc-fe-02) | W-3: Home→Services→ticker→Approach→`#use-cases`→Contact. Nav to Use cases in one step. Reduce motion: static ticker/demos, copy readable. | §4 on preview. | S5.2: SITE-AC-N03 CWV; UQ-U4 keyboard; NFR-01/04/12 viewports + reduce motion. |
+| RP1 (ttuc-fe-01 + ttuc-fe-02) | W-3: Home→Services→ticker→Approach→`#use-cases`→Contact. Nav to Use cases one step. Reduce motion: static ticker/demos. | §4 on preview. | S5.2: CWV; keyboard; NFR-01/04/12. |
 
 ## 4. Regression set *(existing-repo)*
 | Area from the impact analysis | Existing behavior that must not change | Test |
@@ -82,7 +82,7 @@
   - Slice check: PR merged to `release/tools-ticker-use-cases`; CI pipeline green on merge commit.
   - Release test (RP1): Both slice parts merged and slice-checked; preview URL available for S5 flows.
 - Exit: which failures are blocking; which may be accepted as known issues:
-  - **Blocking:** SITE-AC-16/17 fail; SITE-BR-06 breach; SITE-NFR-02 axe regression on `/`; primary nav or Contact regression (§4); lazy demo breaks readable copy (SITE-AC-17); wrong section order Services → ticker → Approach.
+  - **Blocking:** SITE-AC-16/17; BR-06; axe on `/`; nav/Contact regression; lazy demo hides copy; order Services → ticker → Approach.
   - **Non-blocking at RP1 merge:** SITE-AC-N03 CWV pending S5 lab; UQ-U4 full keyboard pending S5; optional reduce-motion e2e absent if manual SITE-AC-N04 passes; flaky iframe timing — quarantine test with owner, do not waive AC without manual pass.
 
 ## 8. Out of scope
