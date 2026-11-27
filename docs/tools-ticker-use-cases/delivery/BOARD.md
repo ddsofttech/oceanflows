@@ -7,18 +7,18 @@
 - Route: Normal
 - PRD version: 3.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; G4 Approve D8
-- Last updated: 2026-11-27 (ttuc-fe-02 Merged; S5.1 fe-02 + S5.2 RP1)
+- Last updated: 2026-11-27 (RP1 S5.2 done; G6 HITL)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
 |---|---|---|---|---|
-| RP1 | ttuc-fe-01, ttuc-fe-02 | Verifying | — | — |
+| RP1 | ttuc-fe-01, ttuc-fe-02 | Verifying | pending G6 | — |
 
 ## Slice parts
 | Part ID | Slice | Owner | Release point | Depends on | Status (Planned / In progress / In review / Merged / Checked) | PR | Review class (Routine / Important / Sensitive) | Review rounds | Notes |
 |---|---|---|---|---|---|---|---|---|---|
 | ttuc-fe-01 | front-end | frontend-developer | RP1 | — | Checked | [#23](https://github.com/ddsofttech/oceanflows/pull/23) `6bff9d21` | Important | 1 | S5.1 pass |
-| ttuc-fe-02 | front-end | frontend-developer | RP1 | ttuc-fe-01 | Merged | [#24](https://github.com/ddsofttech/oceanflows/pull/24) `daeb543f` | Routine | 0 | e2e + axe |
+| ttuc-fe-02 | front-end | frontend-developer | RP1 | ttuc-fe-01 | Checked | [#24](https://github.com/ddsofttech/oceanflows/pull/24) `daeb543f` | Routine | 0 | S5.1 pass |
 
 ## Open handoffs
 | ID | From | To | Type (consult / defect / finding / contract / environment) | About (part, PR, or defect) | Asked | Status | Answer or link |
