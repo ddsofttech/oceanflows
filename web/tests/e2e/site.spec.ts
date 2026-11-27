@@ -207,9 +207,7 @@ test.describe("marketing site", () => {
     expect(trackAnimation).toBe("none");
 
     await page.locator("#use-cases").scrollIntoViewIfNeeded();
-    await expect(
-      page.locator(".use-case-demo__motion").first(),
-    ).toBeAttached();
+    await expect(page.locator(".use-case-demo__motion").first()).toBeAttached();
     const demoAnimation = await page
       .locator(".use-case-demo__motion")
       .first()
