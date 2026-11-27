@@ -125,45 +125,53 @@ test.describe("marketing site", () => {
   });
 
   test("axe: no serious violations on index", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
     await expectNoSeriousAxeViolations(page);
   });
 
   test("axe: no serious violations on privacy", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/privacy");
     await expectNoSeriousAxeViolations(page);
   });
 
   test("axe: no serious violations on 404", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/does-not-exist");
     await expectNoSeriousAxeViolations(page);
   });
 
   test("axe: no serious violations on contact", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/#contact");
     await expectNoSeriousAxeViolations(page);
   });
 
-  test("tools ticker follows Services with 12 text labels in spec order", async ({
+  test("tools ticker sits in its own section between Services and Approach", async ({
     page,
   }) => {
     await page.goto("/");
 
     const sectionOrder = await page.evaluate(() => {
       const services = document.querySelector("#services");
+      const toolsSection = document.querySelector("#tools");
       const ticker = document.querySelector(".tools-ticker");
       const approach = document.querySelector("#approach");
-      if (!services || !ticker || !approach) return null;
+      if (!services || !toolsSection || !ticker || !approach) return null;
+      const tickerInsideTools = toolsSection.contains(ticker);
       const tickerInsideServices = services.contains(ticker);
-      const servicesBeforeApproach =
-        (services.compareDocumentPosition(approach) &
-          Node.DOCUMENT_POSITION_FOLLOWING) !==
-        0;
-      return { tickerInsideServices, servicesBeforeApproach };
+      const order =
+        services.compareDocumentPosition(toolsSection) &
+          Node.DOCUMENT_POSITION_FOLLOWING &&
+        toolsSection.compareDocumentPosition(approach) &
+          Node.DOCUMENT_POSITION_FOLLOWING;
+      return { tickerInsideTools, tickerInsideServices, order: !!order };
     });
     expect(sectionOrder).toEqual({
-      tickerInsideServices: true,
-      servicesBeforeApproach: true,
+      tickerInsideTools: true,
+      tickerInsideServices: false,
+      order: true,
     });
 
     const accessibleLabels = await page

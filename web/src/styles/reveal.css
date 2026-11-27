@@ -1,0 +1,73 @@
+/**
+ * Scroll and hero enter motion (marketing home). Requires site.js for .has-reveal / .is-visible.
+ */
+
+.hero-banner__brand-line-part {
+  display: block;
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(var(--motion-reveal-distance));
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-banner__content {
+    animation: none;
+  }
+
+  .hero-banner__content .hero-reveal-step {
+    opacity: 0;
+    animation: reveal-up var(--motion-slow) var(--motion-ease-out) both;
+    animation-delay: calc(var(--reveal-step, 0) * var(--motion-stagger));
+  }
+
+  html.has-reveal .scroll-reveal-item {
+    opacity: 0;
+    transform: translateY(var(--motion-reveal-distance));
+    transition:
+      opacity var(--motion-reveal) var(--motion-ease-out),
+      transform var(--motion-reveal) var(--motion-ease-out);
+  }
+
+  html.has-reveal .reveal-section.is-visible .scroll-reveal-item {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(
+      var(--scroll-reveal-step, 0) * var(--motion-scroll-stagger)
+    );
+  }
+
+  html.has-reveal #approach .approach-track > .approach-stage {
+    transform: translate3d(
+      calc(var(--motion-reveal-distance) * -1.25),
+      var(--motion-reveal-distance),
+      0
+    );
+  }
+
+  html.has-reveal #approach.is-visible .approach-track > .approach-stage {
+    transform: none;
+    transition-delay: calc(
+      var(--scroll-reveal-step, 1) * var(--motion-approach-stagger)
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-banner__content,
+  .hero-banner__content .hero-reveal-step,
+  .reveal-section .scroll-reveal-item {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
