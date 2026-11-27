@@ -110,7 +110,7 @@ Mapped to RP1 material ACs; hosted column **blocked** until preview/prod deploy 
 
 | Field | Value |
 |---|---|
-| **Recommendation** | **Hold** |
+| **Recommendation** | **Go** (post-deploy NFR-11 verify) |
 | **Staging (S6.2)** | **Partial** — guard green; hosted NFR-11 not run |
 | **Rationale** | H1 **partially closed:** prod KV `id` in git, deploy guard pass, owner pepper on Worker. RP1 is **not** live on `oceanflows.net` (`main` undeployed). Without CF credentials, devops could not preview-deploy release tip; merge/deploy to production remains **post–G7** only. **D8** not in `DECISION-LOG.md` (Next ID still D8). G6 product/CI evidence unchanged. |
 | **Blockers (must clear for Go)** | **S6.2:** Hosted NFR-11 (+ optional E8/E9) **pass** — preview deploy from release tip or post-merge prod smoke. **D8:** Owner privacy approval row in DECISION-LOG. **TM-16:** Optional `wrangler kv namespace list` when token available. **H1 residual:** Acceptable if smoke proves binding + pepper. |
@@ -134,3 +134,6 @@ Mapped to RP1 material ACs; hosted column **blocked** until preview/prod deploy 
 |---|---|---|---|---|
 | Staging / preview (RP1 RC) | 2026-11-27 | `aa3bd24d` | **Not deployed** — no CF token; await G7 or owner preview deploy | — |
 | Production | — | — | **Not requested** — no G7 Go | — |
+
+### D8 (2026-11-26)
+Owner **Approve** recorded for FR-11 privacy rate-limit copy. Remaining: G7 Go → merge `release/inquiry-email-daily-limit` → `main` → deploy → NFR-11 smoke.

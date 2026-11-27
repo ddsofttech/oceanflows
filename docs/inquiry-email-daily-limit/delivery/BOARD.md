@@ -6,7 +6,7 @@
 - Route: Normal
 - PRD version: v2.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; D5 Approve (2026-11-26)
-- Last updated: 2026-11-26 (S6.2 partial; await D8)
+- Last updated: 2026-11-26 (D8 Approve; G7)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
@@ -27,6 +27,7 @@
 | ID | From | To | Type (consult / defect / finding / contract / environment) | About (part, PR, or defect) | Asked | Status | Answer or link |
 |---|---|---|---|---|---|---|---|
 | H1 | devops | human | environment | KV namespace IDs + `INQUIRY_LIMIT_HASH_PEPPER` for hosted QA/prod | 2026-11-26 | Closed | Owner set prod KV `id` + pepper (2026-11-26); preview_id unused |
+| D8 | human | human | environment | FR-11 privacy rate-limit copy for prod | 2026-11-26 | Closed | Approve (decision log D8) |
 
 ## Environments
 | Pipeline or environment | Ready | Evidence |
