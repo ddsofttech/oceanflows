@@ -2,7 +2,7 @@
 
 ## Metadata
 - Architecture version: `design/ARCHITECTURE.md` (S3.1, 2026-11-27)
-- G4 decision (recorded on approval): (pending S3.3 HITL)
+- G4 decision (recorded on approval): Approve D8 (2026-11-27)
 - Author: architect (S3.2)
 - Date: 2026-11-27
 
