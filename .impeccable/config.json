@@ -119,6 +119,51 @@
         ],
         "createdAt": "2026-11-27T12:52:50.856Z",
         "reason": "Product design system: direction throwaway matches Home headings"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "web/public/demos/customer-support-chat.html"
+        ],
+        "createdAt": "2026-11-27T14:26:02.529Z",
+        "reason": "Owner chat demo fixture keeps Inter from supplied prototype"
+      },
+      {
+        "rule": "pulsing-dot",
+        "value": "*",
+        "files": [
+          "web/public/demos/customer-support-chat.html"
+        ],
+        "createdAt": "2026-11-27T14:26:02.577Z",
+        "reason": "User G7 Hold D11: keep online status dot on AI Assistant"
+      },
+      {
+        "rule": "tiny-text",
+        "value": "*",
+        "files": [
+          "web/public/demos/customer-support-chat.html"
+        ],
+        "createdAt": "2026-11-27T14:26:02.606Z",
+        "reason": "Owner chat demo fixture; caption/footer sizes from prototype"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "web/public/demos/customer-support-chat.html"
+        ],
+        "createdAt": "2026-11-27T14:26:02.632Z",
+        "reason": "Owner chat demo card elevation from supplied prototype"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "web/public/demos/customer-support-chat.html"
+        ],
+        "createdAt": "2026-11-27T14:26:02.657Z",
+        "reason": "Owner chat demo fixture layout from supplied prototype"
       }
     ]
   }
