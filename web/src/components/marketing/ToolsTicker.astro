@@ -1,7 +1,7 @@
 ---
 /**
  * @component ToolsTicker
- * @purpose Text-only marquee of integration tools immediately below Services (SITE-FR-16)
+ * @purpose Text-only marquee of integration tools inside Services (SITE-FR-16)
  * @props (none)
  * @states default, reduced-motion-static
  * @story docs/tools-ticker-use-cases/prototype/stories/tools-ticker-default.html
@@ -24,13 +24,11 @@ const tools = [
 ] as const;
 ---
 
-<section
-  class="tools-ticker section--flush"
-  aria-labelledby="tools-ticker-heading"
+<div
+  class="tools-ticker"
+  role="region"
+  aria-label="Tools and platforms we build with and integrate"
 >
-  <h2 id="tools-ticker-heading" class="visually-hidden">
-    Tools and platforms we build with and integrate
-  </h2>
   <ul
     class="tools-ticker__accessible visually-hidden"
     aria-label="Tools and platforms"
@@ -68,4 +66,4 @@ const tools = [
       ))
     }
   </ul>
-</section>
+</div>

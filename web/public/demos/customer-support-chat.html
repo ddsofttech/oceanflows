@@ -56,9 +56,11 @@
       }
       html {
         height: 100%;
+        background: var(--card);
       }
       body {
-        background: transparent;
+        /* Opaque so rounded .card corners do not show parent demo grey through the iframe */
+        background: var(--card);
         font:
           400 14px/1.5 Inter,
           system-ui,

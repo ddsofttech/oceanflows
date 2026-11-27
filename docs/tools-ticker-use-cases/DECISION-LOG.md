@@ -17,5 +17,6 @@ One row per human decision, answer, or routing event, oldest first. `sdlc-check.
 | D11 | 2026-11-27 | G7 | S6.3 | Revise | RP1 | Remove Online Here to help, keep the dot and move it to AI assistant on the same line. Replace icon logo on header of the chat with customer support icon | human | Hold: CS chat header — drop status line; green dot beside title; headset/support icon. |
 | D12 | 2026-11-27 | G7 | S6.3 | Revise | RP1 | revert height = (1 + 1/4) × width → aspect-ratio width/height = 4/5 | human | Hold: drop 4:5 chat-frame aspect-ratio; restore fixed iframe height. |
 | D13 | 2026-11-27 | G7 | S6.3 | Revise | RP1 | why did you define class specific for chat__frame, I think it should be consistent design all for use cases. In addition, I dont want to have demo badge, so remove it and its class | human | Hold: shared demo panel sizing (no chat-only heights); remove all use-case-demo__badge markup/CSS. |
+| D14 | 2026-11-27 | G7 | S6.3 | Answer | RP1 | Can I set ration for use-case-chat, I want height is longer than width, but keep use-case-row__demo | human | Yes: `aspect-ratio: 4/5` on `.use-case-chat` only; `.use-case-row__demo` stays shared `min-height: 320px`. |
 
-Next ID: **D14**.
+Next ID: **D15**.

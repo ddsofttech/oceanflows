@@ -154,19 +154,16 @@ test.describe("marketing site", () => {
       const ticker = document.querySelector(".tools-ticker");
       const approach = document.querySelector("#approach");
       if (!services || !ticker || !approach) return null;
-      const servicesBeforeTicker =
-        (services.compareDocumentPosition(ticker) &
+      const tickerInsideServices = services.contains(ticker);
+      const servicesBeforeApproach =
+        (services.compareDocumentPosition(approach) &
           Node.DOCUMENT_POSITION_FOLLOWING) !==
         0;
-      const tickerBeforeApproach =
-        (ticker.compareDocumentPosition(approach) &
-          Node.DOCUMENT_POSITION_FOLLOWING) !==
-        0;
-      return { servicesBeforeTicker, tickerBeforeApproach };
+      return { tickerInsideServices, servicesBeforeApproach };
     });
     expect(sectionOrder).toEqual({
-      servicesBeforeTicker: true,
-      tickerBeforeApproach: true,
+      tickerInsideServices: true,
+      servicesBeforeApproach: true,
     });
 
     const accessibleLabels = await page
