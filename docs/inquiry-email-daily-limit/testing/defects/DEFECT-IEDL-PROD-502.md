@@ -21,5 +21,12 @@
 | Date | Event | By | Link |
 |---|---|---|---|
 | 2026-11-27 | Filed S5.1 prod observation | qa | this file |
+| 2026-11-27 | Devops diagnosis + live 502 repro | devops | `testing/handoffs/DEFECT-IEDL-PROD-502-devops-diagnosis.md` |
 
 **Note:** Not the same as the human-reported “Please wait a moment” copy (that maps to **429** `rate_limited`). Fixing 502 may reduce confusing retry → rate-limit sequences.
+
+### Devops disposition (2026-11-27)
+
+- **Hypothesis:** Missing or invalid **runtime** Worker configuration — most likely **`INQUIRY_LIMIT_HASH_PEPPER`** (IEDL fail-closed → `inquiry.kv_unavailable`) and/or **`RESEND_API_KEY` / `INQUIRY_EMAIL`** (pre–daily-limit → `inquiry.delivery_failed`). Less likely: Resend domain/API rejection after KV increment.
+- **Code change:** **No** — use Worker logs to pick SETUP-GUIDES §A8 / §B fix.
+- **Owner:** Human dashboard steps in handoff above; QA retest after fix.
