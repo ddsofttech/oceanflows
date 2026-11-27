@@ -187,9 +187,13 @@
   width: 100%;
   aspect-ratio: 16 / 10;
   height: auto;
-  background: var(--color-surface-card);
+  background: #f6f7f9;
   border-radius: 12px;
   overflow: hidden;
+}
+
+[data-theme="dark"] .use-case-website {
+  background: #0c1220;
 }
 
 .use-case-website__idle {

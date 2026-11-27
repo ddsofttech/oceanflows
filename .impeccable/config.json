@@ -182,6 +182,15 @@
         ],
         "createdAt": "2026-11-27T22:14:56.863Z",
         "reason": "intentional demo fixture: matches customer-support-chat.html brand typography"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "web/public/demos/website-build-demo.html"
+        ],
+        "createdAt": "2026-11-27T22:27:48.304Z",
+        "reason": "decorative scaled iframe demo; contrast tokens tuned for reference mimic"
       }
     ]
   }

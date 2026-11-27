@@ -6,43 +6,39 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <title>Website build journey – animation</title>
+    <title>Website build journey – preview</title>
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Lora:ital,wght@1,500;1,600&display=swap"
     />
     <style>
       :root {
-        --pg: #f4f8ff;
-        --card: #fff;
-        --line: #dfe7f3;
-        --text: #152947;
-        --muted: #63728a;
-        --surface: #eef3fc;
-        --blue: #1e40af;
-        --ok: #15803d;
+        --ground: #f6f7f9;
+        --card: #ffffff;
+        --line: #dfe3ea;
+        --navy: #142433;
+        --muted: #28323d;
+        --sky: #2578b8;
         box-sizing: border-box;
       }
       @media (prefers-color-scheme: dark) {
         :root:not([data-theme="light"]) {
-          --pg: #070f2b;
-          --card: #0e1a44;
-          --line: #22337a;
-          --text: #f1f5f9;
-          --muted: #a8b5cc;
-          --surface: #13245f;
-          --blue: #3b82f6;
+          --ground: #0c1220;
+          --card: #141c2e;
+          --line: #2a3548;
+          --navy: #f1f4f8;
+          --muted: #c5ced8;
+          --sky: #4ba3e8;
           color-scheme: dark;
         }
       }
       :root[data-theme="dark"] {
-        --pg: #070f2b;
-        --card: #0e1a44;
-        --line: #22337a;
-        --text: #f1f5f9;
-        --muted: #a8b5cc;
-        --surface: #13245f;
-        --blue: #3b82f6;
+        --ground: #0c1220;
+        --card: #141c2e;
+        --line: #2a3548;
+        --navy: #f1f4f8;
+        --muted: #c5ced8;
+        --sky: #4ba3e8;
         color-scheme: dark;
       }
       * {
@@ -54,232 +50,244 @@
         height: 100%;
       }
       html {
-        background: var(--card);
+        background: var(--ground);
       }
       body {
-        background: var(--card);
+        background: var(--ground);
         font:
-          400 13px/1.45 Inter,
+          400 12px/1.45 "DM Sans",
           system-ui,
           sans-serif;
-        color: var(--text);
-        display: flex;
-        flex-direction: column;
+        color: var(--navy);
         min-height: 100%;
         padding: 12px 14px 10px;
-        gap: 10px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
       }
-      .chrome {
+      .page {
         flex: 1;
         min-height: 0;
         display: flex;
         flex-direction: column;
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        overflow: hidden;
-        background: var(--card);
+        align-items: center;
+        gap: 14px;
+        position: relative;
+        transition: opacity 0.4s ease;
       }
-      .bar {
+      .page.dim {
+        opacity: 0.4;
+      }
+      .nav-pill {
         flex: none;
+        width: 100%;
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        background: var(--surface);
-        border-bottom: 1px solid var(--line);
+        gap: 10px;
+        padding: 8px 10px 8px 12px;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 999px;
       }
-      .dots {
+      .brand {
         display: flex;
-        gap: 5px;
+        align-items: center;
+        gap: 7px;
+        flex: none;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: -0.02em;
+        color: var(--navy);
       }
-      .dots i {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: color-mix(in srgb, var(--muted) 55%, transparent);
+      .brand-mark {
+        width: 20px;
+        height: 20px;
+        border-radius: 5px;
+        background: var(--navy);
+        color: var(--card);
+        display: grid;
+        place-items: center;
+        font-size: 10px;
+        font-weight: 700;
       }
-      .dots i:nth-child(1) {
-        background: #f87171;
-      }
-      .dots i:nth-child(2) {
-        background: #fbbf24;
-      }
-      .dots i:nth-child(3) {
-        background: #4ade80;
-      }
-      .url {
+      .nav-links {
         flex: 1;
         min-width: 0;
-        font:
-          500 11px Inter,
-          sans-serif;
-        color: var(--muted);
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        padding: 5px 10px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .viewport {
-        flex: 1;
-        min-height: 0;
-        position: relative;
-        background: linear-gradient(
-          165deg,
-          color-mix(in srgb, var(--blue) 8%, var(--pg)) 0%,
-          var(--pg) 45%
-        );
-        padding: 14px 16px 12px;
         display: flex;
-        flex-direction: column;
-        gap: 10px;
-        transition: opacity 0.45s ease;
-      }
-      .viewport.dim {
-        opacity: 0.35;
-      }
-      .mock-nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-      }
-      .mock-logo {
-        font:
-          700 14px Montserrat,
-          sans-serif;
-        color: var(--blue);
-        letter-spacing: -0.02em;
-      }
-      .mock-links {
-        display: flex;
+        justify-content: center;
         gap: 12px;
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 500;
         color: var(--muted);
+        white-space: nowrap;
+        overflow: hidden;
       }
-      .mock-hero {
-        flex: 1;
-        min-height: 52px;
-        border-radius: 10px;
-        border: 1px dashed color-mix(in srgb, var(--blue) 35%, var(--line));
-        background: color-mix(in srgb, var(--card) 70%, transparent);
-        display: grid;
-        place-items: center;
-        text-align: center;
-        padding: 12px;
-      }
-      .mock-hero h1 {
-        margin: 0 0 6px;
+      .nav-cta {
+        flex: none;
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 0;
+        background: var(--navy);
+        color: var(--card);
         font:
-          700 15px/1.2 Montserrat,
+          600 11px "DM Sans",
           sans-serif;
-        color: var(--text);
       }
-      .mock-hero p {
-        margin: 0;
-        font-size: 10px;
+      .hero {
+        flex: none;
+        text-align: center;
+        max-width: 34em;
+        padding: 4px 6px 2px;
+      }
+      .kicker {
+        margin: 0 0 8px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
         color: var(--muted);
-        max-width: 22em;
       }
-      .mock-cta {
-        display: inline-block;
-        margin-top: 10px;
-        padding: 6px 14px;
-        border-radius: 8px;
-        background: var(--blue);
-        color: #fff;
-        font-size: 10px;
+      .headline {
+        margin: 0;
+        font-size: clamp(16px, 2.8vw, 20px);
+        font-weight: 700;
+        line-height: 1.22;
+        color: var(--navy);
+        letter-spacing: -0.02em;
+      }
+      .headline em {
+        font-family: Lora, Georgia, serif;
+        font-style: italic;
         font-weight: 600;
       }
-      .mock-grid {
+      .cards {
+        flex: 1;
+        min-height: 0;
+        width: 100%;
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        align-items: stretch;
+        margin-top: 2px;
       }
-      .mock-tile {
-        height: 36px;
-        border-radius: 8px;
-        background: color-mix(in srgb, var(--surface) 80%, var(--card));
+      .svc {
+        background: var(--card);
         border: 1px solid var(--line);
-      }
-      .trail {
-        flex: none;
-        display: grid;
-        grid-template-columns: repeat(7, minmax(0, 1fr));
-        gap: 6px;
-        padding: 0 2px;
-      }
-      .step {
+        border-radius: 14px;
+        padding: 10px 10px 12px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 4px;
         text-align: center;
-      }
-      .step-ico {
-        width: 28px;
-        height: 28px;
-        border-radius: 8px;
-        display: grid;
-        place-items: center;
-        font-size: 12px;
-        background: var(--surface);
-        border: 1px solid var(--line);
-        color: var(--muted);
         transition:
-          background 0.35s,
           border-color 0.35s,
-          color 0.35s,
           transform 0.35s;
       }
-      .step.on .step-ico {
-        background: var(--blue);
-        border-color: var(--blue);
-        color: #fff;
-        transform: scale(1.06);
+      .svc.is-on {
+        border-color: color-mix(in srgb, var(--sky) 55%, var(--line));
+        transform: translateY(-2px);
       }
-      .step.done .step-ico {
-        background: color-mix(in srgb, var(--ok) 18%, var(--card));
-        border-color: color-mix(in srgb, var(--ok) 40%, var(--line));
-        color: var(--ok);
+      .illus {
+        width: 100%;
+        height: 58px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 8px;
       }
-      .step-lbl {
-        font:
-          500 8px/1.2 Inter,
-          sans-serif;
+      .illus svg {
+        width: 100%;
+        max-width: 76px;
+        height: auto;
+      }
+      .svc h2 {
+        margin: 0 0 6px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--navy);
+      }
+      .svc p {
+        margin: 0 0 8px;
+        font-size: 11px;
+        line-height: 1.45;
         color: var(--muted);
-        letter-spacing: 0.02em;
+        flex: 1;
       }
-      .step.on .step-lbl {
-        color: var(--text);
+      .svc a {
+        font-size: 11px;
         font-weight: 600;
+        color: var(--navy);
+        text-decoration: none;
       }
-      .badge {
+      .pager {
+        flex: none;
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        margin-top: -4px;
+      }
+      .pager button {
+        width: 7px;
+        height: 7px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--muted) 35%, transparent);
+      }
+      .pager button.on {
+        background: var(--navy);
+      }
+      .foot {
+        flex: none;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding-top: 4px;
+      }
+      .foot p {
+        margin: 0;
+        font-size: 11px;
+        color: var(--muted);
+        max-width: 28em;
+        line-height: 1.5;
+      }
+      .btn-sky {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 16px;
+        border-radius: 999px;
+        border: 0;
+        background: var(--sky);
+        color: #ffffff;
+        font:
+          600 12px "DM Sans",
+          sans-serif;
+      }
+      .btn-sky svg {
+        flex: none;
+      }
+      .milestone {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0.92);
-        opacity: 0;
-        pointer-events: none;
-        padding: 10px 16px;
-        border-radius: 10px;
+        bottom: 4px;
+        right: 2px;
+        padding: 6px 12px;
+        border-radius: 999px;
         background: var(--card);
         border: 1px solid var(--line);
-        font:
-          600 12px Montserrat,
-          sans-serif;
-        color: var(--blue);
-        white-space: nowrap;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--navy);
+        opacity: 0;
+        transform: translateY(4px);
         transition:
           opacity 0.35s,
           transform 0.35s;
       }
-      .badge.show {
+      .milestone.show {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
+        transform: translateY(0);
       }
       @media (prefers-reduced-motion: reduce) {
         * {
@@ -290,145 +298,290 @@
     </style>
   </head>
   <body>
-    <div class="chrome" aria-label="Website build journey preview">
-      <div class="bar" aria-hidden="true">
-        <div class="dots"><i></i><i></i><i></i></div>
-        <div class="url" id="url">yoursite.example — preview</div>
-      </div>
-      <div class="viewport" id="vp">
-        <div class="mock-nav" aria-hidden="true">
-          <span class="mock-logo">Harbor &amp; Co.</span>
-          <span class="mock-links"
-            ><span>Services</span><span>About</span><span>Contact</span></span
-          >
+    <div class="page" id="page" aria-label="Decorative website preview">
+      <nav class="nav-pill" aria-hidden="true">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          northfold
         </div>
-        <div class="mock-hero" aria-hidden="true">
-          <div>
-            <h1 id="ht">Your business, online</h1>
-            <p id="hs">
-              A clear site scope turns into a prototype you can click through
-              before a single line of production code ships.
-            </p>
-            <span class="mock-cta" id="hc">Book a consultation</span>
+        <div class="nav-links">
+          <span>Studio</span><span>Work</span><span>Services</span
+          ><span>About</span><span>Contact</span>
+        </div>
+        <button type="button" class="nav-cta">Start a project</button>
+      </nav>
+      <header class="hero">
+        <p class="kicker" id="kick">What we deliver</p>
+        <h1 class="headline" id="hl">
+          Your website is <em id="emph">planned</em> before pixels ship.
+        </h1>
+      </header>
+      <div class="cards" aria-hidden="true">
+        <article class="svc" data-card="0">
+          <div class="illus">
+            <svg viewBox="0 0 80 64" fill="none" aria-hidden="true">
+              <rect
+                x="14"
+                y="18"
+                width="52"
+                height="34"
+                rx="4"
+                stroke="#142433"
+                stroke-width="1.5"
+              />
+              <rect x="14" y="18" width="52" height="7" fill="#2578b8" rx="4" />
+              <path
+                d="M40 32 L40 22 M40 32 L46 38 M40 32 L34 38"
+                stroke="#142433"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M28 48 Q40 54 52 48"
+                stroke="#2578b8"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
           </div>
-        </div>
-        <div class="mock-grid" aria-hidden="true">
-          <div class="mock-tile"></div>
-          <div class="mock-tile"></div>
-          <div class="mock-tile"></div>
-        </div>
-        <div class="badge" id="badge" aria-hidden="true"></div>
+          <h2>Page structure</h2>
+          <p>Sitemaps, templates, and content zones agreed in writing first.</p>
+          <a href="#">Learn more →</a>
+        </article>
+        <article class="svc" data-card="1">
+          <div class="illus">
+            <svg viewBox="0 0 80 64" fill="none" aria-hidden="true">
+              <circle
+                cx="28"
+                cy="22"
+                r="6"
+                stroke="#142433"
+                stroke-width="1.5"
+              />
+              <path
+                d="M18 40 Q28 32 38 40 L38 52 L18 52 Z"
+                fill="#fff"
+                stroke="#142433"
+                stroke-width="1.5"
+              />
+              <rect
+                x="44"
+                y="20"
+                width="28"
+                height="22"
+                rx="3"
+                stroke="#142433"
+                stroke-width="1.5"
+                fill="#fff"
+              />
+              <path d="M48 26 H68" stroke="#2578b8" stroke-width="2" />
+              <path d="M48 32 H62" stroke="#142433" stroke-width="1.2" />
+              <path
+                d="M58 14 L62 18 L50 30"
+                stroke="#2578b8"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <h2>Clickable design</h2>
+          <p>Prototype flows you can test before development begins.</p>
+          <a href="#">Learn more →</a>
+        </article>
+        <article class="svc" data-card="2">
+          <div class="illus">
+            <svg viewBox="0 0 80 64" fill="none" aria-hidden="true">
+              <rect
+                x="10"
+                y="38"
+                width="28"
+                height="4"
+                rx="1"
+                fill="#142433"
+                opacity="0.2"
+              />
+              <circle
+                cx="26"
+                cy="24"
+                r="5"
+                stroke="#142433"
+                stroke-width="1.5"
+              />
+              <path
+                d="M14 44 L14 34 L26 28 L38 34 L38 44 Z"
+                stroke="#142433"
+                stroke-width="1.5"
+                fill="#fff"
+              />
+              <rect
+                x="48"
+                y="14"
+                width="22"
+                height="16"
+                rx="2"
+                stroke="#2578b8"
+                stroke-width="1.5"
+                fill="#fff"
+              />
+              <rect
+                x="52"
+                y="34"
+                width="22"
+                height="16"
+                rx="2"
+                stroke="#142433"
+                stroke-width="1.5"
+                fill="#fff"
+              />
+              <path d="M54 20 H66" stroke="#142433" stroke-width="1.2" />
+              <path d="M54 40 H62" stroke="#2578b8" stroke-width="1.5" />
+            </svg>
+          </div>
+          <h2>Launch &amp; care</h2>
+          <p>Domain, hosting, analytics, and updates after go-live.</p>
+          <a href="#">Learn more →</a>
+        </article>
       </div>
+      <div class="pager" id="pager" aria-hidden="true"></div>
+      <footer class="foot">
+        <p id="sub">
+          From scope to launch, every step stays visible in one shared plan.
+        </p>
+        <button type="button" class="btn-sky" id="cta">
+          <span id="cta-label">See the process</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+            <path
+              d="M2 5h6M5 2l3 3-3 3"
+              stroke="#fff"
+              stroke-width="1.3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </footer>
+      <p class="milestone" id="mile" aria-hidden="true"></p>
     </div>
-    <div class="trail" id="trail" aria-hidden="true"></div>
     <script>
       (function () {
         var STEPS = [
           {
-            label: "Scope",
-            icon: "◈",
-            url: "scope — draft",
-            hero: "Goals & pages captured",
-            sub: "Audience, must-haves, and content in one written scope.",
+            kick: "Scope draft",
+            before: "Your goals are ",
+            emph: "mapped",
+            after: " in a clear written plan.",
+            card: 0,
+            dot: 0,
+            sub: "Audience, pages, and must-haves captured before design starts.",
             cta: "Review scope",
-            badge: "Scope signed off",
+            mile: "Scope signed off",
           },
           {
-            label: "Design",
-            icon: "◇",
-            url: "prototype — clickable",
-            hero: "Clickable prototype",
-            sub: "Navigate real pages and flows before development starts.",
+            kick: "Prototype",
+            before: "The site is ",
+            emph: "clickable",
+            after: " before code is written.",
+            card: 1,
+            dot: 1,
+            sub: "Test navigation and layouts with your team in a shared preview.",
             cta: "Open prototype",
-            badge: "Prototype ready",
+            mile: "Prototype ready",
           },
           {
-            label: "Approve",
-            icon: "✓",
-            url: "approval — pending",
-            hero: "Agreed up front",
-            sub: "You approve scope and design so changes stay predictable.",
+            kick: "Approval",
+            before: "Changes are ",
+            emph: "agreed",
+            after: " before build begins.",
+            card: 1,
+            dot: 2,
+            sub: "You sign off scope and design so delivery stays predictable.",
             cta: "Approve to build",
-            badge: "Approved",
+            mile: "Approved",
           },
           {
-            label: "Build",
-            icon: "⚙",
-            url: "staging.yoursite.example",
-            hero: "Integrated & tested",
-            sub: "Forms, booking, email, and your existing tools connected.",
+            kick: "Build",
+            before: "Tools are ",
+            emph: "integrated",
+            after: " on staging.",
+            card: 2,
+            dot: 3,
+            sub: "Forms, booking, and email connect to what you already use.",
             cta: "View staging",
-            badge: "QA passing",
+            mile: "QA passing",
           },
           {
-            label: "Launch",
-            icon: "↗",
-            url: "www.harborandco.com",
-            hero: "Live on your domain",
-            sub: "DNS, hosting, certificate, and a confident release.",
+            kick: "Launch",
+            before: "Your domain goes ",
+            emph: "live",
+            after: " with confidence.",
+            card: 2,
+            dot: 4,
+            sub: "DNS, certificate, and hosting handled through release day.",
             cta: "Visit live site",
-            badge: "Launched",
+            mile: "Launched",
           },
           {
-            label: "Manage",
-            icon: "◎",
-            url: "www.harborandco.com",
-            hero: "Managed & reported",
-            sub: "Hosting, updates, analytics, and regular recommendations.",
+            kick: "Manage",
+            before: "Performance is ",
+            emph: "reported",
+            after: " every month.",
+            card: 0,
+            dot: 5,
+            sub: "Hosting, updates, and analytics with actionable recommendations.",
             cta: "See report",
-            badge: "Monthly insights",
+            mile: "Monthly insights",
           },
           {
-            label: "Extend",
-            icon: "+",
-            url: "www.harborandco.com",
-            hero: "AI-ready extensions",
-            sub: "Assistants, bookings, and follow-ups when you are ready.",
+            kick: "Extend",
+            before: "Add-ons are ",
+            emph: "ready",
+            after: " when you want them.",
+            card: 1,
+            dot: 5,
+            sub: "AI assistants, bookings, and follow-ups plug in when you are.",
             cta: "Explore add-ons",
-            badge: "Grow with AI",
+            mile: "Grow with AI",
           },
         ];
-        var trail = document.getElementById("trail");
-        var url = document.getElementById("url");
-        var ht = document.getElementById("ht");
-        var hs = document.getElementById("hs");
-        var hc = document.getElementById("hc");
-        var badge = document.getElementById("badge");
-        var vp = document.getElementById("vp");
+        var kick = document.getElementById("kick");
+        var hl = document.getElementById("hl");
+        var sub = document.getElementById("sub");
+        var ctaLabel = document.getElementById("cta-label");
+        var mile = document.getElementById("mile");
+        var page = document.getElementById("page");
+        var pager = document.getElementById("pager");
+        var cards = document.querySelectorAll(".svc");
+        var dots = [];
         var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
         var run = 0;
-        var stepEls = [];
 
-        STEPS.forEach(function (s, i) {
-          var el = document.createElement("div");
-          el.className = "step" + (rm && i === STEPS.length - 1 ? " on" : "");
-          el.innerHTML =
-            '<div class="step-ico">' +
-            s.icon +
-            '</div><span class="step-lbl">' +
-            s.label +
-            "</span>";
-          trail.appendChild(el);
-          stepEls.push(el);
-        });
+        for (var d = 0; d < 6; d++) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.setAttribute("aria-hidden", "true");
+          pager.appendChild(b);
+          dots.push(b);
+        }
 
         function paint(i) {
           var s = STEPS[i];
-          url.textContent = s.url;
-          ht.textContent = s.hero;
-          hs.textContent = s.sub;
-          hc.textContent = s.cta;
-          badge.textContent = s.badge;
-          stepEls.forEach(function (el, j) {
-            el.classList.remove("on", "done");
-            if (j < i) el.classList.add("done");
-            if (j === i) el.classList.add("on");
+          kick.textContent = s.kick;
+          hl.innerHTML =
+            s.before + '<em id="emph">' + s.emph + "</em>" + s.after;
+          sub.textContent = s.sub;
+          ctaLabel.textContent = s.cta;
+          mile.textContent = s.mile;
+          cards.forEach(function (c, j) {
+            c.classList.toggle("is-on", j === s.card);
+          });
+          dots.forEach(function (dot, j) {
+            dot.classList.toggle("on", j === s.dot);
           });
         }
 
         if (rm) {
           paint(STEPS.length - 1);
-          badge.classList.add("show");
+          mile.classList.add("show");
           return;
         }
 
@@ -440,22 +593,21 @@
 
         async function loop() {
           var id = ++run;
-          badge.classList.remove("show");
-          vp.classList.remove("dim");
+          mile.classList.remove("show");
           for (var i = 0; i < STEPS.length; i++) {
             if (id !== run) return;
             paint(i);
             if (i > 0) {
-              vp.classList.add("dim");
-              await sleep(120);
-              vp.classList.remove("dim");
+              page.classList.add("dim");
+              await sleep(100);
+              page.classList.remove("dim");
             }
-            badge.classList.add("show");
-            await sleep(2200);
-            badge.classList.remove("show");
-            await sleep(350);
+            mile.classList.add("show");
+            await sleep(2400);
+            mile.classList.remove("show");
+            await sleep(300);
           }
-          await sleep(800);
+          await sleep(700);
           if (id !== run) return;
           loop();
         }
