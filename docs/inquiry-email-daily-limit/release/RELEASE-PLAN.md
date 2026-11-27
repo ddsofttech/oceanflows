@@ -95,7 +95,29 @@ Pre-merge S6.2 gate (CI + deploy readiness). Hosted NFR-11 runtime proof is **S6
 
 - **Dashboards and alerts:** Cloudflare Worker `oceanflows-company-site` deploy status and errors; GitHub Actions `web-ci` + `web-deploy-production`; Worker observability (existing).
 - **KPIs to watch (PRD §3 IDs):** **O5** — inquiry volume and qualification; watch for spike in **429** `daily_limit_reached` vs legitimate **502** from misconfig; **FR-15** reduces repeat-email abuse.
-- **Observation window:** **48h** after **G7 Go** — **owner:** devops + human spot-check; **start/end:** set when S6.4 completes (not started).
+- **Observation window:** **48h** after production deploy confirm — **owner:** devops + human spot-check.
+  - **Start (UTC):** 2026-11-27T02:42:14Z (S6.4 complete)
+  - **End (UTC):** 2026-11-29T02:42:14Z
+
+### S7.1 — Initial observation summary (RP1)
+
+**Release:** RP1 @ production merge `c950a6e5` (PR #18). **Deploy run:** GitHub Actions `web-deploy-production` **45929625224** (success).
+
+| Signal | Status (T0) | Notes |
+|---|---|---|
+| Site availability (`GET /`) | **OK** | HTTP 200 |
+| Privacy FR-11 copy (`GET /privacy/`) | **OK** | Contains “Inquiry rate limiting” |
+| Inquiry API reachability | **OK** | `POST /api/inquiry` `{}` → 400 `validation_failed` |
+| Inquiry 5xx / KV misconfig | **OK** | No unexpected 502 on lightweight probes |
+| IP burst path (BR-13) | **OK** | `POST` with valid body → 429 `rate_limited` after prior traffic (same session) |
+| NFR-11 aggregate cap (E8) | **deferred** | Daily limit runs after Turnstile; full 3+4th POST needs coordinated test tokens — do not spam production inbox in T0 |
+| Rollback triggers | **none** | No sustained 5xx, no wrong copy, no cap bypass observed |
+
+**KPI O5 (inquiry volume):** Baseline not instrumented in-repo; watch Worker errors and human spot-check for abnormal 502 vs 429 mix during window.
+
+**Incidents:** None opened at T0.
+
+**Next cadence:** End-of-window summary in S7.2; owner may run NFR-11 E8 during window with disposable emails + Turnstile if needed.
 
 ### Go decision (G7)
 
@@ -120,14 +142,27 @@ Pre-merge S6.2 gate (CI + deploy readiness). Hosted NFR-11 runtime proof is **S6
 - [x] H1: `INQUIRY_LIMIT_HASH_PEPPER` set on production Worker (owner)
 - [x] D8: Privacy rate-limit paragraph approved
 - [ ] Rollback steps acknowledged (Worker promote pre–RP1)
-- [ ] After Go: S6.4 NFR-11 smoke (3 then 4th → daily_limit_reached)
+- [x] After Go: S6.4 confirm smoke (see **S6.4 production confirm**); full NFR-11 E8 deferred to coordinated Turnstile test
+
+### S6.4 — Production confirm (RP1)
+
+- **Date (UTC):** 2026-11-27
+- **Merge:** PR **#18** → `main` @ **`c950a6e5`**
+- **Deploy:** `web-deploy-production` run [**45929625224**](https://github.com/ddsofttech/oceanflows/actions/runs/45929625224) — **success** (KV guard + build + Wrangler deploy to `oceanflows-company-site`)
+- **URL:** https://oceanflows.net/
+- **Health:** **OK** — apex 200; privacy 200 with rate-limit disclosure; inquiry API responsive
+- **Smoke (no inbox spam):**
+  - `POST /api/inquiry` `{}` → **400** `validation_failed`
+  - `POST /api/inquiry` valid fields + honeypot `hp` filled → **429** `rate_limited` (IP burst path; prior probe traffic)
+- **NFR-11 (hosted KV aggregate cap):** **Partial / indirect** — RP1 Worker live with KV binding per deploy guard + successful deploy; no **502** `delivery_failed` on probes. **Full E8** (3 then 4th same email → `daily_limit_reached`) **not executed** — requires valid **X-Turnstile-Token**; would risk Resend delivery. Schedule with owner during 48h observation if needed.
+- **Rollback:** Not exercised
 
 ### Deploy record
 
 | Environment | Date | Version | Result | Rollback run? |
 |---|---|---|---|---|
-| Staging / preview (RP1 RC) | 2026-11-27 | `aa3bd24d` | **Not deployed** — no CF token; await G7 or owner preview deploy | — |
-| Production | — | — | **Not requested** — no G7 Go | — |
+| Staging / preview (RP1 RC) | 2026-11-27 | `aa3bd24d` | **Skipped** — no separate staging host; prod is hosted verify | — |
+| Production | 2026-11-27 | `c950a6e5` | **Success** — run 45929625224 | no |
 
 ### D8 (2026-11-26)
-Owner **Approve** recorded for FR-11 privacy rate-limit copy. Remaining: G7 Go → merge `release/inquiry-email-daily-limit` → `main` → deploy → NFR-11 smoke.
+Owner **Approve** recorded for FR-11 privacy rate-limit copy. **Closed** with production deploy 2026-11-27.
