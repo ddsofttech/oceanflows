@@ -310,6 +310,12 @@ jobs:
             *tools-ticker-use-cases*)
               REQUEST=tools-ticker-use-cases
               case "$HEAD_REF" in
+                feature/ttuc-fe-01*)
+                  PART=ttuc-fe-01
+                  ;;
+                feature/ttuc-fe-02*)
+                  PART=ttuc-fe-02
+                  ;;
                 feature/ttuc-*)
                   PART="${HEAD_REF#feature/}"
                   ;;
