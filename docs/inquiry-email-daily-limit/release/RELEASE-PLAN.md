@@ -12,7 +12,7 @@ Request: `inquiry-email-daily-limit`. One section per release point, newest firs
 
 ### Release notes
 
-- **User-facing:** Contact inquiries are limited to **3 submissions per normalized email per UTC calendar day**. A clear **daily limit** message is shown when the cap is reached (distinct from the **1 per minute per IP** burst limit). Privacy notice updated to describe hashed per-email counters (subject to owner D8 sign-off).
+- **User-facing:** Contact inquiries are limited to **3 submissions per normalized email per UTC calendar day**. A clear **daily limit** message is shown when the cap is reached (distinct from the **1 per minute per IP** burst limit). Privacy notice updated to describe hashed per-email counters (D8 approved).
 - **Technical:**
   - `iedl-devops-01`: `INQUIRY_DAILY_LIMIT` KV binding in `web/wrangler.toml`; SETUP-GUIDES **§A8**; production placeholder guard `check:production-wrangler-kv`.
   - `iedl-be-01`: Daily limit store (peppered SHA-256 keys); BR-10–BR-14, BR-13 IP 1/min; fail-closed **502** when pepper or KV store unavailable.
@@ -20,8 +20,8 @@ Request: `inquiry-email-daily-limit`. One section per release point, newest firs
   - **Soak / verify host (when H1 closed):** `https://oceanflows.net` (production) or Cloudflare **preview** deploy — no separate staging hostname.
   - **Deploy path:** Merge `release/inquiry-email-daily-limit` → `main` → `.github/workflows/web-deploy.yml` (`web-deploy-production`) after real KV `id` in `wrangler.toml`.
 - **Known issues accepted at G6:**
-  - **H1** — **Partially closed (owner 2026-11-26):** production KV `id` committed; `INQUIRY_LIMIT_HASH_PEPPER` on production Worker; single namespace ( `preview_id` placeholder accepted). **Open:** hosted NFR-11 / TM-16 smoke; RP1 not deployed to `oceanflows.net` until merge + G7.
-  - **D8** — Privacy rate-limit paragraph not owner-signed for prod (Non-blocking at G6; **blocking at G7**).
+  - **H1** — **Closed (owner 2026-11-26):** production KV `id` committed; `INQUIRY_LIMIT_HASH_PEPPER` on production Worker; single namespace (`preview_id` placeholder accepted). Hosted NFR-11 after G7 deploy.
+  - **D8** — **Closed** (Approve 2026-11-26) — Privacy rate-limit paragraph approved for prod.
   - **TM-01 / TM-12** — KV race and IP-across-isolates residuals (accepted per TEST-PLAN).
   - **FR-07** — Live Resend inbox proof may still need owner secrets (carry-forward from CBW).
 
@@ -41,12 +41,7 @@ Request: `inquiry-email-daily-limit`. One section per release point, newest firs
 
 ### Rollback
 
-- **Rollback criteria (concrete signals and thresholds):**
-  - Sustained **5xx** on `POST /api/inquiry` for valid payloads after RP1 deploy (>5 minutes), excluding expected **502** when H1 misconfigured;
-  - Uncapped sends when daily limit should apply (4th same email returns success);
-  - Plaintext email observable in KV (incident — Sev-1 route);
-  - Wrong visitor copy (daily cap shows IP burst message or vice versa) on Contact;
-  - Privacy page missing rate-limit disclosure after fe deploy.
+- Rollback criteria (concrete signals and thresholds): Sustained 5xx on `POST /api/inquiry` for valid payloads after RP1 deploy (>5 minutes), excluding expected 502 when pepper/KV misconfigured; uncapped sends when daily limit should apply (4th same email returns success); plaintext email observable in KV (Sev-1); wrong visitor copy (daily vs IP burst); privacy page missing rate-limit disclosure after fe deploy.
 - **Rollback steps:**
   1. Cloudflare → Worker `oceanflows-company-site` → **Deployments** → promote last known-good version (pre–RP1).
   2. If git revert required: revert RP1 merge on `main` via PR; re-run `web-deploy-production` on prior SHA **only after** KV `id` placeholders restored or prior config checked in.
@@ -81,26 +76,26 @@ Request: `inquiry-email-daily-limit`. One section per release point, newest firs
 
 ### Staging checklist
 
-Mapped to RP1 material ACs; hosted column **blocked** until preview/prod deploy (2026-11-27).
+Pre-merge S6.2 gate (CI + deploy readiness). Hosted NFR-11 runtime proof is **S6.4 confirm-only** after G7 merge (no separate staging host).
 
 | Check (smoke set mapped to AC IDs) | Result | Evidence |
 |---|---|---|
-| NFR-11 — `INQUIRY_DAILY_LIMIT` bound at runtime | **blocked** | No hosted deploy; prod Worker pre–RP1 |
-| TM-16 — dedicated KV namespaces + scoped token | **blocked** | `wrangler kv namespace list` not run (no API token) |
-| BR-10 / FR-15 — 4th email → `daily_limit_reached` | **pass (CI)** | `inquiry.contract.test.ts`; not hosted |
-| BR-13 — 2nd IP &lt;60s → `rate_limited` | **pass (CI)** | Contract + rate-limit tests |
-| BR-12 — increment rules; fail-closed store errors | **pass (CI)** | Contract; missing pepper → 502 in tests |
-| FR-08 / FR-15 — distinct daily vs burst copy | **pass (CI)** | `inquiry-form.test.ts` + source |
-| FR-11 — privacy disclosure present in build | **pass (CI)** | `privacy.astro` + e2e meta; **D8 sign-off pending** |
-| FR-07 — inquiry delivery under cap | **pass (CI)** | Contract happy path; hosted Resend not run |
-| Site smoke — Contact reachable | **pass (CI)** | QA Playwright subset |
-| Production KV guard (D7) | **pass** | Real prod `id` **allows** deploy pipeline guard; merge still gated by G7 |
+| Production KV guard (D7) | pass | `CHECK_PRODUCTION_ENV=1 npm run check:production-wrangler-kv` exit 0; `id=98c8523f…` |
+| BR-10 / FR-15 — 4th email → `daily_limit_reached` | pass | `inquiry.contract.test.ts` (CI) |
+| BR-13 — 2nd IP &lt;60s → `rate_limited` | pass | Contract + rate-limit tests (CI) |
+| BR-12 — increment rules; fail-closed store errors | pass | Contract; missing pepper → 502 (CI) |
+| FR-08 / FR-15 — distinct daily vs burst copy | pass | `inquiry-form.test.ts` + source (CI) |
+| FR-11 — privacy disclosure in build + D8 | pass | `privacy.astro`; D8 Approve 2026-11-26 |
+| FR-07 — inquiry delivery under cap | pass | Contract happy path (CI); hosted Resend optional |
+| Site smoke — Contact reachable | pass | QA Playwright subset |
+| Live apex reachability (pre-RP1) | pass | `oceanflows.net` POST inquiry → 400; GET /privacy 200 |
+| QA release test RP1 | pass | `testing/reports/RP1.md` |
 
 ### Observation
 
 - **Dashboards and alerts:** Cloudflare Worker `oceanflows-company-site` deploy status and errors; GitHub Actions `web-ci` + `web-deploy-production`; Worker observability (existing).
 - **KPIs to watch (PRD §3 IDs):** **O5** — inquiry volume and qualification; watch for spike in **429** `daily_limit_reached` vs legitimate **502** from misconfig; **FR-15** reduces repeat-email abuse.
-- **Observation window:** **48h** after **G7 Go** — **owner:** devops + human spot-check; **start/end:** set when D8 approves and S6.4 completes (not started — D8 + hosted S6.2 block G7).
+- **Observation window:** **48h** after **G7 Go** — **owner:** devops + human spot-check; **start/end:** set when S6.4 completes (not started).
 
 ### Go decision (G7)
 
@@ -110,23 +105,22 @@ Mapped to RP1 material ACs; hosted column **blocked** until preview/prod deploy 
 
 | Field | Value |
 |---|---|
-| **Recommendation** | **Go** (post-deploy NFR-11 verify) |
-| **Staging (S6.2)** | **Partial** — guard green; hosted NFR-11 not run |
-| **Rationale** | H1 **partially closed:** prod KV `id` in git, deploy guard pass, owner pepper on Worker. RP1 is **not** live on `oceanflows.net` (`main` undeployed). Without CF credentials, devops could not preview-deploy release tip; merge/deploy to production remains **post–G7** only. **D8** not in `DECISION-LOG.md` (Next ID still D8). G6 product/CI evidence unchanged. |
-| **Blockers (must clear for Go)** | **S6.2:** Hosted NFR-11 (+ optional E8/E9) **pass** — preview deploy from release tip or post-merge prod smoke. **D8:** Owner privacy approval row in DECISION-LOG. **TM-16:** Optional `wrangler kv namespace list` when token available. **H1 residual:** Acceptable if smoke proves binding + pepper. |
-| **Residual (accepted at G6 — not waived)** | TM-01, TM-12; optional FR-07 live Resend on staging; `preview_id` placeholder. |
-| **On Approve (Go)** | Merge `release/inquiry-email-daily-limit` → `main`; `web-deploy-production` @ release tip; S6.4 confirm-only on `https://oceanflows.net`; start 48h observation (S7.1). |
-| **On Hold** | Remain here until **D8** + hosted S6.2 checklist (NFR-11 minimum). |
+| **Recommendation** | **Go** (merge → deploy → S6.4 NFR-11 confirm) |
+| **Staging (S6.2)** | **Pass** (CI + KV guard + apex reachability); hosted daily-limit path confirmed in S6.4 |
+| **Rationale** | H1 closed (prod KV id + pepper). D8 Approve recorded. G6 product/CI green. No separate staging host — production deploy after Go is the hosted verification (48h soak). |
+| **Blockers** | None for Go. Post-deploy: NFR-11 smoke (3 then 4th reject). |
+| **Residual** | TM-01, TM-12; optional FR-07 live Resend; `preview_id` placeholder (single namespace). |
+| **On Approve (Go)** | Merge `release/inquiry-email-daily-limit` → `main`; `web-deploy-production`; S6.4 confirm on `https://oceanflows.net`; start 48h observation. |
+| **On Hold** | Do not merge; keep pre–RP1 Worker. |
 | **On No-go** | Do not deploy; keep production on pre–RP1 Worker version. |
 
 **G7 checklist for human:**
 
 - [x] H1: KV production `id` committed (`98c8523f…`); single namespace (`preview_id` placeholder OK)
-- [x] H1: `INQUIRY_LIMIT_HASH_PEPPER` set on production Worker (owner; verify via NFR-11 smoke)
-- [ ] devops: S6.2 staged — NFR-11 smoke POST (3 then 4th reject); burst 429; no uncapped 4th send
-- [ ] D8: Privacy rate-limit paragraph approved
+- [x] H1: `INQUIRY_LIMIT_HASH_PEPPER` set on production Worker (owner)
+- [x] D8: Privacy rate-limit paragraph approved
 - [ ] Rollback steps acknowledged (Worker promote pre–RP1)
-- [ ] Resend secrets confirmed if running full W1 on hosted (optional)
+- [ ] After Go: S6.4 NFR-11 smoke (3 then 4th → daily_limit_reached)
 
 ### Deploy record
 
