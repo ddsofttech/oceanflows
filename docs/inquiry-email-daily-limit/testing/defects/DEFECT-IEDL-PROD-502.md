@@ -16,7 +16,7 @@
   - Browser form first submit on same IP after probe window → **429** UI (rate limit), masking delivery until window clears
   - `inquiry.ts`: 502 from missing Resend/INQUIRY_EMAIL, KV/pepper (`inquiry.kv_unavailable`), Resend API failure, or KV store error — all return same `delivery_failed` body
   - Context: user noted Resend secrets may still be flaky from CBW H8
-- Status: Open
+- Status: Closed (human confirmed fixed 2026-11-26)
 
 | Date | Event | By | Link |
 |---|---|---|---|
@@ -30,3 +30,4 @@
 - **Hypothesis:** Missing or invalid **runtime** Worker configuration — most likely **`INQUIRY_LIMIT_HASH_PEPPER`** (IEDL fail-closed → `inquiry.kv_unavailable`) and/or **`RESEND_API_KEY` / `INQUIRY_EMAIL`** (pre–daily-limit → `inquiry.delivery_failed`). Less likely: Resend domain/API rejection after KV increment.
 - **Code change:** **No** — use Worker logs to pick SETUP-GUIDES §A8 / §B fix.
 - **Owner:** Human dashboard steps in handoff above; QA retest after fix.
+| 2026-11-27 | Human confirmed fixed after secrets/config | human | — |

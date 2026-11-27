@@ -6,7 +6,7 @@
 - Route: Normal
 - PRD version: v2.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; D5 Approve (2026-11-26)
-- Last updated: 2026-11-26 (RP1 Released; S7.1)
+- Last updated: 2026-11-26 (H2 closed; delivery fixed)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
@@ -23,7 +23,6 @@
 ## Open handoffs
 | ID | From | To | Type (consult / defect / finding / contract / environment) | About (part, PR, or defect) | Asked | Status | Answer or link |
 |---|---|---|---|---|---|---|---|
-| H2 | qa | human | environment | DEFECT-IEDL-PROD-502 delivery_failed on prod | 2026-11-27 | Open | Check Worker runtime secrets (pepper, Resend, INQUIRY_EMAIL); see testing/handoffs/DEFECT-IEDL-PROD-502-devops-diagnosis.md |
 
 ## Environments
 | Pipeline or environment | Ready | Evidence |
