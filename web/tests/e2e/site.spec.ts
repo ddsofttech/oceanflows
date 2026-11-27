@@ -19,8 +19,6 @@ const toolsInSpecOrder = [
   "MCP Server",
   "Supabase",
   "Notion",
-  "LangChain",
-  "LangFuse",
   "Google Workspace",
   "Microsoft",
   "Cloudflare",
