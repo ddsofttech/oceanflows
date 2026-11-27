@@ -78,7 +78,7 @@ Request: `tools-ticker-use-cases`. One section per release point, newest first.
 
 - **Dashboards and alerts:** Cloudflare Worker `oceanflows-company-site` deploy status; GitHub Actions `web-ci` + `web-deploy-production`; Cloudflare Web Analytics (existing).
 - **KPIs to watch (PRD §2):** **O2** service communication (ticker + use cases visible); **O4** operational value clarity; **O5** inquiry path unchanged — watch for post-deploy 5xx or form regression; owner content review (O1–O3) unchanged.
-- **Observation window:** **48h** after **G7 Go** production deploy — **start:** on S6.4 health pass; **end:** T+48h; **owner:** `devops` + human spot-check.
+- **Observation window:** **48h** after **G7 Go** production deploy — **start:** 2026-11-27T15:55Z; **end:** 2026-11-29T15:55Z; **owner:** `devops` + human spot-check.
 
 ### Go decision (G7) — RP1 production deploy
 
@@ -96,4 +96,4 @@ Request: `tools-ticker-use-cases`. One section per release point, newest first.
 | Environment | Date | Version | Result | Rollback run? |
 |---|---|---|---|---|
 | Staging (local serve @ RC) | 2026-11-27 | `5a377ecb` | pass | no |
-| Production | — | — | deploying (S6.4 after D15) | — |
+| Production | 2026-11-27 | `4d473e8f` (PR #30; deploy [46029082837](https://github.com/ddsofttech/oceanflows/actions/runs/46029082837)) | pass — oceanflows.net 200; tools-ticker + #use-cases present | no |
