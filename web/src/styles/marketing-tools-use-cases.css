@@ -167,14 +167,11 @@
 .use-case-row:not(.use-case-row--idle) .use-case-chat__frame {
   opacity: 1;
   pointer-events: auto;
-  height: min(520px, 70vh);
+  /* height = (1 + 1/4) × width → aspect-ratio width/height = 4/5 */
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
   visibility: visible;
-}
-
-@media (width >= 900px) {
-  .use-case-row:not(.use-case-row--idle) .use-case-chat__frame {
-    height: 480px;
-  }
 }
 
 .use-case-demo {
