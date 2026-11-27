@@ -14,5 +14,5 @@ enabled = true
 # Owner: set production id (+ preview_id) before deploy — SETUP-GUIDES.md §A8.
 [[kv_namespaces]]
 binding = "INQUIRY_DAILY_LIMIT"
-id = "<production-namespace-id>"
+id = "98c8523f918a4a1d8c79e9c8395e51e6"
 preview_id = "<preview-namespace-id>"
