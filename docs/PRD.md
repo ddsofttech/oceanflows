@@ -2,12 +2,12 @@
 <!-- budget: lines=150 chars=300 -->
 
 ## Document control
-- Status: Pending approval
-- Version: `2.1`
-- Last approved version: `2.0` (`docs/baselines/prds/PRD-v2.0.md`)
+- Status: Approved
+- Version: `3.0`
+- Last approved version: `3.0` (`docs/baselines/prds/PRD-v3.0/`)
 - Owner: Duong (Young) Dang. Content: `requirements-analyst`
 - Stakeholder approvers: Duong (Young) Dang
-- Approval date: —
+- Approval date: 2026-11-27
 
 ## 1. Vision
 - Purpose (what and why): Responsive single-page marketing site for DD Software Solutions Inc. (Alberta; SMB AI consulting and integration). Core message: "We help businesses turn AI opportunities into working solutions." Consulting-first; no invented proof.
@@ -64,19 +64,19 @@ Out of scope (product-wide):
 | C5 | Constraint | No AI cliché imagery; animation not overly complex by default (source §5) | Confirmed | designer |
 | C6 | Constraint | Cal.com free tier, 30-minute consultation | Confirmed | INQ-FR-13 |
 | C7 | Constraint | Free-tier hosting; owner supplies domain | Confirmed | architect/devops |
-| C8 | Constraint | Ticker and use-case motion must honour NFR-04 and stay within SITE-NFR-03 | Proposed | frontend |
+| C8 | Constraint | Ticker and use-case motion must honour NFR-04 and stay within SITE-NFR-03 | Confirmed | frontend |
 | A2 | Assumption | English only | Confirmed | — |
 | R2 | Risk | Late contact/domain/Figma assets delay launch | Identified | BR-09; Duong |
 | R5 | Risk | Generic AI-startup visual drift | Identified | UX review; SITE-NFR-08 |
 | R9 | Risk | Motion-rich use cases hurt CWV or accessibility | Identified | Mitigate per SITE-NFR-03/04/12 |
-| R10 | Risk | Third-party names in ticker must stay descriptive and text-only | Mitigated | SITE-BR-06; D2 Q28 |
+| R10 | Risk | Third-party names in ticker must stay descriptive and text-only | Mitigated | SITE-BR-06 |
 | D4 | Dependency | Figma design system readable export | Pending | Duong; before S2 |
 | D9 | Dependency | Owner chat prototype for Customer Support use case | Received | `docs/tools-ticker-use-cases/sources/2026-11-27-customer-support-ai-assistant-chat.html` |
 
 ## 8. Feature index
 | Feature ID | Feature | Spec | Capability (ID) | Last changed (version, request) |
 |---|---|---|---|---|
-| SITE | Marketing site experience | `docs/features/SITE.md` | CAP-1 | 2.1, tools-ticker-use-cases |
+| SITE | Marketing site experience | `docs/features/SITE.md` | CAP-1 | 3.0, tools-ticker-use-cases |
 | INQ | Contact, booking, limits | `docs/features/INQ.md` | CAP-2 | 2.1, template reshape |
 
 ## 9. Open questions
@@ -90,3 +90,4 @@ Out of scope (product-wide):
 |---|---|---|---|---|
 | 2.1 | template reshape | Split v2.0 monolithic PRD into PRD + SITE + INQ specs; IDs prefixed; no intent change | — | 2026-11-27 |
 | 2.1 | tools-ticker-use-cases | SITE SITE-FR-16, SITE-FR-17, SITE-NFR-12, SITE-BR-06; PRD W-3, C8, R9–R10, D9; D2 closes Q27–Q28 | — | 2026-11-27 |
+| 3.0 | tools-ticker-use-cases | G1 Approve (D3). Draft v2.1 → baseline v3.0; Proposed requirements set Approved; closed Q27–Q28 | Duong | 2026-11-27 |

@@ -5,7 +5,7 @@
 - Feature ID: `SITE`
 - Capability (PRD §4 ID): CAP-1
 - Inherits (PRD IDs): BR-01, BR-02, BR-09, C1, C5, W-1, W-3
-- Last changed: 2.1, tools-ticker-use-cases
+- Last changed: 3.0, tools-ticker-use-cases
 
 ## 1. Purpose and users
 - Job: Present DD Software Solutions to SMB visitors: value prop, five services, approach, four use cases, about, CTAs, analytics.
@@ -29,8 +29,8 @@
 | SITE-FR-09 | Consultation CTA on Home, end of Services, Approach, About → Contact | Should | Approved | source §6 |
 | SITE-FR-12 | Unknown URL → 404 with nav and Home link | Should | Approved | analyst |
 | SITE-FR-14 | Privacy-friendly analytics; no analytics cookies | Should | Approved | Q7 |
-| SITE-FR-16 | **Tools ticker** immediately below Services: text-only descriptors for exactly these tools/platforms in order: Claude, n8n, Cursor, Composio, MCP Server, Supabase, Notion, Google Workspace, Microsoft, Cloudflare, AWS, Azure | Must | Proposed | D2 Q27 |
-| SITE-FR-17 | **Use cases** `#use-cases`: four SMB workflows; interactive motion-rich presentation; Customer Support may use owner chat prototype; designer proposes options at G2 | Must | Proposed | 2026-11-27 request |
+| SITE-FR-16 | **Tools ticker** immediately below Services: text-only descriptors for exactly these tools/platforms in order: Claude, n8n, Cursor, Composio, MCP Server, Supabase, Notion, Google Workspace, Microsoft, Cloudflare, AWS, Azure | Must | Approved | tools-ticker-use-cases |
+| SITE-FR-17 | **Use cases** `#use-cases`: four SMB workflows; interactive motion-rich presentation; Customer Support may use owner chat prototype; designer proposes options at G2 | Must | Approved | tools-ticker-use-cases |
 
 ## 4. Non-functional requirements
 | ID | Quality attribute | Requirement/measure | Status | Source |
@@ -43,7 +43,7 @@
 | SITE-NFR-08 | Visual identity | Figma design system; no AI cliché stock; typography-led | Approved | Q10 |
 | SITE-NFR-09 | Browsers | Current Chrome, Safari, Firefox, Edge | Approved | A3 |
 | SITE-NFR-10 | SEO | Unique title and meta on main page | Approved | source §8 |
-| SITE-NFR-12 | Use-case motion | Static title/summary readable without interaction; demos decorative; pause/hide on reduced motion; no autoplay audio | Must | Proposed | request |
+| SITE-NFR-12 | Use-case motion | Static title/summary readable without interaction; demos decorative; pause/hide on reduced motion; no autoplay audio | Approved | tools-ticker-use-cases |
 
 ## 5. Business rules
 | ID | Rule | Source |
@@ -51,7 +51,7 @@
 | SITE-BR-03 | Five service names match source §4 | source §4 |
 | SITE-BR-04 | Consulting before implementation on Home and Approach | source §1 |
 | SITE-BR-05 | Use cases remain qualitative illustrations, not client claims (BR-02) | source §7 |
-| SITE-BR-06 | Ticker shows text-only tool names; no official third-party logos or wordmarks | D2 Q28 |
+| SITE-BR-06 | Ticker shows text-only tool names; no official third-party logos or wordmarks | tools-ticker-use-cases |
 
 ## 6. Workflow, states, and scenarios
 - Workflow: scroll Home → Services → ticker → later sections; optional "Explore use cases" from hero (W-3).
