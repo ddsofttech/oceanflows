@@ -29,7 +29,7 @@
 | SITE-FR-09 | Consultation CTA on Home, end of Services, Approach, About → Contact | Should | Approved | source §6 |
 | SITE-FR-12 | Unknown URL → 404 with nav and Home link | Should | Approved | analyst |
 | SITE-FR-14 | Privacy-friendly analytics; no analytics cookies | Should | Approved | Q7 |
-| SITE-FR-16 | **Tools ticker** immediately below Services: tools/platforms used to build or integrate (minimum: Claude, n8n, Cursor, Composio, MCP Server, Supabase, Notion, Google Workspace, Microsoft, Cloudflare, AWS, Azure; more per Q27) | Must | Proposed | 2026-11-27 request |
+| SITE-FR-16 | **Tools ticker** immediately below Services: text-only descriptors for exactly these tools/platforms in order: Claude, n8n, Cursor, Composio, MCP Server, Supabase, Notion, Google Workspace, Microsoft, Cloudflare, AWS, Azure | Must | Proposed | D2 Q27 |
 | SITE-FR-17 | **Use cases** `#use-cases`: four SMB workflows; interactive motion-rich presentation; Customer Support may use owner chat prototype; designer proposes options at G2 | Must | Proposed | 2026-11-27 request |
 
 ## 4. Non-functional requirements
@@ -51,7 +51,7 @@
 | SITE-BR-03 | Five service names match source §4 | source §4 |
 | SITE-BR-04 | Consulting before implementation on Home and Approach | source §1 |
 | SITE-BR-05 | Use cases remain qualitative illustrations, not client claims (BR-02) | source §7 |
-| SITE-BR-06 | Third-party tool names/logos used only as fair descriptive references; compliant with Q28 | request |
+| SITE-BR-06 | Ticker shows text-only tool names; no official third-party logos or wordmarks | D2 Q28 |
 
 ## 6. Workflow, states, and scenarios
 - Workflow: scroll Home → Services → ticker → later sections; optional "Explore use cases" from hero (W-3).
@@ -68,7 +68,7 @@
 | SITE-AC-01 | SITE-FR-01 | Given Home loads, then core message, consulting-first line, and CTA to Contact are visible |
 | SITE-AC-02 | SITE-FR-02 | Given any viewport, when using primary nav, then each listed section is reached in one action |
 | SITE-AC-03 | SITE-FR-03 | Given Services, then five named areas each have problem and outcome (owner review) |
-| SITE-AC-16 | SITE-FR-16 | Given Home, when Services ends, then ticker shows each tool from the approved list with accessible name; order follows content source |
+| SITE-AC-16 | SITE-FR-16 | Given Home, when Services ends, then ticker shows each named tool with accessible text label in the fixed order in SITE-FR-16 |
 | SITE-AC-17 | SITE-FR-17 | Given Use cases, then four workflows remain listed with title and summary without interaction; Customer Support demo matches owner prototype intent; reduced motion shows static equivalent |
 | SITE-AC-N03 | SITE-NFR-03 | Given mobile lab run, then LCP, INP, CLS within targets with new sections enabled |
 | SITE-AC-N04 | SITE-NFR-04,12 | Given reduced motion on, then ticker and use-case loops do not animate |
@@ -82,6 +82,4 @@
 ## 9. Open questions
 | ID | Question/decision | Severity | Impact | Owner |
 |---|---|---|---|---|
-| Q27 | Complete ticker tool list | Important | SITE-FR-16 | Duong |
-| Q28 | Logo vs text-only for third parties | Important | SITE-BR-06 | Duong |
 | Q29 | Visual treatment for three use cases without owner assets | Non-blocking | SITE-FR-17 design | designer at G2 |

@@ -69,7 +69,7 @@ Out of scope (product-wide):
 | R2 | Risk | Late contact/domain/Figma assets delay launch | Identified | BR-09; Duong |
 | R5 | Risk | Generic AI-startup visual drift | Identified | UX review; SITE-NFR-08 |
 | R9 | Risk | Motion-rich use cases hurt CWV or accessibility | Identified | Mitigate per SITE-NFR-03/04/12 |
-| R10 | Risk | Third-party tool names/logos need trademark-compliant use | Identified | SITE Q27 |
+| R10 | Risk | Third-party names in ticker must stay descriptive and text-only | Mitigated | SITE-BR-06; D2 Q28 |
 | D4 | Dependency | Figma design system readable export | Pending | Duong; before S2 |
 | D9 | Dependency | Owner chat prototype for Customer Support use case | Received | `docs/tools-ticker-use-cases/sources/2026-11-27-customer-support-ai-assistant-chat.html` |
 
@@ -84,11 +84,9 @@ Out of scope (product-wide):
 |---|---|---|---|---|
 | Q19 | Replace placeholders: inbox, public email, booking URL, domain; optional phone/LinkedIn | Non-blocking | BR-09; production | Duong |
 | Q20 | Figma design system access or export | Non-blocking | SITE-NFR-08; S2 | Duong |
-| Q27 | Final ordered list of tools/platforms in the ticker beyond the named set and "..." | Important | SITE-FR-16 | Duong |
-| Q28 | Use official third-party logos/wordmarks in the ticker vs text-only descriptors | Important | SITE-BR-06; legal posture | Duong |
 
 ## 10. Change history
 | Version | Request or change request | Features and IDs changed | Approver | Date |
 |---|---|---|---|---|
 | 2.1 | template reshape | Split v2.0 monolithic PRD into PRD + SITE + INQ specs; IDs prefixed; no intent change | — | 2026-11-27 |
-| 2.1 | tools-ticker-use-cases | SITE SITE-FR-16, SITE-FR-17, SITE-NFR-12, SITE-BR-06; PRD W-3, C8, R9–R10, D9, Q27–Q28 | — | 2026-11-27 |
+| 2.1 | tools-ticker-use-cases | SITE SITE-FR-16, SITE-FR-17, SITE-NFR-12, SITE-BR-06; PRD W-3, C8, R9–R10, D9; D2 closes Q27–Q28 | — | 2026-11-27 |
