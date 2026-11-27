@@ -58,6 +58,6 @@
 ## 6. Recommendation for G8
 
 - **Close the cycle** | Close with new work | Corrective work: **none required for RP1 scope**
-- **Why:** Production RP1 is healthy after human-closed 502; PRD Must requirements are met in product and privacy; residuals are documented Non-blocking follow-ups. Human requested **early close** of the 48h observation window.
+- Why: Production RP1 is healthy after human-closed 502; PRD Must requirements are met in product and privacy; residuals are documented Non-blocking follow-ups. Human requested early close of the 48h observation window.
 
 **G8 recommendation:** **Approve** — close request `inquiry-email-daily-limit` and route optional follow-ups through S7.4 / new requests as listed above.
