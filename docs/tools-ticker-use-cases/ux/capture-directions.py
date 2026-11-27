@@ -6,9 +6,10 @@ from playwright.sync_api import sync_playwright
 BASE = "http://127.0.0.1:8765"
 OUT = Path(__file__).resolve().parent / "directions"
 DIRS = [
-    ("direction-a-focus-tabs", "/docs/tools-ticker-use-cases/ux/directions/direction-a-focus-tabs.html"),
-    ("direction-b-snap-rail", "/docs/tools-ticker-use-cases/ux/directions/direction-b-snap-rail.html"),
-    ("direction-c-stage-rail", "/docs/tools-ticker-use-cases/ux/directions/direction-c-stage-rail.html"),
+    (
+        "direction-d4-demo-copy-split",
+        "/docs/tools-ticker-use-cases/ux/directions/direction-d4-demo-copy-split.html",
+    ),
 ]
 WIDTHS = {"mobile": 390, "desktop": 1200}
 

@@ -101,6 +101,24 @@
         ],
         "createdAt": "2026-11-27T12:43:51.801Z",
         "reason": "Product DS per design-tokens.json"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "docs/tools-ticker-use-cases/ux/directions/direction-d4-demo-copy-split.html"
+        ],
+        "createdAt": "2026-11-27T12:52:50.831Z",
+        "reason": "Product design system: direction throwaway matches Home tokens"
+      },
+      {
+        "rule": "overused-font",
+        "value": "montserrat",
+        "files": [
+          "docs/tools-ticker-use-cases/ux/directions/direction-d4-demo-copy-split.html"
+        ],
+        "createdAt": "2026-11-27T12:52:50.856Z",
+        "reason": "Product design system: direction throwaway matches Home headings"
       }
     ]
   }
