@@ -1,0 +1,72 @@
+---
+/**
+ * @component ToolsTicker
+ * @purpose Text-only marquee of integration tools immediately below Services (SITE-FR-16)
+ * @props (none)
+ * @states default, reduced-motion-static
+ * @story docs/tools-ticker-use-cases/prototype/stories/tools-ticker-default.html
+ */
+import "../../styles/marketing-tools-use-cases.css";
+
+const tools = [
+  "Claude",
+  "n8n",
+  "Cursor",
+  "Composio",
+  "MCP Server",
+  "Supabase",
+  "Notion",
+  "Google Workspace",
+  "Microsoft",
+  "Cloudflare",
+  "AWS",
+  "Azure",
+] as const;
+---
+
+<section
+  class="tools-ticker section--flush"
+  aria-labelledby="tools-ticker-heading"
+>
+  <h2 id="tools-ticker-heading" class="visually-hidden">
+    Tools and platforms we build with and integrate
+  </h2>
+  <ul class="tools-ticker__accessible visually-hidden">
+    {
+      tools.map((tool) => (
+        <li>{tool}</li>
+      ))
+    }
+  </ul>
+  <div class="tools-ticker__marquee" aria-hidden="true">
+    <div class="tools-ticker__track">
+      <ul class="tools-ticker__list">
+        {
+          tools.map((tool) => (
+            <li class="tools-ticker__item">
+              <span class="tools-ticker__label">{tool}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <ul class="tools-ticker__list" inert>
+        {
+          tools.map((tool) => (
+            <li class="tools-ticker__item">
+              <span class="tools-ticker__label">{tool}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+  <ul class="tools-ticker__static" aria-hidden="true">
+  {
+      tools.map((tool) => (
+        <li class="tools-ticker__item">
+          <span class="tools-ticker__label">{tool}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>
