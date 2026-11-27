@@ -185,6 +185,15 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
+        transition:
+          border-color 0.45s ease,
+          transform 0.45s ease,
+          box-shadow 0.45s ease;
+      }
+      .svc.is-selected {
+        border-color: color-mix(in srgb, var(--sky) 70%, var(--line));
+        transform: translateY(-3px);
+        box-shadow: 0 10px 22px rgba(20, 36, 51, 0.1);
       }
       .illus {
         width: 100%;
@@ -307,6 +316,8 @@
       @media (prefers-reduced-motion: reduce) {
         * {
           animation: none !important;
+        }
+        .svc {
           transition: none !important;
         }
       }
@@ -470,9 +481,8 @@
           <a href="#">Learn more →</a>
         </article>
       </div>
-      <div class="pager" aria-hidden="true">
-        <span class="is-active"></span><span></span><span></span><span></span
-        ><span></span><span></span>
+      <div class="pager" id="card-pager" aria-hidden="true">
+        <span class="is-active"></span><span></span><span></span>
       </div>
       <footer class="foot">
         <p>
@@ -496,20 +506,61 @@
       (function () {
         var page = document.querySelector(".page");
         if (!page) return;
-        if (matchMedia("(prefers-reduced-motion:reduce)").matches) {
+        var cards = page.querySelectorAll(".cards .svc");
+        var dots = page.querySelectorAll("#card-pager span");
+        var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+        var idx = 0;
+        var HOLD_MS = 2800;
+        var timer;
+
+        function selectCard(i) {
+          cards.forEach(function (card, j) {
+            card.classList.toggle("is-selected", j === i);
+          });
+          dots.forEach(function (dot, j) {
+            dot.classList.toggle("is-active", j === i);
+          });
+          idx = i;
+        }
+
+        selectCard(0);
+
+        if (rm) {
           page.classList.remove("is-entering");
           return;
         }
-        var foot = page.querySelector(".foot");
-        if (foot) {
-          foot.addEventListener(
-            "animationend",
-            function () {
-              page.classList.remove("is-entering");
-            },
-            { once: true },
-          );
+
+        var cycleStarted = false;
+
+        function startCycle() {
+          clearInterval(timer);
+          timer = setInterval(function () {
+            selectCard((idx + 1) % cards.length);
+          }, HOLD_MS);
         }
+
+        function afterEntrance() {
+          if (cycleStarted) return;
+          cycleStarted = true;
+          page.classList.remove("is-entering");
+          startCycle();
+        }
+
+        var foot = page.querySelector(".foot");
+        if (foot && page.classList.contains("is-entering")) {
+          foot.addEventListener("animationend", afterEntrance, { once: true });
+          setTimeout(afterEntrance, 1100);
+        } else {
+          afterEntrance();
+        }
+
+        document.addEventListener("visibilitychange", function () {
+          if (document.hidden) {
+            clearInterval(timer);
+          } else if (!rm) {
+            startCycle();
+          }
+        });
       })();
     </script>
   </body>
