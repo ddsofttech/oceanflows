@@ -180,3 +180,7 @@ Pre-merge S6.2 gate (CI + deploy readiness). Hosted NFR-11 runtime proof is **S6
 
 ### D8 (2026-11-26)
 Owner **Approve** recorded for FR-11 privacy rate-limit copy. **Closed** with production deploy 2026-11-27.
+
+
+### G8 (2026-11-26)
+Human: **close the request now** — recorded as D10 Approve. Observation window closed early. Cycle closed.
