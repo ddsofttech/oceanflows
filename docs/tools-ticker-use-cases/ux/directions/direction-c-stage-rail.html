@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Direction C — Stage + rail (throwaway)</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700&display=swap">
+  <style>
+    :root { --ground:#f8fafc; --card:#fff; --text:#0b1746; --muted:#475569; --line:#e2e8f0; --primary:#1e40af; --cyan:#0e7490; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 16px/1.5 Inter, system-ui, sans-serif; color: var(--text); background: var(--ground); }
+    .wrap { max-width: 72rem; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+    .label { font-size: 14px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: .06em; margin: 0 0 .5rem; }
+    h1 { font: 700 clamp(1.5rem, 3vw, 1.75rem)/1.2 Montserrat; margin: 0 0 .75rem; }
+    .lead { color: var(--muted); margin: 0 0 2rem; max-width: 40rem; }
+    .stage {
+      display: grid; gap: 1.5rem; align-items: start;
+    }
+    @media (min-width: 900px) {
+      .stage { grid-template-columns: 13rem 1fr; gap: 2rem; }
+    }
+    .rail { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .35rem; }
+    .rail button {
+      width: 100%; text-align: left; border: none; background: transparent; cursor: pointer;
+      font: 600 15px Inter; padding: .65rem .75rem; border-radius: 8px; color: var(--muted);
+      border-left: 3px solid transparent;
+    }
+    .rail button[aria-current="true"] {
+      color: var(--text); background: #fff; border-left-color: var(--primary);
+      box-shadow: 0 1px 0 var(--line);
+    }
+    .viewport {
+      border: 1px solid var(--line); border-radius: 12px; background: var(--card); padding: 1.5rem;
+      min-height: 340px; display: grid; gap: 1.25rem;
+    }
+  @media (min-width: 700px) { .viewport { grid-template-columns: 1fr 1.2fr; } }
+    .copy h2 { font: 700 1.25rem Montserrat; margin: .15rem 0 .5rem; }
+    .copy .tag { font-size: 12px; font-weight: 600; color: var(--cyan); margin: 0; text-transform: uppercase; }
+    .copy p { margin: 0; color: var(--muted); }
+    .theater {
+      border-radius: 10px; border: 1px solid var(--line); background: #0b1746;
+      min-height: 240px; position: relative; overflow: hidden;
+    }
+    .theater .glow {
+      position: absolute; width: 120px; height: 120px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(6,182,212,.45), transparent 70%);
+      top: 20%; left: 55%; animation: drift 5s ease-in-out infinite;
+    }
+    .theater .bars {
+      position: absolute; bottom: 18%; left: 12%; right: 12%; height: 56px;
+      display: flex; gap: 8px; align-items: flex-end;
+    }
+    .theater .bars span {
+      flex: 1; background: linear-gradient(180deg, #3b82f6, #1e40af); border-radius: 4px 4px 0 0;
+      animation: bar 2s ease-in-out infinite;
+    }
+    .theater .bars span:nth-child(2) { animation-delay: .2s; height: 70%; }
+    .theater .bars span:nth-child(3) { animation-delay: .4s; height: 45%; }
+    .theater .bars span:nth-child(1) { height: 55%; }
+    .caption { font-size: 11px; color: var(--muted); }
+    @keyframes drift { 50% { transform: translate(-12px, 8px); } }
+    @keyframes bar { 50% { transform: scaleY(1.15); } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <p class="label">Use cases</p>
+    <h1>Where small businesses start with AI</h1>
+    <p class="lead">Direction C: sticky index + large stage — editorial pick-one-at-a-time with a cinematic demo viewport.</p>
+    <div class="stage">
+      <ul class="rail" role="list">
+        <li><button type="button" aria-current="true">Customer support</button></li>
+        <li><button type="button" aria-current="false">Sales</button></li>
+        <li><button type="button" aria-current="false">Operations</button></li>
+        <li><button type="button" aria-current="false">Automation</button></li>
+      </ul>
+      <div class="viewport">
+        <div class="copy">
+          <p class="tag">Customer support</p>
+          <h2>Inquiry &amp; FAQ assistant</h2>
+          <p>Answer routine questions from approved FAQs and policies — hours, shipping, returns — and escalate exceptions to your team.</p>
+        </div>
+        <div class="theater" aria-hidden="true" aria-label="Decorative demo">
+          <div class="glow"></div>
+          <div class="bars"><span></span><span></span><span></span></div>
+        </div>
+        <p class="caption" style="grid-column: 1 / -1">Theater hosts owner chat embed for this workflow; abstract motion for the other three (Q29).</p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

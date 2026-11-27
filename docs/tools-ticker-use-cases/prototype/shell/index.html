@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>tools-ticker-use-cases — prototype shell</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 2rem;
+        line-height: 1.5;
+        font-size: 1rem;
+      }
+      h1 {
+        font-size: 1.75rem;
+        line-height: 1.2;
+        margin: 0 0 1rem;
+      }
+      h2 {
+        font-size: 1.25rem;
+        margin: 1.5rem 0 0.5rem;
+      }
+      ul {
+        padding-left: 1.25rem;
+      }
+      code {
+        font-size: 0.92em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>tools-ticker-use-cases prototype</h1>
+    <p>
+      Production-shaped UI lives in <code>web/</code>. Run
+      <code>npm run dev</code> in <code>web/</code>, then open flows below.
+    </p>
+    <h2>Flows (mock data on Home)</h2>
+    <ul>
+      <li>
+        <a href="http://127.0.0.1:4321/#services">Tools ticker</a> — marquee
+        below Services
+      </li>
+      <li>
+        <a href="http://127.0.0.1:4321/#use-cases">Use cases D4 stack</a> —
+        lazy-loaded demos
+      </li>
+    </ul>
+    <h2>Stories</h2>
+    <ul>
+      <li>
+        <a href="../stories/tools-ticker-default.html"
+          >ToolsTicker — default marquee</a
+        >
+      </li>
+      <li>
+        <a href="../stories/tools-ticker-reduced-motion.html"
+          >ToolsTicker — reduced-motion static list</a
+        >
+      </li>
+      <li>
+        <a href="../stories/use-cases-default.html"
+          >UseCaseStack — four rows idle</a
+        >
+      </li>
+      <li>
+        <a href="../stories/use-cases-customer-support.html"
+          >CustomerSupportDemo — chat embed</a
+        >
+      </li>
+    </ul>
+    <p>
+      Simulated: owner chat transcript; abstract SVG demos; no APIs. Lazy load
+      via <code>/scripts/use-case-lazy.js</code>.
+    </p>
+  </body>
+</html>

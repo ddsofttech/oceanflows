@@ -10,6 +10,29 @@ const sections = [
   { id: "contact", label: "Contact" },
 ];
 
+/** SITE-FR-16 fixed order */
+const toolsInSpecOrder = [
+  "Claude",
+  "n8n",
+  "Cursor",
+  "Composio",
+  "MCP Server",
+  "Supabase",
+  "Notion",
+  "Google Workspace",
+  "Microsoft",
+  "Cloudflare",
+  "AWS",
+  "Azure",
+] as const;
+
+const useCaseTitles = [
+  "Inquiry & FAQ assistant",
+  "Lead qualification & follow-up",
+  "Internal knowledge assistant",
+  "Booking & follow-up workflows",
+] as const;
+
 const axeTags = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];
 
 async function expectNoSeriousAxeViolations(page: Page) {
@@ -119,6 +142,76 @@ test.describe("marketing site", () => {
   test("axe: no serious violations on contact", async ({ page }) => {
     await page.goto("/#contact");
     await expectNoSeriousAxeViolations(page);
+  });
+
+  test("tools ticker follows Services with 12 text labels in spec order", async ({
+    page,
+  }) => {
+    await page.goto("/");
+
+    const sectionOrder = await page.evaluate(() => {
+      const services = document.querySelector("#services");
+      const ticker = document.querySelector(".tools-ticker");
+      const approach = document.querySelector("#approach");
+      if (!services || !ticker || !approach) return null;
+      const tickerInsideServices = services.contains(ticker);
+      const servicesBeforeApproach =
+        (services.compareDocumentPosition(approach) &
+          Node.DOCUMENT_POSITION_FOLLOWING) !==
+        0;
+      return { tickerInsideServices, servicesBeforeApproach };
+    });
+    expect(sectionOrder).toEqual({
+      tickerInsideServices: true,
+      servicesBeforeApproach: true,
+    });
+
+    const accessibleLabels = await page
+      .locator(".tools-ticker__accessible li")
+      .allTextContents();
+    expect(accessibleLabels).toEqual([...toolsInSpecOrder]);
+
+    await expect(page.locator(".tools-ticker img")).toHaveCount(0);
+  });
+
+  test("use cases section shows four workflow titles without activating demos", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const useCases = page.locator("#use-cases");
+    await expect(useCases).toBeAttached();
+
+    for (const title of useCaseTitles) {
+      await expect(
+        useCases.getByRole("heading", { name: title, level: 3 }),
+      ).toBeVisible();
+    }
+  });
+
+  test("prefers-reduced-motion uses static ticker and disables demo pulse", async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+
+    await expect(page.locator(".tools-ticker__marquee")).toBeHidden();
+    await expect(page.locator(".tools-ticker__static")).toBeVisible();
+
+    const trackAnimation = await page
+      .locator(".tools-ticker__track")
+      .first()
+      .evaluate((el) => getComputedStyle(el).animationName);
+    expect(trackAnimation).toBe("none");
+
+    await page.locator("#use-cases").scrollIntoViewIfNeeded();
+    await expect(page.locator(".use-case-demo__motion").first()).toBeAttached();
+    const demoAnimation = await page
+      .locator(".use-case-demo__motion")
+      .first()
+      .evaluate((el) => getComputedStyle(el).animationName);
+    expect(demoAnimation).toBe("none");
+
+    await expect(page.locator(".use-case-demo.is-active")).toHaveCount(0);
   });
 });
 

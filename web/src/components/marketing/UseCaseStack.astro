@@ -1,0 +1,81 @@
+---
+/**
+ * @component UseCaseStack
+ * @purpose Four use-case rows with demo left and copy right (D4 layout)
+ * @props (none)
+ * @states default, row-idle, row-active, reduced-motion-static
+ * @story docs/tools-ticker-use-cases/prototype/stories/use-cases-default.html
+ */
+import "../../styles/marketing-tools-use-cases.css";
+import CustomerSupportDemo from "./CustomerSupportDemo.astro";
+import UseCaseDemoPlaceholder from "./UseCaseDemoPlaceholder.astro";
+
+const customerSupportBenefits = [
+  "Answer routine questions from approved FAQs and policies — hours, shipping, returns.",
+  "Escalate exceptions to your team when judgment matters.",
+  "Clear inputs and outputs, with room for a person in the loop.",
+  "AI agents that handle routine steps and hand off when a human should decide.",
+  "AI connected to the applications, APIs, and workflows people already use.",
+] as const;
+
+const otherCases = [
+  {
+    variant: "sales" as const,
+    tag: "Sales",
+    title: "Lead qualification & follow-up",
+    summary:
+      "Score new website and email inquiries, draft a first response, and route high-intent leads so nothing sits unanswered.",
+  },
+  {
+    variant: "operations" as const,
+    tag: "Operations",
+    title: "Internal knowledge assistant",
+    summary:
+      "Let staff ask questions against SOPs, pricing sheets, and past decisions — with links back to the source documents.",
+  },
+  {
+    variant: "automation" as const,
+    tag: "Automation",
+    title: "Booking & follow-up workflows",
+    summary:
+      "Connect scheduling, reminders, and post-visit follow-ups so appointments and next steps stay consistent without extra admin.",
+  },
+] as const;
+---
+
+<div class="use-case-stack">
+  <article class="use-case-row use-case-row--idle" data-lazy-demo>
+    <div class="use-case-row__demo" aria-hidden="true">
+      <CustomerSupportDemo />
+    </div>
+    <div class="use-case-row__copy">
+      <p class="use-case-row__tag">Customer support</p>
+      <h3 class="use-case-row__title">Inquiry &amp; FAQ assistant</h3>
+      <p class="use-case-row__hook">
+        Routine answers from your approved FAQs — exceptions stay with your
+        team.
+      </p>
+      <ol class="use-case-row__benefits">
+        {customerSupportBenefits.map((item) => <li>{item}</li>)}
+      </ol>
+    </div>
+  </article>
+  {
+    otherCases.map((item) => (
+      <article class="use-case-row use-case-row--idle" data-lazy-demo>
+        <div class="use-case-row__demo" aria-hidden="true">
+          <div data-demo-root>
+            <UseCaseDemoPlaceholder variant={item.variant} />
+          </div>
+        </div>
+        <div class="use-case-row__copy">
+          <p class="use-case-row__tag">{item.tag}</p>
+          <h3 class="use-case-row__title">{item.title}</h3>
+          <p class="use-case-row__summary">{item.summary}</p>
+        </div>
+      </article>
+    ))
+  }
+</div>
+
+<script is:inline src="/scripts/use-case-lazy.js"></script>

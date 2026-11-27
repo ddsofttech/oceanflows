@@ -2,6 +2,8 @@
 import BookingPanel from "../BookingPanel.astro";
 import ContactDetails from "../ContactDetails.astro";
 import InquiryForm from "../InquiryForm.astro";
+import ToolsTicker from "./ToolsTicker.astro";
+import UseCaseStack from "./UseCaseStack.astro";
 import { publicSiteConfig } from "../../lib/public-site";
 
 const site = publicSiteConfig();
@@ -272,6 +274,7 @@ const site = publicSiteConfig();
       </div>
     </div>
   </div>
+  <ToolsTicker />
 </section>
 <section id="approach" class="section section--approach">
   <div class="container">
@@ -311,7 +314,7 @@ const site = publicSiteConfig();
             proposing technology.
           </p>
           <div class="approach-stage__deliverable">
-            <p class="approach-stage__deliverable-label">You receive</p>
+            <p class="approach-stage__deliverable-label">Deliverable</p>
             <p class="approach-stage__deliverable-value">
               Opportunity assessment and prioritized use cases
             </p>
@@ -362,7 +365,7 @@ const site = publicSiteConfig();
             implementation scope.
           </p>
           <div class="approach-stage__deliverable">
-            <p class="approach-stage__deliverable-label">You receive</p>
+            <p class="approach-stage__deliverable-label">Deliverable</p>
             <p class="approach-stage__deliverable-value">
               Solution approach and integration plan
             </p>
@@ -403,7 +406,7 @@ const site = publicSiteConfig();
             environment.
           </p>
           <div class="approach-stage__deliverable">
-            <p class="approach-stage__deliverable-label">You receive</p>
+            <p class="approach-stage__deliverable-label">Deliverable</p>
             <p class="approach-stage__deliverable-value">
               Working integration in your environment
             </p>
@@ -435,7 +438,7 @@ const site = publicSiteConfig();
             handover.
           </p>
           <div class="approach-stage__deliverable">
-            <p class="approach-stage__deliverable-label">You receive</p>
+            <p class="approach-stage__deliverable-label">Deliverable</p>
             <p class="approach-stage__deliverable-value">
               Handover and guidance on measuring outcomes
             </p>
@@ -461,88 +464,7 @@ const site = publicSiteConfig();
         person when judgment matters.
       </p>
     </div>
-    <ul class="use-case-grid">
-      <li class="use-case-card">
-        <img
-          class="use-case-card__media"
-          src="/assets/usecases/usecase-customer-support.jpg"
-          width="1536"
-          height="1024"
-          alt=""
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="use-case-card__body">
-          <p class="use-case-card__tag">Customer support</p>
-          <h3 class="use-case-card__title">Inquiry &amp; FAQ assistant</h3>
-          <p class="use-case-card__text">
-            Answer routine questions from approved FAQs and policies — hours,
-            shipping, returns — and escalate exceptions to your team.
-          </p>
-        </div>
-      </li>
-      <li class="use-case-card">
-        <img
-          class="use-case-card__media"
-          src="/assets/usecases/usecase-lead-qualification.jpg"
-          width="1536"
-          height="1024"
-          alt=""
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="use-case-card__body">
-          <p class="use-case-card__tag">Sales</p>
-          <h3 class="use-case-card__title">
-            Lead qualification &amp; follow-up
-          </h3>
-          <p class="use-case-card__text">
-            Score new website and email inquiries, draft a first response, and
-            route high-intent leads so nothing sits unanswered.
-          </p>
-        </div>
-      </li>
-      <li class="use-case-card">
-        <img
-          class="use-case-card__media"
-          src="/assets/usecases/usecase-internal-knowledge.jpg"
-          width="1536"
-          height="1024"
-          alt=""
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="use-case-card__body">
-          <p class="use-case-card__tag">Operations</p>
-          <h3 class="use-case-card__title">Internal knowledge assistant</h3>
-          <p class="use-case-card__text">
-            Let staff ask questions against SOPs, pricing sheets, and past
-            decisions — with links back to the source documents.
-          </p>
-        </div>
-      </li>
-      <li class="use-case-card">
-        <img
-          class="use-case-card__media"
-          src="/assets/usecases/usecase-workflow-automation.jpg"
-          width="1536"
-          height="1024"
-          alt=""
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="use-case-card__body">
-          <p class="use-case-card__tag">Automation</p>
-          <h3 class="use-case-card__title">
-            Booking &amp; follow-up workflows
-          </h3>
-          <p class="use-case-card__text">
-            Connect scheduling, reminders, and post-visit follow-ups so
-            appointments and next steps stay consistent without extra admin.
-          </p>
-        </div>
-      </li>
-    </ul>
+    <UseCaseStack />
   </div>
 </section>
 <section
@@ -559,10 +481,10 @@ const site = publicSiteConfig();
     </div>
     <div class="about-intro">
       <p>
-        DD Software Solutions Inc. is an Alberta-based software and AI
-        consulting company founded in 2023. We help small and medium-sized
-        businesses solve practical business challenges through software
-        engineering, intelligent automation, and AI integration.
+        <strong>DD Software Solutions Inc.</strong> is an Alberta-based software and
+        AI consulting company founded in 2023. We help small and medium-sized businesses
+        solve practical business challenges through software engineering, intelligent
+        automation, and AI integration.
       </p>
       <p>
         With a foundation in software quality, enterprise applications,

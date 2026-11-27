@@ -3,9 +3,9 @@
 C4 model of the whole system as approved. One row per element; the code, contracts, and request designs hold the detail.
 
 ## Metadata
-- Last changed by request: `inquiry-email-daily-limit`
+- Last changed by request: `tools-ticker-use-cases`
 - G4 decision for that change: (pending S3.3)
-- Date: 2026-11-26
+- Date: 2026-11-27
 
 ## 1. System context (C4 level 1)
 ```mermaid
@@ -56,6 +56,10 @@ flowchart LR
 | CMP-INQUIRY-FORM | Inquiry form UI | Client validation, submit states, limit copy | `web/src/components/InquiryForm.astro`, `inquiry-form.ts` | CTR-INQUIRY-API | company-branding-website |
 | CMP-BOOKING | Booking link | Cal.com CTA | `web/src/components/BookingPanel.*` | EXT-CALCOM | company-branding-website |
 | CMP-PRIVACY | Privacy notice | FR-11 disclosures | `web/src/pages/privacy.astro` | — | inquiry-email-daily-limit |
+| CMP-HOME-MAIN | Home page sections | Hero through Contact markup | `web/src/components/marketing/HomeMain.astro` | CMP-TOOLS-TICKER, CMP-USE-CASE-STACK | tools-ticker-use-cases |
+| CMP-TOOLS-TICKER | Tools ticker | Text-only marquee below Services | `web/src/components/marketing/ToolsTicker.astro` | — | tools-ticker-use-cases |
+| CMP-USE-CASE-STACK | Use cases presentation | D4 rows, copy + demos | `web/src/components/marketing/UseCaseStack.astro` | CMP-USE-CASE-LAZY | tools-ticker-use-cases |
+| CMP-USE-CASE-LAZY | Lazy demo activation | IO script, iframe src, abstract motion | `web/public/scripts/use-case-lazy.js`, `CustomerSupportDemo.astro`, `UseCaseDemoPlaceholder.astro` | — | tools-ticker-use-cases |
 
 ### CTR-INQUIRY-API: Inquiry API
 | ID | Component | Responsibility | Code location | Depends on | Since |
@@ -79,3 +83,4 @@ flowchart LR
 |---|---|---|---|
 | 2026-11-25 | company-branding-website | Added CTX-*, EXT-*, SYS-WEBSITE, CTR-*, CMP-* (initial) | Approved D17 |
 | 2026-11-26 | inquiry-email-daily-limit | Added EXT-KV, BND-KV, CMP-DAILY-LIMIT; changed CMP-IP-RATE-LIMIT, CMP-INQUIRY-HANDLER, CMP-INQUIRY-FORM, CMP-PRIVACY, CTR-INQUIRY-API data | Pending G4 |
+| 2026-11-27 | tools-ticker-use-cases | Added CMP-TOOLS-TICKER, CMP-USE-CASE-STACK, CMP-USE-CASE-LAZY; changed CMP-HOME-MAIN | Pending G4 |
