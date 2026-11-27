@@ -122,6 +122,10 @@
   min-height: 320px;
 }
 
+.use-case-row__demo:has(.use-case-chat) {
+  padding: var(--space-4);
+}
+
 .use-case-chat {
   position: relative;
   width: 100%;
