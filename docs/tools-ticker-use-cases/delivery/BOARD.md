@@ -7,7 +7,7 @@
 - Route: Normal
 - PRD version: 3.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; G4 Approve D8
-- Last updated: 2026-11-27 (G4 D8 Approve; S3.4 ∥ S3.5 starting)
+- Last updated: 2026-11-27 (S3.4/S3.5 done; ttuc-fe-01 starting)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
@@ -17,7 +17,7 @@
 ## Slice parts
 | Part ID | Slice | Owner | Release point | Depends on | Status (Planned / In progress / In review / Merged / Checked) | PR | Review class (Routine / Important / Sensitive) | Review rounds | Notes |
 |---|---|---|---|---|---|---|---|---|---|
-| ttuc-fe-01 | front-end | frontend-developer | RP1 | — | Planned | — | Important | 0 | Harden G3 Home ticker + use cases |
+| ttuc-fe-01 | front-end | frontend-developer | RP1 | — | In progress | — | Important | 0 | Harden G3 Home ticker + use cases |
 | ttuc-fe-02 | front-end | frontend-developer | RP1 | ttuc-fe-01 | Planned | — | Routine | 0 | e2e + axe after fe-01 |
 
 ## Open handoffs
@@ -27,9 +27,10 @@
 ## Environments
 | Pipeline or environment | Ready | Evidence |
 |---|---|---|
-| Git host (GitHub) | Pending S3.4 | — |
-| PR CI (gates) | Pending S3.4 | — |
-| Cloudflare preview | Pending S3.4 | — |
+| Git host (GitHub) | Yes | github.com/ddsofttech/oceanflows.git |
+| PR CI (gates) | Yes | web-ci; retarget sdlc-process to this request on first PR (G-CI-01) |
+| Cloudflare preview | Yes | Worker preview unchanged; no new bindings |
+| Test plan | Yes | `testing/TEST-PLAN.md` |
 
 ## Escalations
 | Date | Part or defect | Reason (retest failed twice / three handoffs / three fix rounds) | Sent to | Outcome |
