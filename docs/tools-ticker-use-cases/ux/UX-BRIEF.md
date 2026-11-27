@@ -7,7 +7,7 @@
 | Screen or state | Requirement IDs | Tier | Why this tier | Catalog components |
 |---|---|---|---|---|
 | Tools ticker (Home, below Services) | SITE-FR-16, SITE-BR-06, SITE-NFR-04, SITE-AC-16 | **T2** | New block + marquee; order and copy fixed in spec (not G2-open) | SiteLayout tokens; **new:** `ToolsTicker` |
-| Use cases section `#use-cases` | SITE-FR-17, SITE-NFR-12, SITE-BR-05, SITE-AC-17, Q29 | **T2** (post–G2 Revise) | Layout closed at D4; left demo / right copy stack replaces grid; no further direction exploration | Section heading pattern from `HomeMain.astro`; **new:** `UseCaseStack`, `CustomerSupportDemo` (owner HTML), `UseCaseDemoPlaceholder` ×3 |
+| Use cases `#use-cases` | SITE-FR-17, SITE-NFR-12, SITE-BR-05, SITE-AC-17, Q29 | **T2** | D4: demo left / copy right stack; layout closed | `HomeMain.astro`; **new:** `UseCaseStack`, `CustomerSupportDemo`, `UseCaseDemoPlaceholder` ×3 |
 
 Highest tier after D4: **T2** (use cases layout decided; build in S2.3). Tools ticker **T2**. No T0/T1 screens.
 
