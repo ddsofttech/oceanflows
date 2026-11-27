@@ -7,12 +7,12 @@
 - Route: Normal
 - PRD version: 3.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; G4 Approve D8
-- Last updated: 2026-11-27 (RP1 S5.2 done; G6 HITL)
+- Last updated: 2026-11-27 (G6 D9 Approve; S6.1 starting)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
 |---|---|---|---|---|
-| RP1 | ttuc-fe-01, ttuc-fe-02 | Verifying | pending G6 | — |
+| RP1 | ttuc-fe-01, ttuc-fe-02 | Signed off | D9 Approve | — |
 
 ## Slice parts
 | Part ID | Slice | Owner | Release point | Depends on | Status (Planned / In progress / In review / Merged / Checked) | PR | Review class (Routine / Important / Sensitive) | Review rounds | Notes |
