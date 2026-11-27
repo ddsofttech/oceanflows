@@ -1,0 +1,23 @@
+---
+/**
+ * @component CustomerSupportDemo
+ * @purpose Owner chat prototype embed for Customer Support use case (SITE-FR-17, D9)
+ * @props (none)
+ * @states idle, loaded, reduced-motion-static
+ * @story docs/tools-ticker-use-cases/prototype/stories/use-cases-customer-support.html
+ */
+const chatSrc = "/demos/customer-support-chat.html";
+---
+
+<div class="use-case-chat" data-demo-root>
+  <span class="use-case-demo__badge">Interactive chat illustration</span>
+  <p class="use-case-chat__idle" data-demo-idle>
+    Demo loads when this row scrolls into view.
+  </p>
+  <iframe
+    class="use-case-chat__frame"
+    title=""
+    data-src={chatSrc}
+    loading="lazy"
+    tabindex="-1"></iframe>
+</div>

@@ -1,7 +1,7 @@
 # UX Brief
 
 - Started by: G1 D3 (2026-11-27) — triggers **3 Restructure**, **4 Open UX** on baseline `docs/baselines/prds/PRD-v3.0`. Request `tools-ticker-use-cases`, profile Standard, mode existing-repo.
-- Status: **S2.1 revised after G2 Revise D4 + D5**; **G2 HITL** (confirm direction + proposed Customer Support copy). S2.3 waits on G2.
+- Status: **S2.3 build complete** (G2 D6 Approve). Ready for S2.4.
 
 ## A. Screens and tiers
 | Screen or state | Requirement IDs | Tier | Why this tier | Catalog components |
@@ -71,11 +71,14 @@ None.
 - **Not in scope for G2:** Tools ticker (T2, spec-fixed); lazy-load is accepted behavior per D5 (no separate choice).
 
 ## F. Build record
-- **UX branch (S2.3):** `ux/tools-ticker-use-cases`.
-- **Prototype:** n/a until G2; after approval, build on UX branch.
-- **Simulated:** Owner chat transcript; abstract demos; ticker static list; no API.
-- **Lazy load (build note):** One IO per `.use-case-row`; `rootMargin` ~0 0 -10% 0; threshold ~0.15; assign iframe `data-src` → `src` on first intersect; abstract demos add `is-active` class for CSS motion only when intersecting and motion allowed.
-- **UI checks:** Not run (S2.1). Apply at S2.3.
+- **UX branch (S2.3):** `ux/tools-ticker-use-cases` (merged `release/tools-ticker-use-cases`).
+- **Prototype shell:** `docs/tools-ticker-use-cases/prototype/shell/index.html` — flows on `npm run dev` in `web/` → `/#services`, `/#use-cases`.
+- **Stories:** `docs/tools-ticker-use-cases/prototype/stories/` (`tools-ticker-default`, `tools-ticker-reduced-motion`, `use-cases-default`, `use-cases-customer-support`).
+- **Components:** `web/src/components/marketing/ToolsTicker.astro`, `UseCaseStack.astro`, `CustomerSupportDemo.astro`, `UseCaseDemoPlaceholder.astro`; styles `web/src/styles/marketing-tools-use-cases.css`; `web/public/scripts/use-case-lazy.js`; chat demo `web/public/demos/customer-support-chat.html`.
+- **Simulated:** Owner chat transcript; abstract SVG demos; ticker marquee/static; no API.
+- **Lazy load:** `use-case-lazy.js` — one IO per `[data-lazy-demo]`; `rootMargin` `0 0 -10% 0`; `threshold` 0.15; iframe `data-src` → `src`; abstract `is-active` when motion allowed.
+- **Screenshots:** `docs/tools-ticker-use-cases/ux/screens/` — `tools-ticker-default-{mobile,desktop}`, `use-cases-idle-{mobile,desktop}`, `use-cases-active-{mobile,desktop}` (helper `ux/capture-screenshots.py`).
+- **UI checks (2026-11-27):** `eslint .` pass; `astro check` + `tsc` pass; `stylelint` pass on `marketing-tools-use-cases.css`; `ui-catalog.py --check` pass (`docs/COMPONENTS.md` regenerated).
 - **Out of scope:** Contact/nav; vendor ticker links; replacing Sales/Operations/Automation body copy.
 
 ## Change history

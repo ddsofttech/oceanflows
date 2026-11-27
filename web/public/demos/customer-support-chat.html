@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DD Assistant – chat animation</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700&display=swap">
+<style>
+:root{--pg:#F4F8FF;--card:#fff;--line:#DFE7F3;--text:#152947;--muted:#63728A;--ai:#F0F3F8;--inb:#fff;--blue:#1E40AF;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#070F2B;--card:#0E1A44;--line:#22337A;--text:#F1F5F9;--muted:#A8B5CC;--ai:#13245F;--inb:#0B1738;color-scheme:dark}}
+:root[data-theme="dark"]{--pg:#070F2B;--card:#0E1A44;--line:#22337A;--text:#F1F5F9;--muted:#A8B5CC;--ai:#13245F;--inb:#0B1738;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--pg);font:400 14px/1.5 Inter,system-ui,sans-serif;color:var(--text);display:grid;place-items:center;min-height:100svh;padding:24px 16px}
+.card{width:min(422px,100%);height:min(718px,calc(100svh - 48px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)));display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 16px 48px rgba(26,51,102,.14),0 2px 8px rgba(26,51,102,.05);overflow:hidden}
+.hd{height:88px;flex:none;background:var(--blue);display:flex;align-items:center;gap:16px;padding:0 20px;color:#fff}
+.lg{width:40px;height:40px;border-radius:10px;background:#fff;display:grid;place-items:center;flex:none}
+.t b{display:block;font:700 18px/1.2 Montserrat,sans-serif}
+.t span{display:flex;align-items:center;gap:8px;font:500 12px Inter,sans-serif;color:#E4ECFF;margin-top:4px}
+.dot{width:6px;height:6px;border-radius:50%;background:#7FE2B5;animation:pl 2s infinite}
+.min{margin-left:auto;width:10px;height:2px;border-radius:2px;background:#fff}
+.bd{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:14px;scrollbar-width:none;transition:opacity .5s}
+.bd::-webkit-scrollbar{display:none}
+.ts{align-self:center;font:500 12px Inter,sans-serif;color:var(--muted);animation:fi .5s}
+.r{display:flex;flex-direction:column;max-width:80%;animation:pop .35s cubic-bezier(.2,.8,.2,1)}
+.r.u{align-self:flex-end;align-items:flex-end}.r.a{align-self:flex-start}
+.who{font:500 12px Inter,sans-serif;color:var(--muted);margin-bottom:6px}
+.b{padding:14px 16px;border-radius:12px}
+.u .b{background:var(--blue);color:#fff;border-radius:12px 12px 4px 12px}
+.a .b{background:var(--ai);color:var(--text);border-radius:12px 12px 12px 4px}
+.w{opacity:0;transition:opacity .3s}.w.on{opacity:1}
+.dots{display:flex;gap:5px;padding:5px 2px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:bn 1s infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+.ft{flex:none;border-top:1px solid var(--line);padding:15px 20px 12px}
+.in{display:flex;align-items:center;gap:12px;height:57px;border:1px solid var(--line);border-radius:10px;padding:0 9px 0 16px;background:var(--inb)}
+.tx{flex:1;white-space:nowrap;overflow:hidden;text-overflow:clip;direction:ltr}
+.tx:empty::before{content:"Type your message…";color:var(--muted)}
+.tx.ty::after{content:"";display:inline-block;width:1.5px;height:16px;background:var(--text);vertical-align:-3px;margin-left:1px;animation:bk .8s steps(1) infinite}
+.snd{width:38px;height:38px;border-radius:9px;background:var(--blue);display:grid;place-items:center;flex:none}
+.snd.go{animation:pr .35s}
+.pw{text-align:center;font:500 11px Inter,sans-serif;color:var(--muted);margin-top:10px}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}}
+@keyframes fi{from{opacity:0}}
+@keyframes bn{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+@keyframes bk{50%{opacity:0}}
+@keyframes pl{50%{opacity:.35}}
+@keyframes pr{40%{transform:scale(.86)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<linearGradient id="gb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1E3A8A"/><stop offset="1" stop-color="#3B82F6"/></linearGradient>
+<linearGradient id="gc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0891B2"/><stop offset="1" stop-color="#67E8F9"/></linearGradient>
+<symbol id="dd" viewBox="0 0 120 80"><path transform="translate(34 0)" fill-rule="evenodd" fill="url(#gc)" d="M6 8H42C62 8 74 22 74 40S62 72 42 72H6ZM20 22V58H41C51 58 58 51 58 40S51 22 41 22Z"/><path fill-rule="evenodd" fill="url(#gb)" stroke="#fff" stroke-width="3" d="M6 8H42C62 8 74 22 74 40S62 72 42 72H6ZM20 22V58H41C51 58 58 51 58 40S51 22 41 22Z"/><g fill="#06B6D4"><rect x="96" y="2" width="5" height="5"/><rect x="104" y="6" width="4" height="4" opacity=".8"/><rect x="110" y="13" width="3" height="3" opacity=".6"/></g></symbol>
+</defs></svg>
+<main class="card" aria-label="Chat with DD Assistant">
+<div class="hd"><div class="lg"><svg width="30" height="20" aria-hidden="true"><use href="#dd"/></svg></div>
+<div class="t"><b>AI Assistant</b><span><i class="dot"></i>Online · Here to help</span></div><i class="min" aria-hidden="true"></i></div>
+<div class="bd" id="bd" role="log" aria-live="polite"></div>
+<div class="ft"><div class="in"><div class="tx" id="tx" aria-hidden="true"></div><div class="snd" id="snd" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 15.5V3.5M4 8.5l5-5 5 5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+<div class="pw">Powered by DD Software Solutions</div></div>
+</main>
+<script>
+(function(){
+var M=[
+["u","Hi! We run a small logistics company and lose hours to manual reporting. Can AI help?"],
+["a","Yes, definitely. We can connect AI to the systems you already use, automate the reports, and flag problems early. First, we map where your team loses the most time."],
+["u","That sounds good. Would it work with our current software, or would we need to replace it?"],
+["a","No replacement needed. We integrate AI with your existing apps and APIs. Want to book a 30-minute consultation to walk through your setup?"]
+];
+var bd=document.getElementById('bd'),tx=document.getElementById('tx'),snd=document.getElementById('snd');
+var rm=matchMedia('(prefers-reduced-motion:reduce)').matches,run=0;
+var sl=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+function el(c,t){var e=document.createElement('div');e.className=c;if(t)e.textContent=t;return e}
+function down(){bd.scrollTo({top:bd.scrollHeight,behavior:rm?'auto':'smooth'})}
+function row(k,who){var r=el('r '+k);if(who)r.appendChild(el('who',who));bd.appendChild(r);return r}
+function words(t){var b=el('b'),s=[];t.split(' ').forEach(function(w,i,a){var x=document.createElement('span');x.className='w';x.textContent=w+(i<a.length-1?' ':'');b.appendChild(x);s.push(x)});return{b:b,s:s}}
+async function play(){
+var id=++run;bd.innerHTML='';bd.style.opacity=1;tx.textContent='';
+if(rm){bd.appendChild(el('ts','Today, 10:24 AM'));M.forEach(function(m){var r=row(m[0],m[0]==='a'?'DD Assistant':'');var w=words(m[1]);w.s.forEach(function(x){x.classList.add('on')});r.appendChild(w.b)});return}
+await sl(700);if(id!==run)return;
+bd.appendChild(el('ts','Today, 10:24 AM'));await sl(900);
+for(var i=0;i<M.length;i++){
+ var m=M[i];if(id!==run)return;
+ if(m[0]==='u'){
+  tx.classList.add('ty');
+  for(var c=1;c<=m[1].length;c++){tx.textContent=m[1].slice(0,c);tx.scrollLeft=tx.scrollWidth;await sl(24);if(id!==run)return}
+  await sl(450);snd.classList.add('go');await sl(180);
+  tx.classList.remove('ty');tx.textContent='';snd.classList.remove('go');
+  var r=row('u');var w=words(m[1]);w.s.forEach(function(x){x.classList.add('on')});r.appendChild(w.b);down();await sl(900);
+ }else{
+  var r2=row('a','DD Assistant'),d=el('b'),dots=el('dots');dots.innerHTML='<i></i><i></i><i></i>';d.appendChild(dots);r2.appendChild(d);down();
+  await sl(1300);if(id!==run)return;
+  var w2=words(m[1]);r2.replaceChild(w2.b,d);down();
+  for(var k=0;k<w2.s.length;k++){w2.s[k].classList.add('on');if(k%6===5)down();await sl(70);if(id!==run)return}
+  await sl(1000);
+ }
+}
+await sl(5000);if(id!==run)return;
+bd.style.opacity=0;await sl(600);if(id!==run)return;
+play();
+}
+play();
+})();
+</script>
+</body>
+</html>

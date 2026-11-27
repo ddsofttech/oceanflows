@@ -13,8 +13,12 @@ Audience: SMB owners and executives deciding whether a founder-led AI consultanc
 | Component | Purpose | Props | States | Source | Story |
 |---|---|---|---|---|---|
 | CloudflareWebAnalytics | Cookieless page-view beacon (FR-14); omitted when token unset | (none) | default \| disabled (no PUBLIC_CF_ANALYTICS_TOKEN) | `web/src/components/CloudflareWebAnalytics.astro` |  |
+| CustomerSupportDemo | Owner chat prototype embed for Customer Support use case (SITE-FR-17, D9) | (none) | idle, loaded, reduced-motion-static | `web/src/components/marketing/CustomerSupportDemo.astro` | docs/tools-ticker-use-cases/prototype/stories/use-cases-customer-support.html |
 | SiteLayout | Marketing site document shell with theme, styles, and scripts | title, description, skipTarget | default | `web/src/components/SiteLayout.astro` |  |
 | SiteMeta | Per-route document title and meta description for SEO | title, description | default | `web/src/components/SiteMeta.astro` |  |
+| ToolsTicker | Text-only marquee of integration tools immediately below Services (SITE-FR-16) | (none) | default, reduced-motion-static | `web/src/components/marketing/ToolsTicker.astro` | docs/tools-ticker-use-cases/prototype/stories/tools-ticker-default.html |
+| UseCaseDemoPlaceholder | Decorative abstract motion demo for non–Customer Support use cases (Q29) | variant | idle, active, reduced-motion-static | `web/src/components/marketing/UseCaseDemoPlaceholder.astro` | docs/tools-ticker-use-cases/prototype/stories/use-cases-default.html |
+| UseCaseStack | Four use-case rows with demo left and copy right (D4 layout) | (none) | default, row-idle, row-active, reduced-motion-static | `web/src/components/marketing/UseCaseStack.astro` | docs/tools-ticker-use-cases/prototype/stories/use-cases-default.html |
 
 ## Tokens
 
