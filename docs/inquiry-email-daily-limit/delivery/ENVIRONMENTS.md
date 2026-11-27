@@ -15,8 +15,8 @@ There is **no dedicated staging URL**. Hosted verification uses Cloudflare **pre
 
 | Name | Kind | Where | RP1 status |
 |---|---|---|---|
-| `INQUIRY_DAILY_LIMIT` | KV namespace binding | `web/wrangler.toml` `id` + `preview_id` | **Placeholder** — H1 open |
-| `INQUIRY_LIMIT_HASH_PEPPER` | Worker secret | Cloudflare dashboard (not git) | **Not set** — H1 open |
+| `INQUIRY_DAILY_LIMIT` | KV namespace binding | `web/wrangler.toml` `id` + `preview_id` | **Prod `id` set** (`98c8523f918a4a1d8c79e9c8395e51e6`); `preview_id` still `<preview-namespace-id>` — accepted (single namespace) |
+| `INQUIRY_LIMIT_HASH_PEPPER` | Worker secret | Cloudflare dashboard (not git) | **Owner-set on production Worker** (H1 partial); not verified by hosted NFR-11 smoke in devops session |
 | `RESEND_API_KEY`, `INQUIRY_EMAIL`, Turnstile | Worker secrets | Existing site | Required for full W1 on hosted (prior CBW carry-forward) |
 
 Owner procedure: `docs/company-branding-website/delivery/SETUP-GUIDES.md` **§A8** (KV create, bind IDs, pepper, TM-16 token scope).
@@ -27,16 +27,16 @@ Owner procedure: `docs/company-branding-website/delivery/SETUP-GUIDES.md` **§A8
 |---|---|---|
 | Local / CI (`vitest`, mock store) | **Yes** | QA `testing/reports/RP1.md`; inquiry suites 44/44 on release branch |
 | Local `wrangler dev` | **Partial** | Binding declared; needs gitignored `web/.dev.vars` with pepper + optional local KV |
-| Cloudflare preview Worker | **No** | H1: real `preview_id` + pepper on Worker |
-| Cloudflare production Worker | **No** | H1: real `id` + pepper; deploy guard blocks placeholder `id` |
+| Cloudflare preview Worker | **No** | No preview deploy this session; `preview_id` placeholder; no `CLOUDFLARE_API_TOKEN` locally |
+| Cloudflare production Worker | **Partial (config only)** | RP1 **code not on prod** (`main` still lacks `INQUIRY_DAILY_LIMIT` in `wrangler.toml`); owner pepper + KV namespace ready for post–G7 merge deploy |
 
 ## H1 — owner steps (blocking hosted staging / G7)
 
-1. Create KV namespaces **`INQUIRY_DAILY_LIMIT_PRODUCTION`** and **`INQUIRY_DAILY_LIMIT_PREVIEW`** (dashboard or `cd web && npx wrangler kv namespace list`).
-2. Replace `id` and `preview_id` in `web/wrangler.toml` with real namespace IDs; commit on `release/inquiry-email-daily-limit` (or a follow-up PR to `main` before prod deploy).
-3. Set Worker secret **`INQUIRY_LIMIT_HASH_PEPPER`** (≥32 bytes entropy; §A8.3) on **preview and production** Worker environments.
-4. Confirm `CHECK_PRODUCTION_ENV=1 npm run check:production-wrangler-kv` exits **0** after step 2.
-5. **devops:** Deploy preview (or production after G7) via approved pipeline; run staging checklist in `release/RELEASE-PLAN.md` (NFR-11 smoke POSTs).
+1. Create KV namespaces **`INQUIRY_DAILY_LIMIT_PRODUCTION`** and optionally preview (owner: **one namespace only** — accepted).
+2. Replace production `id` in `web/wrangler.toml` — **done** @ `aa3bd24d`; `preview_id` may remain placeholder.
+3. Set Worker secret **`INQUIRY_LIMIT_HASH_PEPPER`** on production Worker — **owner reports done**; preview optional if no preview namespace.
+4. Confirm `CHECK_PRODUCTION_ENV=1 npm run check:production-wrangler-kv` exits **0** — **pass** (devops S6.2 re-run).
+5. **devops:** Deploy **release tip** preview (`wrangler deploy` from `release/inquiry-email-daily-limit`) **or** merge → `web-deploy-production` **only after G7 Go**; run NFR-11 smoke POSTs in `release/RELEASE-PLAN.md`. **Remaining:** hosted deploy + checklist.
 
 ## CI / deploy guards (D7)
 
