@@ -6,7 +6,7 @@
 - Route: Normal
 - PRD version: v2.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; D5 Approve (2026-11-26)
-- Last updated: 2026-11-26 (S6.2 blocked H1)
+- Last updated: 2026-11-26 (H1 closed; S6.2 re-run)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
@@ -26,14 +26,14 @@
 ## Open handoffs
 | ID | From | To | Type (consult / defect / finding / contract / environment) | About (part, PR, or defect) | Asked | Status | Answer or link |
 |---|---|---|---|---|---|---|---|
-| H1 | devops | human | environment | KV namespace IDs + `INQUIRY_LIMIT_HASH_PEPPER` for hosted QA/prod | 2026-11-26 | Open | Accepted at G6 D7 as known issue; required before G7 Go |
+| H1 | devops | human | environment | KV namespace IDs + `INQUIRY_LIMIT_HASH_PEPPER` for hosted QA/prod | 2026-11-26 | Closed | Owner set prod KV `id` + pepper (2026-11-26); preview_id unused |
 
 ## Environments
 | Pipeline or environment | Ready | Evidence |
 |---|---|---|
 | web-ci (PR gates) | Yes | PR #15–#17 gates |
 | Local (wrangler + .dev.vars) | Partial | Binding present; pepper local-only |
-| Cloudflare preview / production | No | S6.2 blocked: H1 KV IDs + pepper (RELEASE-PLAN) |
+| Cloudflare preview / production | Partial | Prod KV `id` set; pepper claimed set; S6.2 re-run |
 
 ## Escalations
 | Date | Part or defect | Reason (retest failed twice / three handoffs / three fix rounds) | Sent to | Outcome |
