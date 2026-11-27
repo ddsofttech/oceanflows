@@ -90,7 +90,7 @@ Each rule: one line, one example, the tool that enforces it (or "review"), and w
 | Secrets | gitleaks | repo root | No secrets in diff | proposed |
 | Tests and coverage | vitest + Playwright | diff-cover on `web/` | Changed lines ≥80% | proposed |
 | Change size | `sdlc-check.py` | small 250 / medium 600 / large 1200 lines | Per part plan | proposed |
-| Accessibility | `@axe-core/playwright` | key routes | 0 new serious/critical | proposed |
+| Accessibility | `@axe-core/playwright` | index (incl. ticker + use cases), privacy, 404, contact | 0 new serious/critical | enforced |
 | Design tokens | stylelint `declaration-strict-value` | color, spacing, font-size from vars | No new raw hex in components | proposed |
 | UI catalog | `ui-catalog.py --check` | sources `web/src/components`, tokens path | Catalog matches blocks | proposed |
 
