@@ -17,7 +17,7 @@ const site = publicSiteConfig();
   <div class="hero-banner__art" aria-hidden="true">
     <img
       class="hero-banner__art-img hero-banner__art-img--light"
-      src="/assets/banners/light_banner.svg?v=8"
+      src="/assets/banners/light_banner.svg?v=10"
       width="1200"
       height="400"
       alt=""
@@ -25,7 +25,7 @@ const site = publicSiteConfig();
     />
     <img
       class="hero-banner__art-img hero-banner__art-img--dark"
-      src="/assets/banners/dark_banner.svg?v=8"
+      src="/assets/banners/dark_banner.svg?v=9"
       width="1200"
       height="400"
       alt=""
@@ -34,27 +34,40 @@ const site = publicSiteConfig();
   </div>
   <div class="container hero-banner__inner">
     <div class="hero-banner__content">
-      <p class="hero-banner__eyebrow">AI consulting &amp; engineering</p>
+      <p class="hero-banner__eyebrow hero-reveal-step" style="--reveal-step: 0">
+        AI consulting &amp; engineering
+      </p>
       <h1 id="home-heading" class="hero-banner__brand-line">
-        Turn AI Opportunities Into Working Solutions.
+        <span
+          class="hero-banner__brand-line-part hero-reveal-step"
+          style="--reveal-step: 1">Turn AI Opportunities</span
+        >
+        <span
+          class="hero-banner__brand-line-part hero-reveal-step"
+          style="--reveal-step: 2">Into Working Solutions.</span
+        >
       </h1>
-      <p class="hero-banner__lead muted">
+      <p class="hero-banner__lead muted hero-reveal-step" style="--reveal-step: 3">
         We help businesses identify where AI creates value, design practical
         solutions, and integrate intelligent systems into everyday operations.
       </p>
-      <ul class="hero-banner__tags" aria-label="Focus areas">
+      <ul
+        class="hero-banner__tags hero-reveal-step"
+        style="--reveal-step: 4"
+        aria-label="Focus areas"
+      >
         <li>AI Strategy</li>
         <li>AI Integration</li>
         <li>Intelligent Automation</li>
       </ul>
-      <div class="hero-banner__actions">
+      <div class="hero-banner__actions hero-reveal-step" style="--reveal-step: 5">
         <a class="btn btn--primary" href="#contact">Book a consultation</a>
         <a class="btn btn--secondary" href="#use-cases">Explore use cases</a>
       </div>
     </div>
   </div>
 </section>
-<section id="services" class="section section--services">
+<section id="services" class="section section--services reveal-section">
   <div class="container">
     <div class="section-heading">
       <p class="label">Services</p>
@@ -274,9 +287,17 @@ const site = publicSiteConfig();
       </div>
     </div>
   </div>
-  <ToolsTicker />
 </section>
-<section id="approach" class="section section--approach">
+<section
+  id="tools"
+  class="section section--tools reveal-section"
+  aria-label="Tools and platforms we build with and integrate"
+>
+  <div class="container">
+    <ToolsTicker />
+  </div>
+</section>
+<section id="approach" class="section section--approach reveal-section">
   <div class="container">
     <div class="section-heading">
       <p class="label">Approach</p>
@@ -450,7 +471,7 @@ const site = publicSiteConfig();
 </section>
 <section
   id="use-cases"
-  class="section section--use-cases"
+  class="section section--use-cases reveal-section"
   aria-labelledby="use-cases-heading"
 >
   <div class="container">
@@ -469,7 +490,7 @@ const site = publicSiteConfig();
 </section>
 <section
   id="about"
-  class="section section--about"
+  class="section section--about reveal-section"
   aria-labelledby="about-heading"
 >
   <div class="container">
@@ -544,7 +565,7 @@ const site = publicSiteConfig();
     </div>
   </div>
 </section>
-<section id="contact" class="section section--tight">
+<section id="contact" class="section section--tight reveal-section">
   <div class="container">
     <div class="section-heading">
       <p class="label">Contact</p>

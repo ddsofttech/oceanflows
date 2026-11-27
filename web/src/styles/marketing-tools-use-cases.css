@@ -1,11 +1,15 @@
 /* Tools ticker + use-case D4 stack (tools-ticker-use-cases) */
 
-.tools-ticker {
-  margin-top: var(--space-6);
+.section--tools {
   padding-block: var(--space-5);
-  border: none;
-  background: var(--color-brand-cyan);
+}
+
+.tools-ticker {
+  margin: 0;
+  padding-block: 0;
+  background: transparent;
   overflow: hidden;
+  max-width: 100%;
 }
 
 .tools-ticker__marquee {
@@ -16,12 +20,12 @@
   display: none;
   list-style: none;
   margin: 0;
-  padding: var(--space-3) var(--page-gutter);
+  padding: var(--space-3) 0;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-4);
-  justify-content: center;
-  max-width: 72rem;
-  margin-inline: auto;
+  justify-content: flex-start;
+  max-width: none;
+  margin-inline: 0;
 }
 
 .tools-ticker__track {
@@ -46,11 +50,12 @@
 }
 
 .tools-ticker__label {
-  font-family: var(--font-display);
-  font-size: clamp(var(--text-label-size), 2.5vw, var(--text-body-size));
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--color-navy-950);
+  font-family: var(--font-body);
+  font-size: clamp(var(--text-caption-size), 1.6vw, var(--text-label-size));
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
   white-space: nowrap;
 }
 
@@ -241,18 +246,39 @@
 
 .use-case-row__benefits {
   margin: 0;
-  padding-inline-start: var(--space-5);
+  padding-inline-start: 0;
+  list-style: none;
   color: var(--color-text-secondary);
   font-size: var(--text-label-size);
   line-height: 1.5;
 }
 
 .use-case-row__benefits li {
-  margin-bottom: var(--space-2);
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  margin-bottom: var(--space-3);
 }
 
-.use-case-row__benefits li::marker {
-  color: var(--color-brand-deep-blue);
+.use-case-row__benefits li::before {
+  content: "✓";
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: 0.12em;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #1d8091;
+  color: var(--color-brand-white);
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+[data-theme="dark"] .use-case-row__benefits li::before {
+  background: var(--color-action-primary);
+  color: var(--color-text-inverse);
 }
 
 .use-case-row__summary {

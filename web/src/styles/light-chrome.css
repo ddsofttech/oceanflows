@@ -1,0 +1,9 @@
+/* Light theme: token overrides for hardcoded colors in site.css */
+
+.hero-banner {
+  border-bottom: 2px solid var(--color-brand-cyan);
+}
+
+.btn--accent:hover {
+  background: var(--color-action-primary-hover);
+}

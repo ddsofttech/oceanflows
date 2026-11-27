@@ -2,16 +2,15 @@
   "$description": "Audience: SMB owners and executives deciding whether a founder-led AI consultancy is credible. Tone: calm, confident, plain-spoken; low density with generous whitespace. Brand attributes: Clear, Grounded, Considered. Signature: typography-led editorial layout; Services as a ruled problem/outcome list; Approach as a numbered 1–4 sequence. Imagery: type-led, no stock or AI clichés; Lucide-style outline icons only where they carry content. Motion: opacity and transform 150–250ms; disabled under prefers-reduced-motion.",
   "color": {
     "brand": {
-      "deep-blue": { "$value": "#1E40AF" },
-      "cyan": { "$value": "#06B6D4" },
-      "silver": { "$value": "#94A3B8" },
+      "deep-blue": { "$value": "#1D8091" },
+      "cyan": { "$value": "#1D8091" },
       "white": { "$value": "#FFFFFF" }
     },
     "text": {
       "primary": { "$value": "#0B1746" },
       "secondary": { "$value": "#475569" },
       "inverse": { "$value": "#FFFFFF" },
-      "link": { "$value": "#1E40AF" }
+      "link": { "$value": "#1D8091" }
     },
     "surface": {
       "ground": { "$value": "#F8FAFC" },
@@ -20,21 +19,37 @@
       "navy-950": { "$value": "#0B1746" }
     },
     "theme-dark": {
-      "text-primary": { "$value": "#F8FAFC" },
-      "text-secondary": { "$value": "#94A3B8" },
-      "surface-ground": { "$value": "#0B1746" },
-      "surface-card": { "$value": "#081F59" },
-      "border-default": { "$value": "#1E3A5F" }
+      "text-primary": { "$value": "#F5F5F5" },
+      "text-secondary": { "$value": "#B3B3B3" },
+      "text-inverse": { "$value": "#1A1A1A" },
+      "text-link": { "$value": "#E4E7E7" },
+      "surface-ground": { "$value": "#252525" },
+      "surface-card": { "$value": "#2F2F2F" },
+      "surface-navy": { "$value": "#1C1C1C" },
+      "navy-950": { "$value": "#252525" },
+      "navy-900": { "$value": "#1C1C1C" },
+      "border-default": { "$value": "#404040" },
+      "border-input": { "$value": "#5C5C5C" },
+      "border-focus": { "$value": "#E4E7E7" },
+      "brand-cyan": { "$value": "#E4E7E7" },
+      "action-accent": { "$value": "#E4E7E7" },
+      "brand-deep-blue": { "$value": "#E4E7E7" },
+      "action-primary": { "$value": "#E4E7E7" },
+      "action-primary-hover": { "$value": "#F5F5F5" },
+      "status-success": { "$value": "#86EFAC" },
+      "status-success-bg": { "$value": "#1E3328" },
+      "status-error": { "$value": "#F87171" },
+      "status-error-bg": { "$value": "#331F1F" }
     },
     "border": {
       "default": { "$value": "#E2E8F0" },
       "input": { "$value": "#94A3B8" },
-      "focus": { "$value": "#1E40AF" }
+      "focus": { "$value": "#1D8091" }
     },
     "action": {
-      "primary": { "$value": "#1E40AF" },
-      "primary-hover": { "$value": "#1D4ED8" },
-      "accent": { "$value": "#06B6D4" }
+      "primary": { "$value": "#1D8091" },
+      "primary-hover": { "$value": "#1A6F7D" },
+      "accent": { "$value": "#1D8091" }
     },
     "status": {
       "success": { "$value": "#15803D" },

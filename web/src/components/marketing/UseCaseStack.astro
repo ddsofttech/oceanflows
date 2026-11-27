@@ -11,11 +11,13 @@ import CustomerSupportDemo from "./CustomerSupportDemo.astro";
 import UseCaseDemoPlaceholder from "./UseCaseDemoPlaceholder.astro";
 
 const customerSupportBenefits = [
-  "Answer routine questions from approved FAQs and policies — hours, shipping, returns.",
-  "Escalate exceptions to your team when judgment matters.",
-  "Clear inputs and outputs, with room for a person in the loop.",
-  "AI agents that handle routine steps and hand off when a human should decide.",
-  "AI connected to the applications, APIs, and workflows people already use.",
+  "Understands your products, services, pricing, policies, FAQs, and business information.",
+  "Responds to customer inquiries 24/7.",
+  "Communicates naturally, understands customer intent, and handles follow-up questions.",
+  "Explains features, compares options, and helps customers find the right solutions",
+  "Access to only data you accept, no abitrary code execution, or reveal sensitive info.",
+  "Seamless integrates to your existing website.",
+  "Futher intelligent addons to handle bookings, follow ups, ...",
 ] as const;
 
 const otherCases = [
@@ -52,8 +54,7 @@ const otherCases = [
       <p class="use-case-row__tag">Customer support</p>
       <h3 class="use-case-row__title">Inquiry &amp; FAQ assistant</h3>
       <p class="use-case-row__hook">
-        Routine answers from your approved FAQs — exceptions stay with your
-        team.
+        A trained assistant with company knowledge.
       </p>
       <ol class="use-case-row__benefits">
         {customerSupportBenefits.map((item) => <li>{item}</li>)}

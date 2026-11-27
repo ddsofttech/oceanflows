@@ -1,0 +1,42 @@
+/* Approach section: dark-theme accent alignment (charcoal + sky–cyan) */
+
+@media (width >= 900px) {
+  [data-theme="dark"] .approach-stage__marker::before {
+    background: color-mix(
+      in srgb,
+      var(--color-action-primary) 38%,
+      var(--color-border-default)
+    );
+  }
+}
+
+[data-theme="dark"] .approach-stage__icon {
+  border-color: color-mix(
+    in srgb,
+    var(--color-action-primary) 55%,
+    var(--color-border-default)
+  );
+  color: var(--color-action-primary);
+}
+
+[data-theme="dark"] .approach-stage__num {
+  color: color-mix(
+    in srgb,
+    var(--color-action-primary) 48%,
+    var(--color-text-secondary)
+  );
+}
+
+[data-theme="dark"] .approach-stage__deliverable-label {
+  color: var(--color-action-primary);
+}
+
+[data-theme="dark"] .approach-stage__deliverable {
+  background: color-mix(
+    in srgb,
+    var(--color-action-primary) 14%,
+    var(--color-surface-card)
+  );
+  border: 1px solid
+    color-mix(in srgb, var(--color-action-primary) 22%, transparent);
+}

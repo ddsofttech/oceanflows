@@ -132,4 +132,78 @@
   } else {
     setCurrentSection("home");
   }
+
+  const SCROLL_REVEAL_STAGGER = [
+    ".section-heading",
+    ".services-table__head",
+    ".services-table__row",
+    ".tools-ticker",
+    ".approach-track > .approach-stage",
+    ".use-case-stack > .use-case-row",
+    ".about-intro",
+    ".about-bring",
+    ".about-philosophy",
+    ".contact-layout",
+  ].join(",");
+
+  function prepareScrollRevealStagger(section) {
+    const items = section.querySelectorAll(SCROLL_REVEAL_STAGGER);
+    items.forEach((el, index) => {
+      el.classList.add("scroll-reveal-item");
+      el.style.setProperty("--scroll-reveal-step", String(index));
+    });
+  }
+
+  function initScrollReveal() {
+    const revealSections = document.querySelectorAll(".reveal-section");
+    if (!revealSections.length) return;
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    document.documentElement.classList.add("has-reveal");
+
+    revealSections.forEach(prepareScrollRevealStagger);
+
+    function showSection(el) {
+      el.classList.add("is-visible");
+    }
+
+    if (reducedMotion) {
+      revealSections.forEach(showSection);
+      return;
+    }
+
+    function sectionInView(el) {
+      const rect = el.getBoundingClientRect();
+      const trigger = window.innerHeight * 0.84;
+      return rect.top < trigger && rect.bottom > window.innerHeight * 0.12;
+    }
+
+    revealSections.forEach((el) => {
+      if (sectionInView(el)) showSection(el);
+    });
+
+    if (!("IntersectionObserver" in window)) {
+      revealSections.forEach(showSection);
+      return;
+    }
+
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          showSection(entry.target);
+          revealObserver.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "0px 0px -14% 0px", threshold: 0.08 },
+    );
+
+    revealSections.forEach((el) => {
+      if (!el.classList.contains("is-visible")) revealObserver.observe(el);
+    });
+  }
+
+  initScrollReveal();
 })();
