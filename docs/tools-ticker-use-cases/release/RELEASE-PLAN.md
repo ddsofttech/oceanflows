@@ -8,8 +8,8 @@ Request: `tools-ticker-use-cases`. One section per release point, newest first.
 ## Release point RP1
 
 - **Slice parts included:** `ttuc-fe-01`, `ttuc-fe-02`
-- **Release candidate (commit or build):** `5a377ecbd8a36a05c22ab065f543cf719613dec5` (branch tip)
-- **Integrated merges:** PR #23 @ `6bff9d21`; PR #24 @ `daeb543f`
+- **Release candidate (commit or build):** `668bcf938f37fa52b12d8a4c3cef5f8fc2858cde` (branch tip; includes G7 hold fixes #26–#29)
+- **Integrated merges:** PR #23 @ `6bff9d21`; PR #24 @ `daeb543f`; hold PRs #26–#29
 - **QA sign-off (G6 decision):** D9 Approve (2026-11-27) — “approve”; known issues per `testing/reports/RP1.md`
 
 ### Release notes
@@ -78,27 +78,22 @@ Request: `tools-ticker-use-cases`. One section per release point, newest first.
 
 - **Dashboards and alerts:** Cloudflare Worker `oceanflows-company-site` deploy status; GitHub Actions `web-ci` + `web-deploy-production`; Cloudflare Web Analytics (existing).
 - **KPIs to watch (PRD §2):** **O2** service communication (ticker + use cases visible); **O4** operational value clarity; **O5** inquiry path unchanged — watch for post-deploy 5xx or form regression; owner content review (O1–O3) unchanged.
-- **Observation window:** **48h** after **G7 Go** production deploy — **start:** TBD on Go; **end:** T+48h; **owner:** `devops` + human spot-check.
+- **Observation window:** **48h** after **G7 Go** production deploy — **start:** on S6.4 health pass; **end:** T+48h; **owner:** `devops` + human spot-check.
 
 ### Go decision (G7) — RP1 production deploy
 
-**G7 package (S6.3 — awaiting human decision):**
-
 | Field | Value |
 |---|---|
-| **Recommendation** | **Go** |
+| **Decision** | **Go** (D15) |
 | **Staging (S6.2)** | **Pass** (2026-11-27 UTC) |
-| **Rationale** | G6 D9 + QA green; S6.2 **21/21** Playwright @ RC; rollback recorded; no new infra; prod only after Go. |
+| **Rationale** | G6 D9 + QA green; hold fixes #26–#29 on tip `668bcf93`; rollback recorded. |
 | **Residual (non-blocking)** | SITE-AC-N03 CWV lab; UQ-U4 keyboard; CS prototype manual compare; multi-browser partial — per G6 acceptance. |
-| **On Approve (Go)** | Orchestrator merges `release/tools-ticker-use-cases` → `main`; S6.4 `web-deploy-production`; start 48h observation. |
-| **On Hold** | New staging/production regression — devops reruns S6.2. |
-| **On No-go** | Keep production on pre–RP1 Worker version; no merge to `main`. |
 
-- **Approver(s) and date:** pending HITL
+- **Approver(s) and date:** human, 2026-11-27 — “Go”
 
 ### Deploy record
 
 | Environment | Date | Version | Result | Rollback run? |
 |---|---|---|---|---|
 | Staging (local serve @ RC) | 2026-11-27 | `5a377ecb` | pass | no |
-| Production | — | — | not deployed (awaiting G7) | — |
+| Production | — | — | deploying (S6.4 after D15) | — |
