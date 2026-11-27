@@ -60,19 +60,23 @@
           sans-serif;
         color: var(--navy);
         min-height: 100%;
-        padding: 12px 14px 10px;
+        padding: 12px 14px 14px;
         display: flex;
         flex-direction: column;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
+        scrollbar-width: none;
+      }
+      body::-webkit-scrollbar {
+        display: none;
       }
       .page {
-        flex: 1;
-        min-height: 0;
+        flex: none;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 14px;
-        position: relative;
+        gap: 12px;
         transition: opacity 0.4s ease;
       }
       .page.dim {
@@ -136,8 +140,9 @@
       .hero {
         flex: none;
         text-align: center;
-        max-width: 34em;
-        padding: 4px 6px 2px;
+        width: 100%;
+        max-width: 28em;
+        padding: 2px 4px 0;
       }
       .kicker {
         margin: 0 0 8px;
@@ -149,9 +154,9 @@
       }
       .headline {
         margin: 0;
-        font-size: clamp(16px, 2.8vw, 20px);
+        font-size: clamp(14px, 2.4vw, 17px);
         font-weight: 700;
-        line-height: 1.22;
+        line-height: 1.28;
         color: var(--navy);
         letter-spacing: -0.02em;
       }
@@ -161,14 +166,12 @@
         font-weight: 600;
       }
       .cards {
-        flex: 1;
-        min-height: 0;
+        flex: none;
         width: 100%;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px;
+        gap: 8px;
         align-items: stretch;
-        margin-top: 2px;
       }
       .svc {
         background: var(--card);
@@ -189,10 +192,11 @@
       }
       .illus {
         width: 100%;
-        height: 58px;
+        height: 48px;
         display: grid;
         place-items: center;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
+        flex: none;
       }
       .illus svg {
         width: 100%;
@@ -206,11 +210,15 @@
         color: var(--navy);
       }
       .svc p {
-        margin: 0 0 8px;
-        font-size: 11px;
-        line-height: 1.45;
+        margin: 0 0 6px;
+        font-size: 10px;
+        line-height: 1.4;
         color: var(--muted);
         flex: 1;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
       }
       .svc a {
         font-size: 11px;
@@ -223,7 +231,7 @@
         display: flex;
         gap: 6px;
         justify-content: center;
-        margin-top: -4px;
+        padding-top: 2px;
       }
       .pager button {
         width: 7px;
@@ -238,12 +246,13 @@
       }
       .foot {
         flex: none;
+        width: 100%;
         text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 10px;
-        padding-top: 4px;
+        gap: 8px;
+        padding-top: 2px;
       }
       .foot p {
         margin: 0;
@@ -268,15 +277,22 @@
       .btn-sky svg {
         flex: none;
       }
+      .milestone-slot {
+        flex: none;
+        width: 100%;
+        min-height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 4px;
+      }
       .milestone {
-        position: absolute;
-        bottom: 4px;
-        right: 2px;
-        padding: 6px 12px;
+        margin: 0;
+        padding: 5px 12px;
         border-radius: 999px;
         background: var(--card);
         border: 1px solid var(--line);
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 600;
         color: var(--navy);
         opacity: 0;
@@ -284,6 +300,8 @@
         transition:
           opacity 0.35s,
           transform 0.35s;
+        text-align: center;
+        max-width: 100%;
       }
       .milestone.show {
         opacity: 1;
@@ -443,6 +461,9 @@
         </article>
       </div>
       <div class="pager" id="pager" aria-hidden="true"></div>
+      <div class="milestone-slot" aria-hidden="true">
+        <p class="milestone" id="mile"></p>
+      </div>
       <footer class="foot">
         <p id="sub">
           From scope to launch, every step stays visible in one shared plan.
@@ -460,7 +481,6 @@
           </svg>
         </button>
       </footer>
-      <p class="milestone" id="mile" aria-hidden="true"></p>
     </div>
     <script>
       (function () {
