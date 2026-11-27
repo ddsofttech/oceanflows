@@ -47,6 +47,60 @@
         ],
         "createdAt": "2026-11-27T12:32:29.964Z",
         "reason": "S0.1 intake: user-supplied animation source saved unchanged as fixture, not product UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "docs/tools-ticker-use-cases/ux/directions/direction-a-focus-tabs.html"
+        ],
+        "createdAt": "2026-11-27T12:43:51.688Z",
+        "reason": "Product DS: Inter body per docs/COMPONENTS.md and design-tokens.json (NFR-08)"
+      },
+      {
+        "rule": "overused-font",
+        "value": "montserrat",
+        "files": [
+          "docs/tools-ticker-use-cases/ux/directions/direction-a-focus-tabs.html"
+        ],
+        "createdAt": "2026-11-27T12:43:51.710Z",
+        "reason": "Product DS: Montserrat display per docs/COMPONENTS.md (NFR-08)"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "docs/tools-ticker-use-cases/ux/directions/direction-b-snap-rail.html"
+        ],
+        "createdAt": "2026-11-27T12:43:51.732Z",
+        "reason": "Product DS per design-tokens.json"
+      },
+      {
+        "rule": "overused-font",
+        "value": "montserrat",
+        "files": [
+          "docs/tools-ticker-use-cases/ux/directions/direction-b-snap-rail.html"
+        ],
+        "createdAt": "2026-11-27T12:43:51.755Z",
+        "reason": "Product DS per design-tokens.json"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "docs/tools-ticker-use-cases/ux/directions/direction-c-stage-rail.html"
+        ],
+        "createdAt": "2026-11-27T12:43:51.778Z",
+        "reason": "Product DS per design-tokens.json"
+      },
+      {
+        "rule": "overused-font",
+        "value": "montserrat",
+        "files": [
+          "docs/tools-ticker-use-cases/ux/directions/direction-c-stage-rail.html"
+        ],
+        "createdAt": "2026-11-27T12:43:51.801Z",
+        "reason": "Product DS per design-tokens.json"
       }
     ]
   }
