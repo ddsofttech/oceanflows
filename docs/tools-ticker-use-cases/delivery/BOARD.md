@@ -7,7 +7,7 @@
 - Route: Normal
 - PRD version: 3.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; G4 Approve D8
-- Last updated: 2026-11-27 (G6 D9 Approve; S6.1 starting)
+- Last updated: 2026-11-27 (G7 Hold D10; badge removed PR #26; re-ask Go)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
