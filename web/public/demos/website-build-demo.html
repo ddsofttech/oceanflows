@@ -80,8 +80,8 @@
         gap: 12px;
       }
       .layout-spacer {
-        flex: 1 1 34%;
-        min-height: 22px;
+        flex: 1 1 36%;
+        min-height: 24px;
         width: 100%;
       }
       .nav-pill {
@@ -144,42 +144,48 @@
         width: 100%;
         max-width: 100%;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
-        gap: 6px;
-        padding: 2px 4px 0;
-      }
-      .hero__copy {
-        width: 100%;
-        max-width: 28em;
-        text-align: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 2px 2px 0;
       }
       .hero__visual {
         margin: 0;
-        width: 100%;
+        flex: 0 0 auto;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
+        align-items: center;
         line-height: 0;
       }
       .hero__visual img {
-        width: min(58vw, 196px);
+        width: min(44vw, 168px);
         height: auto;
-        max-height: 158px;
+        max-height: 148px;
         object-fit: contain;
-        object-position: center bottom;
+        object-position: left center;
         display: block;
-        -webkit-mask-image: linear-gradient(
-          to bottom,
-          #000 0%,
-          #000 82%,
-          transparent 100%
-        );
-        mask-image: linear-gradient(
-          to bottom,
-          #000 0%,
-          #000 82%,
-          transparent 100%
-        );
+      }
+      .hero__copy {
+        flex: 1 1 0;
+        min-width: 0;
+        max-width: none;
+        text-align: left;
+      }
+      @media (max-width: 300px) {
+        .hero {
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+        }
+        .hero__copy {
+          text-align: center;
+        }
+        .hero__visual img {
+          width: min(58vw, 196px);
+          max-height: 158px;
+          object-position: center bottom;
+        }
       }
       .kicker {
         margin: 0 0 8px;
@@ -375,12 +381,6 @@
         <button type="button" class="nav-cta">Book visit</button>
       </nav>
       <header class="hero">
-        <div class="hero__copy">
-          <p class="kicker">Patient care</p>
-          <h1 class="headline">
-            Healthy smiles start with care that feels <em>gentle</em> and clear.
-          </h1>
-        </div>
         <figure class="hero__visual">
           <img
             src="/demos/assets/dental-hero-smile.png"
@@ -391,6 +391,12 @@
             aria-hidden="true"
           />
         </figure>
+        <div class="hero__copy">
+          <p class="kicker">Patient care</p>
+          <h1 class="headline">
+            Healthy smiles start with care that feels <em>gentle</em> and clear.
+          </h1>
+        </div>
       </header>
       <div class="layout-spacer" aria-hidden="true"></div>
       <div class="cards" aria-hidden="true">
