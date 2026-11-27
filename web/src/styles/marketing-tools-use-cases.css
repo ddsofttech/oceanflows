@@ -119,21 +119,13 @@
   );
   overflow: hidden;
   position: relative;
-  min-height: 280px;
+  min-height: 320px;
 }
 
-.use-case-demo__badge {
-  position: absolute;
-  top: var(--space-3);
-  left: var(--space-3);
-  z-index: 2;
-  font-size: var(--text-caption-size);
-  font-weight: 600;
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border-default);
-  background: var(--color-surface-card);
-  color: var(--color-text-secondary);
+.use-case-chat {
+  position: relative;
+  min-height: 320px;
+  height: 100%;
 }
 
 .use-case-chat__idle {
@@ -154,34 +146,29 @@
 }
 
 .use-case-chat__frame {
+  position: absolute;
+  inset: 0;
   width: 100%;
+  height: 100%;
   border: 0;
   display: block;
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
-  height: 0;
-  min-height: 0;
 }
 
 .use-case-row:not(.use-case-row--idle) .use-case-chat__frame {
   opacity: 1;
   pointer-events: auto;
-  height: min(520px, 70vh);
   visibility: visible;
-}
-
-@media (width >= 900px) {
-  .use-case-row:not(.use-case-row--idle) .use-case-chat__frame {
-    height: 480px;
-  }
 }
 
 .use-case-demo {
   display: grid;
   place-items: center;
   padding: var(--space-6);
-  min-height: 260px;
+  min-height: 320px;
+  height: 100%;
   color: var(--color-brand-deep-blue);
 }
 

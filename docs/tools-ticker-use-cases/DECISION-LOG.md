@@ -16,5 +16,6 @@ One row per human decision, answer, or routing event, oldest first. `sdlc-check.
 | D10 | 2026-11-27 | G7 | S6.3 | Revise | RP1 | DOM Path: main > section#use-cases … span.use-case-demo__badge … remove this | human | Hold: remove "Interactive chat illustration" badge on Customer Support demo. → fix S4.1, then re-ask G7. |
 | D11 | 2026-11-27 | G7 | S6.3 | Revise | RP1 | Remove Online Here to help, keep the dot and move it to AI assistant on the same line. Replace icon logo on header of the chat with customer support icon | human | Hold: CS chat header — drop status line; green dot beside title; headset/support icon. |
 | D12 | 2026-11-27 | G7 | S6.3 | Revise | RP1 | revert height = (1 + 1/4) × width → aspect-ratio width/height = 4/5 | human | Hold: drop 4:5 chat-frame aspect-ratio; restore fixed iframe height. |
+| D13 | 2026-11-27 | G7 | S6.3 | Revise | RP1 | why did you define class specific for chat__frame, I think it should be consistent design all for use cases. In addition, I dont want to have demo badge, so remove it and its class | human | Hold: shared demo panel sizing (no chat-only heights); remove all use-case-demo__badge markup/CSS. |
 
-Next ID: **D13**.
+Next ID: **D14**.
