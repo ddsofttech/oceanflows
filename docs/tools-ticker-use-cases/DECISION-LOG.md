@@ -14,6 +14,6 @@ One row per human decision, answer, or routing event, oldest first. `sdlc-check.
 | D8 | 2026-11-27 | G4 | S3.3 | Approve | Design and delivery plan | approve | human | Architecture + RP1 parts ttuc-fe-01 (Important), ttuc-fe-02 (Routine) locked. Board opened. Next: S3.4 ∥ S3.5, then S4. |
 | D9 | 2026-11-27 | G6 | S5.3 | Approve | RP1 | approve | human | QA sign-off for RP1. Known issues from RP1 report remain deferred (CWV lab, UQ-U4 keyboard, CS manual compare, multi-browser partial). Next: S6.1. |
 | D10 | 2026-11-27 | G7 | S6.3 | Revise | RP1 | DOM Path: main > section#use-cases … span.use-case-demo__badge … remove this | human | Hold: remove "Interactive chat illustration" badge on Customer Support demo. → fix S4.1, then re-ask G7. |
-| D11 | 2026-11-27 | G7 | S6.3 | Revise | RP1 | Remove Online Here to help, keep the dot and move it to AI assistant on the same line. Replace icon logo on header of the chat with customer support icon Height of the area showing chats must be longer (height = (1 + 1/4)width) | human | Hold: CS chat header + aspect-ratio 5:4 chat area. |
+| D11 | 2026-11-27 | G7 | S6.3 | Revise | RP1 | Remove Online Here to help, keep the dot and move it to AI assistant on the same line. Replace icon logo on header of the chat with customer support icon | human | Hold: CS chat header — drop status line; green dot beside title; headset/support icon. |
 
 Next ID: **D12**.
