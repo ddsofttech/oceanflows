@@ -1,0 +1,53 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "docs/tools-ticker-use-cases/sources/2026-11-27-customer-support-ai-assistant-chat.html"
+        ],
+        "createdAt": "2026-11-27T12:32:29.873Z",
+        "reason": "S0.1 intake: user-supplied animation source saved unchanged as fixture, not product UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/tools-ticker-use-cases/sources/2026-11-27-customer-support-ai-assistant-chat.html"
+        ],
+        "createdAt": "2026-11-27T12:32:29.897Z",
+        "reason": "S0.1 intake: user-supplied animation source saved unchanged as fixture, not product UI"
+      },
+      {
+        "rule": "tiny-text",
+        "value": "*",
+        "files": [
+          "docs/tools-ticker-use-cases/sources/2026-11-27-customer-support-ai-assistant-chat.html"
+        ],
+        "createdAt": "2026-11-27T12:32:29.919Z",
+        "reason": "S0.1 intake: user-supplied animation source saved unchanged as fixture, not product UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "docs/tools-ticker-use-cases/sources/2026-11-27-customer-support-ai-assistant-chat.html"
+        ],
+        "createdAt": "2026-11-27T12:32:29.941Z",
+        "reason": "S0.1 intake: user-supplied animation source saved unchanged as fixture, not product UI"
+      },
+      {
+        "rule": "pulsing-dot",
+        "value": "*",
+        "files": [
+          "docs/tools-ticker-use-cases/sources/2026-11-27-customer-support-ai-assistant-chat.html"
+        ],
+        "createdAt": "2026-11-27T12:32:29.964Z",
+        "reason": "S0.1 intake: user-supplied animation source saved unchanged as fixture, not product UI"
+      }
+    ]
+  }
+}
