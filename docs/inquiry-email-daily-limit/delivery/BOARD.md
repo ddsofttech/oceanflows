@@ -6,7 +6,7 @@
 - Route: Normal
 - PRD version: v2.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; D5 Approve (2026-11-26)
-- Last updated: 2026-11-26 (RP1 Released; S7.1)
+- Last updated: 2026-11-26 (G8 D10; cycle closed)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
@@ -28,7 +28,7 @@
 | Pipeline or environment | Ready | Evidence |
 |---|---|---|
 | web-ci (PR gates) | Yes | PR #15–#18 |
-| Cloudflare production | Yes | Deploy run 45929625224; oceanflows.net 200; privacy rate-limit live |
+| Cloudflare production | Yes | Deploy 45929625224; inquiry delivery confirmed |
 
 ## Escalations
 | Date | Part or defect | Reason (retest failed twice / three handoffs / three fix rounds) | Sent to | Outcome |

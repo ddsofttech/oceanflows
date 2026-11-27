@@ -119,6 +119,20 @@ Pre-merge S6.2 gate (CI + deploy readiness). Hosted NFR-11 runtime proof is **S6
 
 **Next cadence:** End-of-window summary in S7.2; owner may run NFR-11 E8 during window with disposable emails + Turnstile if needed.
 
+### S7.2 — Post-release review (early close)
+
+**Observation window:** 2026-11-27T02:42:14Z → 2026-11-29T02:42:14Z (48h). **Closed early** at human request before window end (S7.2).
+
+| Item | Result |
+|---|---|
+| **Full package** | `testing/reports/POST-RELEASE-REVIEW.md` |
+| **G8 recommendation** | **Approve** — close cycle |
+| **PRD §3 / FR-15 / FR-11 / BR-13** | Met in production; **NFR-11 hosted E8** and **O5** metrics partial (documented) |
+| **Defects** | **DEFECT-IEDL-PROD-502** closed by human (config); no rollback |
+| **S7.2 live check (2026-11-27)** | `GET /` **200**; `GET /privacy/` **200** (+ rate-limit disclosure); `POST /api/inquiry` `{}` → **400** |
+
+**Follow-ups:** See POST-RELEASE-REVIEW §5 (optional E8 smoke, TM residuals, FR-07 secrets hygiene, O5 enhancement).
+
 ### Go decision (G7)
 
 - **Approver(s) and date:** human — D9 Go (2026-11-26)
@@ -166,3 +180,7 @@ Pre-merge S6.2 gate (CI + deploy readiness). Hosted NFR-11 runtime proof is **S6
 
 ### D8 (2026-11-26)
 Owner **Approve** recorded for FR-11 privacy rate-limit copy. **Closed** with production deploy 2026-11-27.
+
+
+### G8 (2026-11-26)
+Human: **close the request now** — recorded as D10 Approve. Observation window closed early. Cycle closed.
