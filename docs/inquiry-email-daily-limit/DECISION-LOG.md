@@ -12,5 +12,6 @@ One row per human decision, answer, or routing event, oldest first. `sdlc-check.
 | D6 | 2026-11-26 | G5 | S4.5 | Approve | #16 | Approve | human | Sensitive merge allowed for iedl-be-01 @ `6a8a053e`. H1 env (KV + pepper) remains open. Next: merge → S5.1; start iedl-fe-01 after merge. |
 | D7 | 2026-11-26 | G6 | S5.3 | Approve | RP1 | Approve | human | QA sign-off Pass with known issues. Accepts H1 (KV+pepper hosted), D8 privacy sign-off deferred to G7, TM-01/TM-12 residuals. Next: S6.1. |
 | D8 | 2026-11-26 | — | S6.2 | Approve | FR-11 privacy rate-limit copy | Approve | human | Owner accepts Privacy “Inquiry rate limiting” paragraph for production (D8). Next: present G7. |
+| D9 | 2026-11-26 | G7 | S6.3 | Approve | RP1 | Go | human | Production Go for RP1. Next: S6.4 merge release → main; deploy; S7.1 48h observation. |
 
-Next ID: **D9**.
+Next ID: **D10**.

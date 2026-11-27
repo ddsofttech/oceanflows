@@ -99,7 +99,7 @@ Pre-merge S6.2 gate (CI + deploy readiness). Hosted NFR-11 runtime proof is **S6
 
 ### Go decision (G7)
 
-- **Approver(s) and date:** _(pending)_
+- **Approver(s) and date:** human — D9 Go (2026-11-26)
 
 **G7 package (S6.3 input):**
 

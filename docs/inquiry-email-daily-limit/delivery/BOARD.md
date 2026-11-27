@@ -6,12 +6,12 @@
 - Route: Normal
 - PRD version: v2.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; D5 Approve (2026-11-26)
-- Last updated: 2026-11-26 (D8 Approve; G7 ready)
+- Last updated: 2026-11-26 (G7 D9 Go; S6.4)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
 |---|---|---|---|---|
-| RP1 | iedl-devops-01, iedl-be-01, iedl-fe-01 | Signed off | D7 Approve | awaiting |
+| RP1 | iedl-devops-01, iedl-be-01, iedl-fe-01 | Signed off | D7 Approve | D9 Go |
 
 ## Slice parts
 | Part ID | Slice | Owner | Release point | Depends on | Status (Planned / In progress / In review / Merged / Checked) | PR | Review class (Routine / Important / Sensitive) | Review rounds | Notes |
