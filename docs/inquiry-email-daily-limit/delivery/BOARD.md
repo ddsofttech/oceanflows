@@ -23,6 +23,7 @@
 ## Open handoffs
 | ID | From | To | Type (consult / defect / finding / contract / environment) | About (part, PR, or defect) | Asked | Status | Answer or link |
 |---|---|---|---|---|---|---|---|
+| H2 | qa | human | environment | DEFECT-IEDL-PROD-502 delivery_failed on prod | 2026-11-27 | Open | Check Worker runtime secrets (pepper, Resend, INQUIRY_EMAIL); see testing/handoffs/DEFECT-IEDL-PROD-502-devops-diagnosis.md |
 
 ## Environments
 | Pipeline or environment | Ready | Evidence |
