@@ -7,7 +7,7 @@
 - Route: Normal
 - PRD version: 3.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; G4 Approve D8
-- Last updated: 2026-11-27 (S3.4/S3.5 done; ttuc-fe-01 starting)
+- Last updated: 2026-11-27 (ttuc-fe-01 PR #23 In review)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
@@ -17,7 +17,7 @@
 ## Slice parts
 | Part ID | Slice | Owner | Release point | Depends on | Status (Planned / In progress / In review / Merged / Checked) | PR | Review class (Routine / Important / Sensitive) | Review rounds | Notes |
 |---|---|---|---|---|---|---|---|---|---|
-| ttuc-fe-01 | front-end | frontend-developer | RP1 | — | In progress | — | Important | 0 | Harden G3 Home ticker + use cases |
+| ttuc-fe-01 | front-end | frontend-developer | RP1 | — | In review | [#23](https://github.com/ddsofttech/oceanflows/pull/23) | Important | 0 | Harden G3 Home ticker + use cases |
 | ttuc-fe-02 | front-end | frontend-developer | RP1 | ttuc-fe-01 | Planned | — | Routine | 0 | e2e + axe after fe-01 |
 
 ## Open handoffs
