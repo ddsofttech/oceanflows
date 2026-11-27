@@ -73,7 +73,12 @@
   }
 
   .tools-ticker__track {
-    animation: none;
+    animation: none !important;
+    transform: none;
+  }
+
+  .use-case-demo__motion {
+    animation: none !important;
   }
 }
 

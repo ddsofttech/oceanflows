@@ -10,7 +10,7 @@
 | AC or requirement ID | Slice part | Release point | Method (automated / manual / exploratory) | Test or check | Level (unit / integration / end-to-end) |
 |---|---|---|---|---|---|
 | SITE-AC-16 | ttuc-fe-01, ttuc-fe-02 | RP1 | automated + manual | E2E: 12 tool labels in SITE-FR-16 order immediately after `#services`; labels are plain text (no `img` logos). Manual: scroll Services → ticker → Approach; spot-check screen-reader/name exposure. | e2e / manual |
-| SITE-AC-17 | ttuc-fe-01, ttuc-fe-02 | RP1 | automated + manual | E2E: four use-case headings + summaries visible on `/` without clicking demos. Manual: CS iframe loads on intersect; copy matches owner intent vs `sources/2026-11-27-customer-support-ai-assistant-chat.html`; placeholders for other three workflows. | e2e / manual |
+| SITE-AC-17 | ttuc-fe-01, ttuc-fe-02 | RP1 | automated + manual | E2E: four headings/summaries on `/` without demo interaction. Manual: CS iframe on intersect; owner chat intent; three placeholders. | e2e / manual |
 | SITE-AC-N04 | ttuc-fe-01, ttuc-fe-02 | RP1 | automated + manual | E2E (optional in ttuc-fe-02): emulate `prefers-reduced-motion: reduce` — no marquee loop, no abstract demo pulse. Manual: OS reduce motion — static ticker list + static CS transcript. | e2e / manual |
 | SITE-BR-06 | ttuc-fe-01 | RP1 | manual | Visual DOM inspection: text-only tool names; no third-party wordmarks or logo images in ticker. | manual |
 | SITE-BR-05 | ttuc-fe-01 | RP1 | manual | Copy review: four workflows qualitative illustrations only; no invented client claims. | manual |
@@ -34,13 +34,13 @@
 ## 2. Slice checks
 | Slice part | Checks run when it merges |
 |---|---|
-| ttuc-fe-01 | PR CI green: `web/` lint, types, Playwright, `ui-catalog.py --check`, `sdlc-check.py`. **Manual slice gate:** Services → ticker → Approach order; 12 tools in spec order; four workflows readable without interaction; reduce-motion static fallbacks. **Blocking:** wrong tool order or count; missing accessible labels; use-case copy not readable without demo activation; logos in ticker; axe serious/critical on index if run locally on merge commit. |
-| ttuc-fe-02 | CI green with extended `site.spec.ts`: ticker order, four use-case titles, nav regression, axe index threshold unchanged. **Blocking:** failing material AC rows for SITE-AC-16/17; new serious/critical axe on `/`; broken nav anchor test. **Non-blocking:** optional reduce-motion e2e not landed — covered in S5 manual if absent. |
+| ttuc-fe-01 | PR CI green (`web-ci` gates incl. `sdlc-check.py`). Manual: Services → ticker → Approach; 12 tools in order; copy readable without demos; reduce-motion static. Blocking: wrong tools; missing a11y labels; logos in ticker; axe serious+ on `/`. |
+| ttuc-fe-02 | CI + extended `site.spec.ts` (ticker, four titles, nav, axe). Blocking: SITE-AC-16/17 fail; axe regression; broken nav. Non-blocking: optional reduce-motion e2e → S5 manual. |
 
 ## 3. Release tests
 | Release point | End-to-end flows | Regression set | Non-functional checks |
 |---|---|---|---|
-| RP1 (ttuc-fe-01 + ttuc-fe-02) | **W-3 normal:** Home → Services → ticker (12 tools) → Approach → `#use-cases` (four titles/summaries) → Contact CTA reachable. **W-3 alternate:** nav “Use cases” one action → `#use-cases` in viewport. **Exception:** reduce motion — static ticker + static demos; content still readable. | §4 regression set on preview build. | S5.2: SITE-AC-N03 lab CWV on preview; UQ-U4 keyboard exploratory; SITE-NFR-01 viewports; confirm SITE-NFR-04/12 under reduce motion. |
+| RP1 | W-3: Home → Services → ticker → Approach → `#use-cases` → Contact. Alt: nav to use cases. Reduce motion: static ticker/demos, copy readable. | §4 on preview. | S5.2: CWV lab; keyboard; viewports; SITE-NFR-04/12. |
 
 ## 4. Regression set *(existing-repo)*
 | Area from the impact analysis | Existing behavior that must not change | Test |
@@ -82,7 +82,7 @@
   - Slice check: PR merged to `release/tools-ticker-use-cases`; CI pipeline green on merge commit.
   - Release test (RP1): Both slice parts merged and slice-checked; preview URL available for S5 flows.
 - Exit: which failures are blocking; which may be accepted as known issues:
-  - **Blocking:** SITE-AC-16/17 fail; SITE-BR-06 breach; SITE-NFR-02 axe regression on `/`; primary nav or Contact regression (§4); lazy demo breaks readable copy (SITE-AC-17); wrong section order Services → ticker → Approach.
+  - **Blocking:** SITE-AC-16/17; BR-06; axe on `/`; nav/Contact regression; lazy demo hides copy; order Services → ticker → Approach.
   - **Non-blocking at RP1 merge:** SITE-AC-N03 CWV pending S5 lab; UQ-U4 full keyboard pending S5; optional reduce-motion e2e absent if manual SITE-AC-N04 passes; flaky iframe timing — quarantine test with owner, do not waive AC without manual pass.
 
 ## 8. Out of scope

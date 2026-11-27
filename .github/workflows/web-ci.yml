@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - ux/company-branding-website
+      - release/tools-ticker-use-cases
       - 'feature/**'
 
 concurrency:
@@ -159,10 +160,26 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install diff-cover
+      - name: Resolve compare branch
+        id: cov
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="${{ github.base_ref }}"
+          else
+            BASE="${{ github.ref_name }}"
+          fi
+          case "$BASE" in
+            *tools-ticker-use-cases*)
+              echo "branch=origin/release/tools-ticker-use-cases" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "branch=origin/ux/company-branding-website" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
       - run: |
-          git fetch origin ux/company-branding-website || true
+          git fetch origin "${{ steps.cov.outputs.branch }}" || true
           diff-cover web/coverage/lcov.info \
-            --compare-branch=origin/ux/company-branding-website \
+            --compare-branch="${{ steps.cov.outputs.branch }}" \
             --fail-under=80
         working-directory: .
 
@@ -245,7 +262,23 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python .cursor/sdlc/scripts/sdlc-check.py --request company-branding-website
+      - name: Resolve SDLC request (G-CI-01)
+        id: sdlc
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="${{ github.base_ref }}"
+          else
+            BASE="${{ github.ref_name }}"
+          fi
+          case "$BASE" in
+            *tools-ticker-use-cases*)
+              echo "request=tools-ticker-use-cases" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "request=company-branding-website" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+      - run: python .cursor/sdlc/scripts/sdlc-check.py --request ${{ steps.sdlc.outputs.request }}
 
   change-size:
     name: gate / change-size
@@ -258,11 +291,34 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Resolve SDLC request and part (G-CI-01)
+        id: sdlc
+        run: |
+          BASE_REF="${{ github.base_ref }}"
+          HEAD_REF="${{ github.head_ref }}"
+          case "$BASE_REF" in
+            *tools-ticker-use-cases*)
+              REQUEST=tools-ticker-use-cases
+              case "$HEAD_REF" in
+                feature/ttuc-*)
+                  PART="${HEAD_REF#feature/}"
+                  ;;
+                *)
+                  PART=ttuc-fe-01
+                  ;;
+              esac
+              ;;
+            *)
+              REQUEST=company-branding-website
+              PART=cbw-fe-01
+              ;;
+          esac
+          echo "request=$REQUEST" >> "$GITHUB_OUTPUT"
+          echo "part=$PART" >> "$GITHUB_OUTPUT"
       - run: |
           BASE_REF="${{ github.base_ref }}"
           git fetch origin "$BASE_REF" || true
-          # Default L budget for release-branch catch-up / large site PRs (cbw-fe-01).
           python .cursor/sdlc/scripts/sdlc-check.py \
-            --request company-branding-website \
-            --part cbw-fe-01 \
+            --request ${{ steps.sdlc.outputs.request }} \
+            --part ${{ steps.sdlc.outputs.part }} \
             --base "origin/$BASE_REF"
