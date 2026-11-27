@@ -1,4 +1,5 @@
 # Post-Release Review
+<!-- budget: lines=50 chars=300 -->
 
 ## Metadata
 - Request summary:
@@ -7,7 +8,7 @@
 - Author:
 
 ## 1. Outcomes versus success measures
-| Measure (PRD §3 ID) | Target | Actual | Met? | Evidence |
+| Measure (PRD §2 or feature spec ID) | Target | Actual | Met? | Evidence |
 |---|---|---|---|---|
 
 ## 2. Health

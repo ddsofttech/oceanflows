@@ -1,4 +1,5 @@
 # Implementation Plan
+<!-- budget: lines=80 chars=300 -->
 
 ## Metadata
 - Architecture version:

@@ -1,4 +1,5 @@
 # Part plan: <part ID> — <title>
+<!-- budget: lines=60 chars=300 -->
 
 ## Goal
 <!-- One or two sentences: what works after this part merges. -->

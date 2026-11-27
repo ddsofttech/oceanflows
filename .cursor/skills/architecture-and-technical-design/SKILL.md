@@ -1,6 +1,6 @@
 ---
 name: architecture-and-technical-design
-description: Propose the simplest technical architecture that meets an approved PRD — options, scale approach, machine-readable contracts, data model, and ADRs — and keep the C4 model of the whole system current, ready for human architecture approval.
+description: Propose the simplest technical architecture that meets a request's approved feature specs — options, scale approach, machine-readable contracts, data model, and ADRs — and keep the C4 model of the whole system current, ready for human architecture approval.
 ---
 
 # Architecture and Technical Design
@@ -8,21 +8,21 @@ description: Propose the simplest technical architecture that meets an approved 
 Playbook step **S3.1** (`architect`); the design is decided at G4 with the delivery plan. Paths, gates, and routes come from your step card.
 
 ## When to use
-- The PRD is approved and S2 is finished, or skipped because G1 confirmed no design trigger.
+- The request's specs are approved and S2 is finished, or skipped because G1 confirmed no design trigger.
 - A developer's design or contract consult during delivery, or a defect that failed retest twice and needs a root cause.
 
 ## Input
-- Approved PRD; impact analysis and research solution patterns.
+- This request's approved specs and the PRD IDs they inherit; impact analysis and research solution patterns.
 - The UX handoff note, or the UX brief when S2 ended without a review.
 - The system architecture, when it exists; otherwise the current repository's structure. The engineering standards.
 - The threat model from `security-engineer`, when consulted.
 
 ## Process
 1. Restate constraints, non-functional requirements, and integration points from the evidence.
-2. Turn binding UX constraints and must-become-real simulations into explicit design items, and the API data the UI assumes into contract operations, or say why the contract differs. When S2 did not run and a changed screen cannot be settled from the PRD and the UI catalog, hand off a design need for it instead of designing it.
+2. Turn binding UX constraints and must-become-real simulations into explicit design items, and the API data the UI assumes into contract operations, or say why the contract differs. When S2 did not run and a changed screen cannot be settled from the feature spec and the UI catalog, hand off a design need for it instead of designing it.
 3. **Existing repo:** design within the current architecture and its patterns. A departure needs an ADR that names what the current approach cannot do.
 4. **Options:** always include "extend what exists", the simplest design that meets the requirements. Recommend a heavier option (new service, queue, cache, store, framework, or generic mechanism) only when a stated requirement needs it, and say which. Prefer decisions that are cheap to reverse.
-5. **Scale:** from the PRD numbers, state expected load, data volume and growth, and the hot paths; then decide storage and indexes, pagination, caching, sync versus async work, and what scales out. A missing number becomes a question, not an invented threshold.
+5. **Scale:** from the numbers in the specs and the PRD, state expected load, data volume and growth, and the hot paths; then decide storage and indexes, pagination, caching, sync versus async work, and what scales out. A missing number becomes a question, not an invented threshold.
 6. **Contracts:** define every API, event, and data contract as a machine-readable schema (for example OpenAPI or JSON Schema) both sides can generate types from. State the error model and, for existing contracts, how compatibility is kept.
 7. **Data model:** entities, keys, constraints, indexes for the hot paths, and the migration approach for existing data.
 8. Define failure modes and the behavior for each, and the metrics and logs needed to run it.

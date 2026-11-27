@@ -15,10 +15,10 @@ Playbook step **S1.2** (`requirements-analyst`). Paths, gates, and routes come f
 - Change boundaries and regression risks are needed before design.
 
 ## When to skip
-- **Project mode is `greenfield`** — do not run this skill and do not add impact-only PRD sections. The mode comes from the step card; do not re-decide it.
+- **Project mode is `greenfield`** — do not run this skill and do not add impact-only sections to the PRD or specs. The mode comes from the step card; do not re-decide it.
 
 ## Input
-- Current PRD draft and the last approved PRD. Label the analysis provisional until the draft is approved.
+- This request's specs in the draft and in the last baseline, and the PRD IDs they inherit. Label the analysis provisional until the draft is approved.
 - The system architecture, when it exists: start from its containers and components to find what the change touches.
 - The relevant parts of the current repository it points to: source, contracts, schemas, rules, tests, docs.
 
@@ -33,8 +33,8 @@ Playbook step **S1.2** (`requirements-analyst`). Paths, gates, and routes come f
 8. If documentation, code, and tests disagree, report the discrepancy. Do not inspect unrelated parts of the system.
 
 ## Output
-- Impact analysis working paper in the `IMPACT-ANALYSIS.md` template shape — **not** a section in the PRD.
-- PRD updates only: sections **6–7** (refined requirements/regression-related NFRs), **10** (risks, dependencies), **11** (non-blocked open items).
+- Impact analysis in the `IMPACT-ANALYSIS.md` template shape: what changes and what could regress, citing the specs by ID instead of restating them.
+- Updates only to refined requirements and regression-related non-functional requirements in this request's specs, and to risks, dependencies, and non-blocked open questions in the specs, or the PRD when product-wide.
 
 ## Quality checklist
 - [ ] Analysis names the feature and the requirements baseline it used
@@ -43,6 +43,6 @@ Playbook step **S1.2** (`requirements-analyst`). Paths, gates, and routes come f
 - [ ] Regression risks and must-keep workflows are listed
 - [ ] Data, API, integration, security, and authorization impacts are considered where relevant
 - [ ] Findings have severity, consequence, owner, and next action
-- [ ] Blocking findings led to user questions, not only section 11 rows
+- [ ] Blocking findings led to user questions, not only open-question rows
 - [ ] Recommendations are labeled as analysis, not approved architecture
 - [ ] No code was modified and no test result was claimed without running it

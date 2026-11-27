@@ -1,4 +1,5 @@
 # Finding notes
+<!-- budget: lines=40 chars=300 -->
 
 - Baseline PRD version: (e.g. `v2.0`)
 

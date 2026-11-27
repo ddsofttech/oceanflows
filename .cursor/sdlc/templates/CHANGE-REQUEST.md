@@ -1,4 +1,5 @@
 # Change request
+<!-- budget: lines=40 chars=300 -->
 
 ## Document control
 - Request summary:
@@ -18,7 +19,7 @@
 - Links or paths:
 
 ## Proposed PRD changes
-| PRD section | Current baseline text | Proposed text |
+| Document (PRD or feature spec) and section | Current baseline text | Proposed text |
 |---|---|---|
 
 ## Review notes

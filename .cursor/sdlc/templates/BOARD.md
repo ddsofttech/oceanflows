@@ -1,4 +1,5 @@
 # Delivery Board
+<!-- budget: chars=300 -->
 
 ## Metadata
 - Request summary:

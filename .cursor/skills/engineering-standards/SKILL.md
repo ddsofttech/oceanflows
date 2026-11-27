@@ -16,7 +16,7 @@ Playbook step **S3.1** (`architect`). Paths, gates, and routes come from your st
 ## Input
 - The current repository: structure, existing code, lint, format, type, and test configuration, CONTRIBUTING or similar docs. Greenfield: the proposed stack.
 - The existing engineering standards, if any.
-- PRD non-functional requirements.
+- Non-functional requirements in this request's specs, and the PRD's constraints.
 
 ## Process
 1. **Existing repo: describe what is there, do not invent.** Read representative modules in each layer and record the conventions the code already follows. Where the code is inconsistent, name the majority pattern as the standard and list the exceptions; never plan a rewrite to fit the standard.

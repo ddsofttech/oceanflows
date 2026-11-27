@@ -1,6 +1,6 @@
 ---
 name: requirements-clarification
-description: Clarify the problem, stakeholders, outcomes, scope, and known requirements, and seed the living PRD.
+description: Clarify the problem, stakeholders, outcomes, scope, and known requirements, decide which features the request touches, and seed the PRD and those features' specs.
 ---
 
 # Requirements Clarification
@@ -16,32 +16,35 @@ Playbook step **S1.1** (`requirements-analyst`). Paths, gates, and routes come f
 ## Input
 
 - The request, materials and stakeholder answers.
-- The living PRD, shaped only as the `PRD.md` template.
+- The PRD, and the specs of the features its index shows the request touches; nothing else of the product.
 
 ## Process
-1. Continue the living PRD; change only what this request requires, and record each change against the last approved PRD in section 12 with this request's summary. Fold in what any request's `analysis/finding-notes.md` recorded since the baseline: each clarification with its own section 12 row, and each gap or risk still open into section 10 or 11.
-2. Read every source in date order. Extract each candidate **functional** need (behavior the system must perform) and **non-functional** need (quality attributes: performance, security, availability, compliance, usability targets, etc.) with citation (file; speaker and timestamp when available).
+1. Continue the draft; change only what this request requires. When the baseline predates the current templates, such as a single PRD file with no feature specs, first reshape it as your step card's section 7 says. Fold in what any request's finding notes recorded since the baseline: each clarification into the document it clarifies, and each gap or risk still open into that document's open questions or risks.
+2. Read every source in date order. Extract each candidate **functional** need (behavior the system must perform) and **non-functional** need (quality attributes: performance, security, availability, compliance, usability targets, etc.) with its source.
 3. Understand the business problem, context, affected users, and desired outcome; identify decision-makers, users, affected parties, and subject-matter experts.
-4. Identify ambiguity, contradictions, missing information, and assumptions. Define scope, exclusions, essential needs, and desirable enhancements.
-5. Update **only these PRD sections** (template headings only):
-   - **Sections 2–5** — problem, objectives, scope, stakeholders.
-   - **Section 6–7** — one table row per material need; columns per template (`ID`, `Requirement` or quality attribute text, `Priority`, `Status`). Use **Proposed** unless the user or an authoritative source already decided; use **Approved** only when authority is explicit. Put the source in the requirement text or in section 10 as constraint/assumption — do not add columns.
-   - **Section 10** — material constraints, assumptions, dependencies surfaced here.
-6. Do **not** state unresolved needs as agreed requirements in sections 6–7; a deferrable one goes in section 11 as **Important** or **Non-blocking**.
-7. Where sources disagree, keep the latest decision and note what it replaced; never pick one silently.
+4. **Place the request.** Decide which features it changes and which it adds, from the PRD's feature index and capabilities. A new feature gets a short feature ID, a row in the index, and a spec from the `FEATURE-SPEC.md` template. A request that spans features changes each of their specs.
+5. Identify ambiguity, contradictions, missing information, and assumptions. Define scope, exclusions, essential needs, and desirable enhancements.
+6. Update only these sections:
+   - **PRD:** vision, objectives and success measures, users, capabilities and scope, feature index, and product-wide constraints. Only what holds for the whole product or for two or more features.
+   - **Each touched spec:** purpose and users, scope, functional and non-functional requirements (one row per material need, with its source in the Source column), and the feature's constraints.
+   - **PRD change history:** one row for this request naming the features and IDs it changed.
+   Use **Proposed** unless the user or an authoritative source already decided; **Approved** only when authority is explicit.
+7. Do **not** state unresolved needs as agreed requirements; a deferrable one goes in the open questions of the document it would change, as **Important** or **Non-blocking**.
+8. Where sources disagree, keep the latest decision and note what it replaced; never pick one silently.
 
 ## Output
-- Updated living PRD (sections 2–7, 10, and section 11 only when not blocked).
-- Optional clarification notes — citations and raw notes; **not** pasted into the PRD as extra sections.
+- The PRD and this request's specs, updated in the sections above (open questions only when not blocked).
 
 ## Quality checklist
 - [ ] Problem and context are clear
 - [ ] Outcomes are explicit
 - [ ] Relevant stakeholders are identified
+- [ ] Every touched or new feature is in the PRD's index, with a spec
+- [ ] Product-wide content is in the PRD; feature content is in its spec, and nothing is in both
 - [ ] Draft requirements are clear enough to analyze
 - [ ] Scope and exclusions are documented
-- [ ] Material assumptions are in section 10
-- [ ] PRD has no headings beyond the template
-- [ ] Blocking gaps were resolved with the user, not only listed in section 11
+- [ ] Material assumptions are recorded where they apply
+- [ ] No heading beyond the templates
+- [ ] Blocking gaps were resolved with the user, not only listed as open questions
 - [ ] Every conflict between sources is resolved by a later decision or by asking the user
-- [ ] Every change since the last approved PRD is identifiable, with the request that made it
+- [ ] This request's changes are identifiable from its change-history row

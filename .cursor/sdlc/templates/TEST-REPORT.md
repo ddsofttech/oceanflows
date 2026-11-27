@@ -1,4 +1,5 @@
 # Test Report: release point <name>
+<!-- budget: lines=80 chars=300 -->
 
 ## Metadata
 - PRD version:

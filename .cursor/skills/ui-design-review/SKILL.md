@@ -15,7 +15,7 @@ Playbook step **S2.4** (`design-lead`). Paths, gates, and routes come from your 
 - The UI check results and the screenshots of each changed state; T1: the screen specs.
 - The UX brief, including layout concepts and any design-system changes.
 - The UI catalog, `docs/COMPONENTS.md`, with the visual identity.
-- Approved PRD: scenarios, states, and accessibility targets.
+- This request's approved specs: scenarios, states, and accessibility targets.
 
 ## Process
 1. Start from the UI check results `ux-validation` recorded (its step 1); do not re-measure what they cover.
@@ -25,7 +25,7 @@ Playbook step **S2.4** (`design-lead`). Paths, gates, and routes come from your 
    - **Hierarchy**: the screen's job is obvious; one element leads; structure encodes content rather than decorating.
    - **Identity**: the identity's signature decisions show; the palette is the product's, not a framework default; screens with different jobs do not share one layout pattern.
    - **Imagery**: every image, illustration, and icon carries content and follows the identity's imagery rules (`ui-design` step 11).
-   - **States**: loading, empty, error, success, permission, and long or missing data, as the PRD scenarios require.
+   - **States**: loading, empty, error, success, permission, and long or missing data, as the spec's scenarios require.
    - **Copy**: user-facing names, consistent action names through the flow, errors that say how to fix the problem.
    - **Accessibility**, beyond the checks: logical keyboard order, meaningful labels, color not the only signal.
    - **Responsiveness**: no overflow, overlap, or clipped text at mobile width.

@@ -20,12 +20,12 @@ Playbook steps **S4.1, S4.2** (`frontend-developer`, `backend-developer`). Paths
 ## Process
 **Investigate and plan**
 
-1. Read the part plan, the sections it points to, and the code around its expected files; search for existing code and tests that already do part of the work. Open another section of the PRD or design only to answer a question those leave open, and read that section, not the whole document. If a gap would force a guess, hand it off to its owner (`architect` for design and contracts, `security-engineer` for security, `requirements-analyst` for criteria; Handoffs in `.cursor/sdlc/AGENT-RULES.md`) after finishing what does not depend on it.
+1. Read the part plan, the sections it points to, and the code around its expected files; search for existing code and tests that already do part of the work. Open another section of the feature spec, the PRD, or the design only to answer a question those leave open, and read that section, not the whole document. If a gap would force a guess, hand it off to its owner (`architect` for design and contracts, `security-engineer` for security, `requirements-analyst` for criteria; Handoffs in `.cursor/sdlc/AGENT-RULES.md`) after finishing what does not depend on it.
 2. Write a 3–5 line approach: the simplest design that meets the criteria, the code it reuses or extends, and the files it changes. Unless the approach explains why:
    - no helper, class, layer, option, or error handling the criteria and contracts do not need now;
    - no new dependency without `architect`;
    - the codebase's existing patterns over a new one, even a better one.
-3. Branch for the slice, or create the scaffold if the plan assigns it to you.
+3. Cut the part's branch from the base your step card names, or create the scaffold if the plan assigns it to you.
 
 **Extend, don't duplicate**
 

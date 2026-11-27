@@ -16,11 +16,11 @@ Playbook step **S3.2** (`architect`). Paths, gates, and routes come from your st
 - The threat model's per-slice security requirements.
 - The engineering standards and their CI quality gates.
 - Acceptance criteria and impact/regression notes.
-- The UX brief and handoff note, when S2 ran: the UX branch, its components, and the API data the UI assumes.
+- The UX brief and handoff note, when S2 ran: the components G3 accepted, and the API data the UI assumes.
 
 ## Process
 1. Slice the work into vertical increments mapped to acceptance criteria.
-2. Split each slice into front-end and back-end parts, one PR each, assigned to `frontend-developer` and `backend-developer`. Give each part an ID and the parts it depends on; a back-end part that defines a contract comes before the front-end part that uses it. When the brief has a UX branch, the front-end parts for its screens start from that branch and reuse its components instead of rebuilding them.
+2. Split each slice into front-end and back-end parts, one PR each, assigned to `frontend-developer` and `backend-developer`. Give each part an ID and the parts it depends on; a back-end part that defines a contract comes before the front-end part that uses it. When G3 accepted built screens, the front-end parts for them reuse their components instead of rebuilding them, and one front-end part per flow, in the release point that first ships the flow, deletes its prototype shell.
 3. For each slice part, search the codebase and name:
    - the files expected to change;
    - the existing functions, modules, and components to reuse or extend, with their callers;

@@ -1,4 +1,5 @@
 # Release Plan
+<!-- budget: lines=120 chars=300 -->
 
 One section per release point, newest first.
 
@@ -28,7 +29,7 @@ One section per release point, newest first.
 
 ### Observation
 - Dashboards and alerts:
-- KPIs to watch (PRD §3 IDs):
+- KPIs to watch (PRD §2 or feature spec success measures):
 - Observation window: start, end, and who watches
 
 ### Go decision (G7)

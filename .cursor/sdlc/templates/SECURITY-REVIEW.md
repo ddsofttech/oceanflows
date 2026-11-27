@@ -1,4 +1,5 @@
 # Security Review: PR <number>
+<!-- budget: lines=40 chars=300 -->
 
 - Title:
 - Slice part:

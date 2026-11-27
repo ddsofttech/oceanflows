@@ -13,8 +13,8 @@ Playbook steps **S2.1, S2.3** (`designer`). Paths, gates, and routes come from y
 - The UX brief names a design-system change: a missing component, state, or token, or a change to the look.
 
 ## Input
-- Approved PRD: product, audience, brand constraints, platforms, accessibility targets.
-- The UI catalog, `docs/COMPONENTS.md`, and the tokens file and components it points to; or, for a product with no UI yet, the house design systems, which share one component markup: [CodeIT Design System](https://claude.ai/artifact/WCexX9GkSkcdqYGo6uukDK). Read them with the Artifact tool. A house system is a starting point, never required.
+- The PRD: product, audience, brand constraints, platforms, accessibility targets.
+- The UI catalog, `docs/COMPONENTS.md`, and the tokens file and components it points to; or, for a product with no UI yet, the [CodeIT Design System](https://claude.ai/artifact/WCexX9GkSkcdqYGo6uukDK), read with the Artifact tool.
 - Brand assets, a design system the human supplies, or a design source, if any.
 - The components or tokens the brief's screens lacked.
 
@@ -31,8 +31,8 @@ Playbook steps **S2.1, S2.3** (`designer`). Paths, gates, and routes come from y
    - what this domain must avoid (for example playful type in finance, cold clinical layouts for children, dense tables for first-time consumers);
    - one or two signature decisions that make the product recognisable without its logo: a typeface pairing, a shape language, an illustration or photography style, or a color with its reason;
    - imagery: one icon family, as SVG; whether the product uses illustration or photography, in what style and on which subjects, and what it never shows.
-3. Give the human the options, and recommend one with the reason and what would need changing: a design system they supply; Meridian, the default, adapted to the identity; another house system that fits the audience better; or a custom direction with a short name, a one-paragraph rationale, and the token decisions below. Do not apply a system before the human chooses.
-4. Whichever is chosen, the identity's signature decisions change its tokens: a house system left exactly as published looks like every other product built on it.
+3. Recommend the CodeIT Design System, the default, adapted to the identity, with what would need changing; the human may choose or supply another instead. Do not apply a system before the human chooses.
+4. Whichever is chosen, the identity's signature decisions change its tokens: a design system left exactly as published looks like every other product built on it.
 
 **Change** (S2.3, the brief's changes only)
 
@@ -60,7 +60,7 @@ Playbook steps **S2.1, S2.3** (`designer`). Paths, gates, and routes come from y
 - In S2.3: the changed tokens file and components on the UX branch, the regenerated catalog, and the list of affected screens.
 
 ## Quality checklist
-- [ ] The recommendation names the audience fit and the trade-off, and offers the human's own system, Meridian, and the alternatives
+- [ ] The recommendation names the audience fit and the trade-off, and offers the CodeIT Design System as the default, open to the human's own choice
 - [ ] The identity has brand attributes, the domain's avoid list, signature decisions, and imagery rules, and lives in the tokens file's `$description`
 - [ ] The primary color has a reason; no framework default is left unchanged
 - [ ] Only the brief's changes were made, in the design system itself

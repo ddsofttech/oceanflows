@@ -25,8 +25,14 @@ PART_STATUS = ["planned", "in progress", "in review", "merged", "checked"]
 RP_STATUS = ["building", "verifying", "signed off", "released"]
 REVIEW_CLASSES = ("routine", "important", "sensitive")  # playbook section 5
 DEFECT_DONE = {"closed"}
-PART_PLAN_LINES = 60                                 # playbook S3.2
 NONE = {"", "-", "—", "n/a", "none"}
+BUDGET_TOLERANCE = 0.10                              # playbook section 8, document budgets
+BUDGET = re.compile(r"<!--\s*budget:([^>]*)-->")
+COMMENT_LINE = re.compile(r"^\s*<!--.*-->\s*$")
+# Folders whose files take a template other than their own name (playbook section 8).
+FOLDER_TEMPLATES = {"features": "FEATURE-SPEC", "change-requests": "CHANGE-REQUEST", "parts": "PART-PLAN",
+                    "reports": "TEST-REPORT", "security": "SECURITY-REVIEW", "defects": "DEFECT"}
+UNBUDGETED = {"sources", "decisions", "baselines"}   # verbatim or immutable
 TEST_OR_GENERATED = re.compile(
     r"(^|/)(tests?|__tests__|spec|specs|fixtures|generated|__snapshots__)/|"
     r"(\.|_)(test|spec)\.[^/]+$|^test_[^/]+$|(^|/)test_[^/]+$|"
@@ -170,51 +176,135 @@ def prd_status(text):
     return status, m.group() if m else ""
 
 
+def titled_tables(text, word, *columns):
+    """Rows of the first table with `columns` in every level-2 section whose title contains `word`."""
+    found = []
+    for title in headings(text or ""):
+        if word.lower() in title.lower():
+            found += table_with(section(text, title) or "", *columns) or []
+    return found
+
+
 def proposed_rows(text):
-    bad = []
-    for heading in ("6.", "7."):
-        rows = table_with(section(text, heading) or "", "ID", "Status")
-        bad += [r["ID"] for r in rows or [] if r["Status"].lower() == "proposed"]
-    return bad
+    """Requirement IDs still Proposed: every 'requirements' section of the PRD or a feature spec (playbook section 7)."""
+    return [r["ID"] for r in titled_tables(text, "requirements", "ID", "Status") if r["Status"].lower() == "proposed"]
+
+
+def open_questions(text):
+    """Blocking or Important rows in the 'Open questions' section."""
+    return [r["ID"] for r in titled_tables(text, "open questions", "ID", "Severity")
+            if r["Severity"].lower().startswith(("blocking", "important"))]
+
+
+def feature_specs(folder):
+    return sorted(folder.glob("*.md")) if folder.is_dir() else []
+
+
+def check_template(path, template, check_id, rel, rep):
+    want, have = headings(read(PKG / "templates" / template)), headings(read(path))
+    rep.check(have == want, check_id, rel,
+              f"headings differ from the {template} template; missing {[h for h in want if h not in have]}, extra {[h for h in have if h not in want]}")
 
 
 def check_prd(root, rep):
-    template = read(PKG / "templates" / "PRD.md")
     prd_path = root / "docs" / "PRD.md"
     prd = read(prd_path)
     if prd is None:
         rep.skip("prd-template", "docs/PRD.md", "no living PRD yet")
         return
-    want, have = headings(template), headings(prd)
-    rep.check(have == want, "prd-template", "docs/PRD.md",
-              f"headings differ from the PRD template; missing {[h for h in want if h not in have]}, extra {[h for h in have if h not in want]}")
+    check_template(prd_path, "PRD.md", "prd-template", "docs/PRD.md", rep)
+    specs = feature_specs(root / "docs" / "features")
+    for spec in specs:
+        check_template(spec, "FEATURE-SPEC.md", "prd-template", spec.relative_to(root).as_posix(), rep)
     status, version = prd_status(prd)
-    if status.lower() == "approved":
-        base = root / "docs" / "baselines" / "prds" / f"PRD-v{version}.md"
-        rep.check(version.endswith(".0"), "prd-approved", "docs/PRD.md", f"approved PRD has draft version {version}")
-        rep.check(base.is_file() and base.read_bytes() == prd_path.read_bytes(), "prd-approved", "docs/PRD.md",
-                  f"approved PRD is not identical to {base.relative_to(root).as_posix()}")
+    if status.lower() != "approved":
+        return
+    rep.check(version.endswith(".0"), "prd-approved", "docs/PRD.md", f"approved PRD has draft version {version}")
+    base = root / "docs" / "baselines" / "prds" / f"PRD-v{version}"
+    if not base.is_dir() and not specs and Path(f"{base}.md").is_file():
+        base_files = {prd_path: Path(f"{base}.md")}         # a single-file baseline from before feature specs
+    else:
+        base_files = {prd_path: base / "PRD.md", **{s: base / "features" / s.name for s in specs}}
+        extra = [p.name for p in feature_specs(base / "features") if not (root / "docs" / "features" / p.name).is_file()]
+        rep.check(not extra, "prd-approved", "docs/features", f"approved v{version} has specs missing here: {', '.join(extra)}")
+    for living, copy in base_files.items():
+        rep.check(copy.is_file() and copy.read_bytes() == living.read_bytes(), "prd-approved", living.relative_to(root).as_posix(),
+                  f"approved, but not identical to {copy.relative_to(root).as_posix()}")
+
+
+def baseline_versions(root):
+    """[(version, PRD file, every file of that baseline)]: a folder PRD-vX.0/ or, from before feature specs, a file PRD-vX.0.md."""
+    folder = root / "docs" / "baselines" / "prds"
+    found = []
+    for path in sorted(folder.glob("PRD-v*")) if folder.is_dir() else []:
+        if path.is_dir():
+            found.append((path.name.split("-v", 1)[1], path / "PRD.md", sorted(p for p in path.rglob("*") if p.is_file())))
+        elif path.suffix == ".md":
+            found.append((path.stem.split("-v", 1)[1], path, [path]))
+    return found
 
 
 def check_baselines(root, rep):
-    folder = root / "docs" / "baselines" / "prds"
     in_git = git(root, "rev-parse", "--is-inside-work-tree") is not None
-    for path in sorted(folder.glob("PRD-v*.md")) if folder.is_dir() else []:
-        rel = path.relative_to(root).as_posix()
-        text = read(path)
-        status, version = prd_status(text)
-        file_version = path.stem.split("-v", 1)[1]
+    for file_version, prd_file, files in baseline_versions(root):
+        rel = prd_file.relative_to(root).as_posix()
+        status, version = prd_status(read(prd_file) or "")
         rep.check(status.lower() == "approved", "baseline-approved", rel, f"document control status is '{status}', not Approved")
-        rep.check(version == file_version, "baseline-approved", rel, f"version {version} does not match the file name")
-        bad = proposed_rows(text)
-        rep.check(not bad, "baseline-approved", rel, f"requirements still Proposed: {', '.join(bad)}")
-        if not in_git:
-            rep.skip("baseline-immutable", rel, "not a git repository")
-            continue
-        commits = [c for c in (git(root, "log", "--format=%H", "--", rel) or "").split() if c]
-        rep.check(len(commits) <= 1, "baseline-immutable", rel, f"changed after it was created ({len(commits)} commits touch it)")
-        state = (git(root, "status", "--porcelain", "--", rel) or "")[:2]
-        rep.check(state.strip() in ("", "??", "A"), "baseline-immutable", rel, "has uncommitted changes")
+        rep.check(version == file_version, "baseline-approved", rel, f"version {version} does not match the baseline name v{file_version}")
+        for path in files:
+            path_rel = path.relative_to(root).as_posix()
+            bad = proposed_rows(read(path) or "")
+            rep.check(not bad, "baseline-approved", path_rel, f"requirements still Proposed: {', '.join(bad)}")
+            if not in_git:
+                rep.skip("baseline-immutable", path_rel, "not a git repository")
+                continue
+            commits = [c for c in (git(root, "log", "--format=%H", "--", path_rel) or "").split() if c]
+            rep.check(len(commits) <= 1, "baseline-immutable", path_rel, f"changed after it was created ({len(commits)} commits touch it)")
+            state = (git(root, "status", "--porcelain", "--", path_rel) or "")[:2]
+            rep.check(state.strip() in ("", "??", "A"), "baseline-immutable", path_rel, "has uncommitted changes")
+
+
+# ---------- document budgets ----------
+
+def budgets():
+    """{template name without .md: {'lines': n, 'chars': n}} from the budget comment in each template."""
+    found = {}
+    for path in sorted((PKG / "templates").glob("*.md")):
+        m = BUDGET.search(read(path) or "")
+        if m:
+            found[path.stem] = {k: int(v) for k, v in re.findall(r"(lines|chars)\s*=\s*(\d+)", m.group(1))}
+    return found
+
+
+def budget_for(path, table):
+    folder = FOLDER_TEMPLATES.get(path.parent.name)
+    name = folder or path.stem.upper().replace("_", "-")
+    return name if name in table else None
+
+
+def check_budget(path, rel, limits, template, rep):
+    lines = [l for l in (read(path) or "").splitlines() if l.strip() and not COMMENT_LINE.match(l)]
+    over = 1 + BUDGET_TOLERANCE
+    if "lines" in limits:
+        rep.check(len(lines) <= limits["lines"] * over, "doc-budget", rel,
+                  f"{len(lines)} lines, more than 10% over the {template} budget of {limits['lines']}: "
+                  "split it, or cut what repeats other documents")
+    if "chars" in limits:
+        long = [l for l in lines if len(l) > limits["chars"] * over]
+        rep.check(not long, "doc-budget", rel,
+                  f"{len(long)} line(s) more than 10% over the {template} budget of {limits['chars']} characters, "
+                  f"the longest {max((len(l) for l in long), default=0)}: shorten them")
+
+
+def check_budgets(root, request_dirs, rep):
+    table, docs = budgets(), root / "docs"
+    paths = sorted(docs.glob("*.md")) + feature_specs(docs / "features")
+    for req in request_dirs:
+        paths += sorted(p for p in req.rglob("*.md") if not UNBUDGETED & set(p.relative_to(req).parts[:-1]))
+    for path in paths:
+        template = budget_for(path, table)
+        if template:
+            check_budget(path, path.relative_to(root).as_posix(), table[template], f"{template}.md", rep)
 
 
 # ---------- decision logs ----------
@@ -267,12 +357,10 @@ def approved(rows, gate, subject_pattern):
 
 
 def check_baseline_approvals(root, all_rows, rep):
-    folder = root / "docs" / "baselines" / "prds"
-    for path in sorted(folder.glob("PRD-v*.md")) if folder.is_dir() else []:
-        version = path.stem.split("-v", 1)[1]
+    for version, prd_file, _ in baseline_versions(root):
         pattern = rf"\bv?{re.escape(version)}\b"
         ok = approved(all_rows, "G1", pattern) or approved(all_rows, "GC", pattern)
-        rep.check(bool(ok), "gate-logged", path.relative_to(root).as_posix(),
+        rep.check(bool(ok), "gate-logged", prd_file.relative_to(root).as_posix(),
                   f"no G1 or GC Approve row for v{version} in any DECISION-LOG.md")
 
 
@@ -435,13 +523,41 @@ def check_release_points(req, board, rows, rep, open_rows):
 
 # ---------- gate pre-checks ----------
 
+def git_ref(root, *refs):
+    return next((r for r in refs if git(root, "rev-parse", "--verify", "--quiet", r + "^{commit}") is not None), None)
+
+
+def check_merged_into_request(root, req, board, rows, rep):
+    """The UX branch G3 accepted and every merged part are on the request branch (playbook section 8, Branches)."""
+    if git(root, "rev-parse", "--is-inside-work-tree") is None:
+        return
+    name = req.name
+    branch = git_ref(root, f"origin/release/{name}", f"release/{name}")
+    merged = [p for p in (board or {}).get("parts", []) if status_index(p["Status"], PART_STATUS) >= 3]
+    ux = git_ref(root, f"origin/ux/{name}", f"ux/{name}")
+    if branch is None:
+        if merged or (ux and approved(rows, "G3", r".")):
+            rep.skip("merged", name, f"no request branch release/{name}")
+        return
+    if ux and approved(rows, "G3", r"."):
+        rep.check(git(root, "merge-base", "--is-ancestor", ux, branch) is not None, "merged", name,
+                  f"{ux} was accepted at G3 but is not merged into {branch}")
+    for part in merged:
+        num = pr_number(part["PR"]) or ""
+        sha = next((t for t in re.findall(r"\b[0-9a-f]{7,40}\b", part["PR"]) if t != num), None)
+        where = f"{name}: {part['Part ID']}"
+        if not rep.check(sha is not None, "merged", where, f"{part['Status']} but the board's PR cell has no merge commit"):
+            continue
+        rep.check(git(root, "merge-base", "--is-ancestor", sha, branch) is not None, "merged", where,
+                  f"merge commit {sha} is not on {branch}")
+
+
 def gate_checks(root, req, args, board, rows, rep):
     gate = args.gate
     if gate == "G1":
         prd = read(root / "docs" / "PRD.md") or ""
-        open_rows = table_with(section(prd, "11.") or "", "ID", "Severity") or []
-        blocking = [r["ID"] for r in open_rows if r["Severity"].lower().startswith(("blocking", "important"))]
-        rep.check(not blocking, "gate-ready", "G1", f"Blocking or Important §11 questions still open: {', '.join(blocking)}")
+        blocking = open_questions(prd) + [q for s in feature_specs(root / "docs" / "features") for q in open_questions(read(s))]
+        rep.check(not blocking, "gate-ready", "G1", f"Blocking or Important open questions in the PRD or a feature spec: {', '.join(blocking)}")
         rep.check(prd_status(prd)[0].lower() == "pending approval", "gate-ready", "G1", "PRD document control is not Pending approval")
     elif gate == "G4":
         for rel in ("design/ARCHITECTURE.md", "design/IMPLEMENTATION-PLAN.md"):
@@ -457,11 +573,8 @@ def gate_checks(root, req, args, board, rows, rep):
             rep.check(p["Size"].upper()[:1] in ("S", "M", "L"), "gate-ready", "G4", f"{p['Part ID']}: size '{p['Size']}' is not S, M, or L")
             rep.check(review_class(p) is not None, "gate-ready", "G4",
                       f"{p['Part ID']}: review class '{p['Review class']}' is not Routine, Important, or Sensitive")
-            part_plan = read(req / "design" / "parts" / f"{p['Part ID']}.md")
-            if rep.check(part_plan is not None, "gate-ready", "G4", f"design/parts/{p['Part ID']}.md is missing"):
-                lines = len(part_plan.rstrip().splitlines())
-                rep.check(lines <= PART_PLAN_LINES, "gate-ready", "G4",
-                          f"design/parts/{p['Part ID']}.md has {lines} lines, over {PART_PLAN_LINES}: split the part")
+            rep.check((req / "design" / "parts" / f"{p['Part ID']}.md").is_file(), "gate-ready", "G4",
+                      f"design/parts/{p['Part ID']}.md is missing")
             for dep in ids_in(p["Depends on"]):
                 rep.check(dep in ids, "gate-ready", "G4", f"{p['Part ID']} depends on unknown part {dep}")
     elif gate == "G5":
@@ -559,7 +672,7 @@ def main():
     check_baselines(root, rep)
     check_package(root, rep)
     docs = root / "docs"
-    request_dirs = [d for d in sorted(docs.iterdir()) if d.is_dir() and d.name != "baselines"] if docs.is_dir() else []
+    request_dirs = [d for d in sorted(docs.iterdir()) if d.is_dir() and d.name not in ("baselines", "features")] if docs.is_dir() else []
     open_logs = {d.name: load_log(d / "DECISION-LOG.md", root, rep) for d in request_dirs if (d / "DECISION-LOG.md").is_file()}
     logs = {name: [r for f in sorted((docs / name / "decisions").glob("*.md")) for r in load_log(f, root, rep)] + rows
             for name, rows in open_logs.items()}
@@ -567,6 +680,7 @@ def main():
 
     if args.request and not (docs / args.request).is_dir():
         ap.error(f"docs/{args.request} does not exist")
+    check_budgets(root, [d for d in request_dirs if not args.request or d.name == args.request], rep)
     for req in request_dirs:
         if args.request and req.name != args.request:
             continue
@@ -578,6 +692,7 @@ def main():
             check_board_current(req, board, rep)
             check_merges(req, board, rows, rep)
             check_release_points(req, board, rows, rep, open_logs.get(req.name, []))
+        check_merged_into_request(root, req, board, rows, rep)
         if args.gate and req.name == args.request:
             gate_checks(root, req, args, board, rows, rep)
         if args.part and req.name == args.request:

@@ -19,7 +19,7 @@ Read `.cursor/sdlc/AGENT-RULES.md` before acting, then run only the steps in you
 
 ## Responsibilities
 
-- Design only what the approved PRD contains; a gap goes back as a finding, not a design choice.
+- Design only what the approved feature specs contain; a gap goes back as a finding, not a design choice.
 - Be candid about simulation: mock data and stubbed errors are listed, never presented as real behavior.
 - Choose components from the UI catalog, not by reading component source.
 - Write no data fetching or production routing or state: the prototype shell is the only navigation, and front-end integration replaces it.

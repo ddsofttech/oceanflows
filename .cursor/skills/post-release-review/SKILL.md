@@ -1,6 +1,6 @@
 ---
 name: post-release-review
-description: Compare release outcomes with the PRD success measures and propose owned follow-ups for the G8 decision.
+description: Compare release outcomes with the success measures in the PRD and feature specs and propose owned follow-ups for the G8 decision.
 ---
 
 # Post-Release Review
@@ -11,7 +11,7 @@ Playbook steps **S7.2, S7.3** (`devops`). Paths, gates, and routes come from you
 - The last release point's observation window has ended, or a major incident tied to a release occurred.
 
 ## Input
-- Observation summaries, incidents, defects, rollback history, PRD §3 success measures.
+- Observation summaries, incidents, defects, rollback history, the success measures of the PRD and of the released features' specs.
 
 ## Process
 1. Compare outcomes with the success measures.
