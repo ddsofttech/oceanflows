@@ -80,8 +80,8 @@
         gap: 12px;
       }
       .layout-spacer {
-        flex: 1 1 45%;
-        min-height: 36px;
+        flex: 1 1 38%;
+        min-height: 28px;
         width: 100%;
       }
       .nav-pill {
@@ -141,10 +141,45 @@
       }
       .hero {
         flex: none;
-        text-align: center;
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: 2px 4px 0;
+      }
+      .hero__copy {
         width: 100%;
         max-width: 28em;
-        padding: 2px 4px 0;
+        text-align: center;
+      }
+      .hero__visual {
+        margin: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        line-height: 0;
+      }
+      .hero__visual img {
+        width: min(46vw, 152px);
+        height: auto;
+        max-height: 118px;
+        object-fit: contain;
+        object-position: center bottom;
+        display: block;
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          #000 0%,
+          #000 82%,
+          transparent 100%
+        );
+        mask-image: linear-gradient(
+          to bottom,
+          #000 0%,
+          #000 82%,
+          transparent 100%
+        );
       }
       .kicker {
         margin: 0 0 8px;
@@ -340,10 +375,22 @@
         <button type="button" class="nav-cta">Book visit</button>
       </nav>
       <header class="hero">
-        <p class="kicker">Patient care</p>
-        <h1 class="headline">
-          Healthy smiles start with care that feels <em>gentle</em> and clear.
-        </h1>
+        <div class="hero__copy">
+          <p class="kicker">Patient care</p>
+          <h1 class="headline">
+            Healthy smiles start with care that feels <em>gentle</em> and clear.
+          </h1>
+        </div>
+        <figure class="hero__visual">
+          <img
+            src="/demos/assets/dental-hero-smile.png"
+            width="304"
+            height="418"
+            alt=""
+            decoding="async"
+            aria-hidden="true"
+          />
+        </figure>
       </header>
       <div class="layout-spacer" aria-hidden="true"></div>
       <div class="cards" aria-hidden="true">
