@@ -6,7 +6,7 @@
 - Route: Normal
 - PRD version: v2.0
 - Implementation plan and G4 decision: `design/IMPLEMENTATION-PLAN.md`; D5 Approve (2026-11-26)
-- Last updated: 2026-11-26 (H1 closed; S6.2 re-run)
+- Last updated: 2026-11-26 (S6.2 partial; await D8)
 
 ## Release points
 | Release point | Slice parts | Status (Building / Verifying / Signed off / Released) | G6 | G7 |
@@ -33,7 +33,7 @@
 |---|---|---|
 | web-ci (PR gates) | Yes | PR #15–#17 gates |
 | Local (wrangler + .dev.vars) | Partial | Binding present; pepper local-only |
-| Cloudflare preview / production | Partial | Prod KV `id` set; pepper claimed set; S6.2 re-run |
+| Cloudflare preview / production | Partial | KV id + pepper set; hosted NFR-11 after G7 deploy to main |
 
 ## Escalations
 | Date | Part or defect | Reason (retest failed twice / three handoffs / three fix rounds) | Sent to | Outcome |
