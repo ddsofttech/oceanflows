@@ -10,5 +10,6 @@ One row per human decision, answer, or routing event, oldest first. `sdlc-check.
 | D4 | 2026-11-27 | G2 | S2.2 | Revise | Use cases direction | all your design options are not better than my prototype, please use my prototype but arrange it in the page on the left and text content on the right with its outstanding benefits, write 5 list items and a hook on the top of it. | human | Discard directions A–C. Rebuild brief around owner chat prototype left + copy right (hook + 5 benefit bullets). Stay within SITE-BR-05 (no invented client claims). → S2.1. |
 | D5 | 2026-11-27 | — | S2.1 | Answer | Use cases lazy load | apply lazy loading when users scroll to each use case | human | Each use-case demo/content activates only when scrolled into view (intersection-based). Fold into S2.1 revise with D4. |
 | D6 | 2026-11-27 | G2 | S2.2 | Approve | Use cases direction D4 | Approve | human | Chosen: left owner chat prototype + right hook/5 benefits; scroll lazy-load (D5); proposed copy accepted. Directions A–C withdrawn. Next: S2.3. |
+| D7 | 2026-11-27 | G3 | S2.5 | Approve | UX acceptance | approve | human | UX accepted. Known issue: ticker PNGs frame Services (live ticker OK). UQ-T3/UQ-U4 deferred to QA. Merge `ux/tools-ticker-use-cases` → request branch → S3.1. |
 
-Next ID: **D7**.
+Next ID: **D8**.
