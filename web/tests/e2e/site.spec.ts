@@ -28,6 +28,7 @@ const toolsInSpecOrder = [
 
 const useCaseTitles = [
   "Inquiry & FAQ assistant",
+  "Website design, build & management",
   "Lead qualification & follow-up",
   "Internal knowledge assistant",
   "Booking & follow-up workflows",
@@ -182,7 +183,7 @@ test.describe("marketing site", () => {
     await expect(page.locator(".tools-ticker img")).toHaveCount(0);
   });
 
-  test("use cases section shows four workflow titles without activating demos", async ({
+  test("use cases section shows five workflow titles without activating demos", async ({
     page,
   }) => {
     await page.goto("/");

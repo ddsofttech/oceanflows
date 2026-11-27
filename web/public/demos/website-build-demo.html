@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Website build journey – animation</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap"
+    />
+    <style>
+      :root {
+        --pg: #f4f8ff;
+        --card: #fff;
+        --line: #dfe7f3;
+        --text: #152947;
+        --muted: #63728a;
+        --surface: #eef3fc;
+        --blue: #1e40af;
+        --ok: #15803d;
+        box-sizing: border-box;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --pg: #070f2b;
+          --card: #0e1a44;
+          --line: #22337a;
+          --text: #f1f5f9;
+          --muted: #a8b5cc;
+          --surface: #13245f;
+          --blue: #3b82f6;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --pg: #070f2b;
+        --card: #0e1a44;
+        --line: #22337a;
+        --text: #f1f5f9;
+        --muted: #a8b5cc;
+        --surface: #13245f;
+        --blue: #3b82f6;
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+      }
+      html {
+        background: var(--card);
+      }
+      body {
+        background: var(--card);
+        font:
+          400 13px/1.45 Inter,
+          system-ui,
+          sans-serif;
+        color: var(--text);
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+        padding: 12px 14px 10px;
+        gap: 10px;
+      }
+      .chrome {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--card);
+      }
+      .bar {
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--line);
+      }
+      .dots {
+        display: flex;
+        gap: 5px;
+      }
+      .dots i {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--muted) 55%, transparent);
+      }
+      .dots i:nth-child(1) {
+        background: #f87171;
+      }
+      .dots i:nth-child(2) {
+        background: #fbbf24;
+      }
+      .dots i:nth-child(3) {
+        background: #4ade80;
+      }
+      .url {
+        flex: 1;
+        min-width: 0;
+        font:
+          500 11px Inter,
+          sans-serif;
+        color: var(--muted);
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 5px 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .viewport {
+        flex: 1;
+        min-height: 0;
+        position: relative;
+        background: linear-gradient(
+          165deg,
+          color-mix(in srgb, var(--blue) 8%, var(--pg)) 0%,
+          var(--pg) 45%
+        );
+        padding: 14px 16px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        transition: opacity 0.45s ease;
+      }
+      .viewport.dim {
+        opacity: 0.35;
+      }
+      .mock-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .mock-logo {
+        font:
+          700 14px Montserrat,
+          sans-serif;
+        color: var(--blue);
+        letter-spacing: -0.02em;
+      }
+      .mock-links {
+        display: flex;
+        gap: 12px;
+        font-size: 10px;
+        font-weight: 500;
+        color: var(--muted);
+      }
+      .mock-hero {
+        flex: 1;
+        min-height: 52px;
+        border-radius: 10px;
+        border: 1px dashed color-mix(in srgb, var(--blue) 35%, var(--line));
+        background: color-mix(in srgb, var(--card) 70%, transparent);
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 12px;
+      }
+      .mock-hero h1 {
+        margin: 0 0 6px;
+        font:
+          700 15px/1.2 Montserrat,
+          sans-serif;
+        color: var(--text);
+      }
+      .mock-hero p {
+        margin: 0;
+        font-size: 10px;
+        color: var(--muted);
+        max-width: 22em;
+      }
+      .mock-cta {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 6px 14px;
+        border-radius: 8px;
+        background: var(--blue);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 600;
+      }
+      .mock-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .mock-tile {
+        height: 36px;
+        border-radius: 8px;
+        background: color-mix(in srgb, var(--surface) 80%, var(--card));
+        border: 1px solid var(--line);
+      }
+      .trail {
+        flex: none;
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 6px;
+        padding: 0 2px;
+      }
+      .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-align: center;
+      }
+      .step-ico {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        color: var(--muted);
+        transition:
+          background 0.35s,
+          border-color 0.35s,
+          color 0.35s,
+          transform 0.35s;
+      }
+      .step.on .step-ico {
+        background: var(--blue);
+        border-color: var(--blue);
+        color: #fff;
+        transform: scale(1.06);
+      }
+      .step.done .step-ico {
+        background: color-mix(in srgb, var(--ok) 18%, var(--card));
+        border-color: color-mix(in srgb, var(--ok) 40%, var(--line));
+        color: var(--ok);
+      }
+      .step-lbl {
+        font:
+          500 8px/1.2 Inter,
+          sans-serif;
+        color: var(--muted);
+        letter-spacing: 0.02em;
+      }
+      .step.on .step-lbl {
+        color: var(--text);
+        font-weight: 600;
+      }
+      .badge {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.92);
+        opacity: 0;
+        pointer-events: none;
+        padding: 10px 16px;
+        border-radius: 10px;
+        background: var(--card);
+        border: 1px solid var(--line);
+        font:
+          600 12px Montserrat,
+          sans-serif;
+        color: var(--blue);
+        white-space: nowrap;
+        transition:
+          opacity 0.35s,
+          transform 0.35s;
+      }
+      .badge.show {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chrome" aria-label="Website build journey preview">
+      <div class="bar" aria-hidden="true">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="url" id="url">yoursite.example — preview</div>
+      </div>
+      <div class="viewport" id="vp">
+        <div class="mock-nav" aria-hidden="true">
+          <span class="mock-logo">Harbor &amp; Co.</span>
+          <span class="mock-links"
+            ><span>Services</span><span>About</span><span>Contact</span></span
+          >
+        </div>
+        <div class="mock-hero" aria-hidden="true">
+          <div>
+            <h1 id="ht">Your business, online</h1>
+            <p id="hs">
+              A clear site scope turns into a prototype you can click through
+              before a single line of production code ships.
+            </p>
+            <span class="mock-cta" id="hc">Book a consultation</span>
+          </div>
+        </div>
+        <div class="mock-grid" aria-hidden="true">
+          <div class="mock-tile"></div>
+          <div class="mock-tile"></div>
+          <div class="mock-tile"></div>
+        </div>
+        <div class="badge" id="badge" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="trail" id="trail" aria-hidden="true"></div>
+    <script>
+      (function () {
+        var STEPS = [
+          {
+            label: "Scope",
+            icon: "◈",
+            url: "scope — draft",
+            hero: "Goals & pages captured",
+            sub: "Audience, must-haves, and content in one written scope.",
+            cta: "Review scope",
+            badge: "Scope signed off",
+          },
+          {
+            label: "Design",
+            icon: "◇",
+            url: "prototype — clickable",
+            hero: "Clickable prototype",
+            sub: "Navigate real pages and flows before development starts.",
+            cta: "Open prototype",
+            badge: "Prototype ready",
+          },
+          {
+            label: "Approve",
+            icon: "✓",
+            url: "approval — pending",
+            hero: "Agreed up front",
+            sub: "You approve scope and design so changes stay predictable.",
+            cta: "Approve to build",
+            badge: "Approved",
+          },
+          {
+            label: "Build",
+            icon: "⚙",
+            url: "staging.yoursite.example",
+            hero: "Integrated & tested",
+            sub: "Forms, booking, email, and your existing tools connected.",
+            cta: "View staging",
+            badge: "QA passing",
+          },
+          {
+            label: "Launch",
+            icon: "↗",
+            url: "www.harborandco.com",
+            hero: "Live on your domain",
+            sub: "DNS, hosting, certificate, and a confident release.",
+            cta: "Visit live site",
+            badge: "Launched",
+          },
+          {
+            label: "Manage",
+            icon: "◎",
+            url: "www.harborandco.com",
+            hero: "Managed & reported",
+            sub: "Hosting, updates, analytics, and regular recommendations.",
+            cta: "See report",
+            badge: "Monthly insights",
+          },
+          {
+            label: "Extend",
+            icon: "+",
+            url: "www.harborandco.com",
+            hero: "AI-ready extensions",
+            sub: "Assistants, bookings, and follow-ups when you are ready.",
+            cta: "Explore add-ons",
+            badge: "Grow with AI",
+          },
+        ];
+        var trail = document.getElementById("trail");
+        var url = document.getElementById("url");
+        var ht = document.getElementById("ht");
+        var hs = document.getElementById("hs");
+        var hc = document.getElementById("hc");
+        var badge = document.getElementById("badge");
+        var vp = document.getElementById("vp");
+        var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+        var run = 0;
+        var stepEls = [];
+
+        STEPS.forEach(function (s, i) {
+          var el = document.createElement("div");
+          el.className = "step" + (rm && i === STEPS.length - 1 ? " on" : "");
+          el.innerHTML =
+            '<div class="step-ico">' +
+            s.icon +
+            '</div><span class="step-lbl">' +
+            s.label +
+            "</span>";
+          trail.appendChild(el);
+          stepEls.push(el);
+        });
+
+        function paint(i) {
+          var s = STEPS[i];
+          url.textContent = s.url;
+          ht.textContent = s.hero;
+          hs.textContent = s.sub;
+          hc.textContent = s.cta;
+          badge.textContent = s.badge;
+          stepEls.forEach(function (el, j) {
+            el.classList.remove("on", "done");
+            if (j < i) el.classList.add("done");
+            if (j === i) el.classList.add("on");
+          });
+        }
+
+        if (rm) {
+          paint(STEPS.length - 1);
+          badge.classList.add("show");
+          return;
+        }
+
+        function sleep(ms) {
+          return new Promise(function (r) {
+            setTimeout(r, ms);
+          });
+        }
+
+        async function loop() {
+          var id = ++run;
+          badge.classList.remove("show");
+          vp.classList.remove("dim");
+          for (var i = 0; i < STEPS.length; i++) {
+            if (id !== run) return;
+            paint(i);
+            if (i > 0) {
+              vp.classList.add("dim");
+              await sleep(120);
+              vp.classList.remove("dim");
+            }
+            badge.classList.add("show");
+            await sleep(2200);
+            badge.classList.remove("show");
+            await sleep(350);
+          }
+          await sleep(800);
+          if (id !== run) return;
+          loop();
+        }
+        loop();
+      })();
+    </script>
+  </body>
+</html>
