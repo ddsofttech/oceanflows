@@ -232,7 +232,6 @@ jobs:
           python-version: '3.12'
       - name: ui-catalog check
         run: |
-          # Production catalog: Astro components only (prototype/ is S2 throwaway, not on release).
           python .cursor/sdlc/scripts/ui-catalog.py \
             --src web/src/components \
             --tokens design/tokens/design-tokens.json \
@@ -248,64 +247,4 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Resolve SDLC request from branch name
-        id: sdlc
-        run: |
-          # SDLC: release/<request-summary> or ux/<request-summary>. No request names hardcoded.
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            REF="${{ github.base_ref }}"
-          else
-            REF="${{ github.ref_name }}"
-          fi
-          REQUEST=""
-          case "$REF" in
-            release/*|ux/*) REQUEST="${REF#*/}" ;;
-          esac
-          echo "request=$REQUEST" >> "$GITHUB_OUTPUT"
-          if [ -z "$REQUEST" ]; then
-            echo "No release|ux/<request> on this event; skipping scoped sdlc-check."
-          fi
-      - if: steps.sdlc.outputs.request != ''
-        run: python .cursor/sdlc/scripts/sdlc-check.py --request ${{ steps.sdlc.outputs.request }}
-
-  change-size:
-    name: gate / change-size
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Resolve SDLC request and part from branch names
-        id: sdlc
-        run: |
-          # SDLC: base release|ux/<request-summary>; head feature/<part-id>.
-          BASE_REF="${{ github.base_ref }}"
-          HEAD_REF="${{ github.head_ref }}"
-          REQUEST=""
-          PART=""
-          case "$BASE_REF" in
-            release/*|ux/*) REQUEST="${BASE_REF#*/}" ;;
-          esac
-          case "$HEAD_REF" in
-            feature/*) PART="${HEAD_REF#feature/}" ;;
-          esac
-          echo "request=$REQUEST" >> "$GITHUB_OUTPUT"
-          echo "part=$PART" >> "$GITHUB_OUTPUT"
-          if [ -n "$REQUEST" ] && [ -n "$PART" ]; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run=false" >> "$GITHUB_OUTPUT"
-            echo "Skipping change-size (need base release|ux/<request> and head feature/<part>)."
-          fi
-      - if: steps.sdlc.outputs.run == 'true'
-        run: |
-          BASE_REF="${{ github.base_ref }}"
-          git fetch origin "$BASE_REF" || true
-          python .cursor/sdlc/scripts/sdlc-check.py \
-            --request ${{ steps.sdlc.outputs.request }} \
-            --part ${{ steps.sdlc.outputs.part }} \
-            --base "origin/$BASE_REF"
+      - run: python .cursor/sdlc/scripts/sdlc-check.py

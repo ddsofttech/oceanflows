@@ -1,6 +1,6 @@
 # Company marketing site (`web/`)
 
-Astro + `@astrojs/cloudflare` scaffold for **company-branding-website** (RP0).
+Astro + `@astrojs/cloudflare` marketing site for DD Software Solutions.
 
 ## Commands
 
@@ -17,8 +17,4 @@ Astro + `@astrojs/cloudflare` scaffold for **company-branding-website** (RP0).
 
 ## Environment
 
-Copy `.env.example` and `.dev.vars.example` (never commit secrets). Production values live in Cloudflare Worker env settings — see `docs/company-branding-website/delivery/SETUP-GUIDES.md` (Cloudflare, Resend, Cal.com).
-
-## Stack note (RP0)
-
-Scaffold uses **Astro 5.x** with `output: "server"` + prerendered routes (replaces Astro 4 `hybrid`). `docs/ENGINEERING-STANDARDS.md` still lists Astro 4 — treat as Class A clarification pending architect sync.
+Copy `.env.example` and `.dev.vars.example` (never commit secrets). Production values live in Cloudflare Worker env settings (Cloudflare, Resend, Cal.com).
