@@ -676,7 +676,9 @@ def main():
     open_logs = {d.name: load_log(d / "DECISION-LOG.md", root, rep) for d in request_dirs if (d / "DECISION-LOG.md").is_file()}
     logs = {name: [r for f in sorted((docs / name / "decisions").glob("*.md")) for r in load_log(f, root, rep)] + rows
             for name, rows in open_logs.items()}
-    check_baseline_approvals(root, [r for rows in logs.values() for r in rows], rep)
+    # Baseline approvals may live with baselines when request folders are retired.
+    baseline_log_rows = load_log(docs / "baselines" / "DECISION-LOG.md", root, rep) if (docs / "baselines" / "DECISION-LOG.md").is_file() else []
+    check_baseline_approvals(root, [r for rows in logs.values() for r in rows] + baseline_log_rows, rep)
 
     if args.request and not (docs / args.request).is_dir():
         ap.error(f"docs/{args.request} does not exist")

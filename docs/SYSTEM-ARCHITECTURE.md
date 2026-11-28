@@ -73,9 +73,9 @@ flowchart LR
 ## 4. Trust boundaries
 | Boundary | Between | What crosses it | Threat model |
 |---|---|---|---|
-| BND-PUBLIC-INTERNET | Visitor ↔ CDN/Worker | HTML, assets, inquiry JSON | `docs/company-branding-website/design/THREAT-MODEL.md`; delta `docs/inquiry-email-daily-limit/design/THREAT-MODEL.md` |
-| BND-EMAIL | Worker ↔ Resend | PII fields in email payload | company-branding TM-02 |
-| BND-KV | Worker ↔ KV | Hashed keys, integer counts | inquiry-email-daily-limit THREAT-MODEL TB-KV |
+| BND-PUBLIC-INTERNET | Visitor ↔ CDN/Worker | HTML, assets, inquiry JSON | Inquiry API + Worker edge |
+| BND-EMAIL | Worker ↔ Resend | PII fields in email payload | Inquiry email payload |
+| BND-KV | Worker ↔ KV | Hashed keys, integer counts | Daily email cap counters |
 | BND-THIRD-PARTY | Visitor ↔ Cal.com / Analytics | Booking PII; anonymous beacon | FR-11 |
 
 ## 5. Change history
