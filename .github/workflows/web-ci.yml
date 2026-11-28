@@ -248,33 +248,25 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Resolve SDLC request (G-CI-01)
+      - name: Resolve SDLC request from branch name
         id: sdlc
         run: |
+          # SDLC: release/<request-summary> or ux/<request-summary>. No request names hardcoded.
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            BASE="${{ github.base_ref }}"
-            REF="${{ github.head_ref }}"
+            REF="${{ github.base_ref }}"
           else
-            BASE="${{ github.ref_name }}"
             REF="${{ github.ref_name }}"
           fi
-          case "$BASE" in
-            *tools-ticker-use-cases*)
-              REQUEST=tools-ticker-use-cases
-              ;;
-            *)
-              case "$REF" in
-                feature/ttuc-*)
-                  REQUEST=tools-ticker-use-cases
-                  ;;
-                *)
-                  REQUEST=company-branding-website
-                  ;;
-              esac
-              ;;
+          REQUEST=""
+          case "$REF" in
+            release/*|ux/*) REQUEST="${REF#*/}" ;;
           esac
           echo "request=$REQUEST" >> "$GITHUB_OUTPUT"
-      - run: python .cursor/sdlc/scripts/sdlc-check.py --request ${{ steps.sdlc.outputs.request }}
+          if [ -z "$REQUEST" ]; then
+            echo "No release|ux/<request> on this event; skipping scoped sdlc-check."
+          fi
+      - if: steps.sdlc.outputs.request != ''
+        run: python .cursor/sdlc/scripts/sdlc-check.py --request ${{ steps.sdlc.outputs.request }}
 
   change-size:
     name: gate / change-size
@@ -287,37 +279,30 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Resolve SDLC request and part (G-CI-01)
+      - name: Resolve SDLC request and part from branch names
         id: sdlc
         run: |
+          # SDLC: base release|ux/<request-summary>; head feature/<part-id>.
           BASE_REF="${{ github.base_ref }}"
           HEAD_REF="${{ github.head_ref }}"
+          REQUEST=""
+          PART=""
           case "$BASE_REF" in
-            *tools-ticker-use-cases*)
-              REQUEST=tools-ticker-use-cases
-              case "$HEAD_REF" in
-                feature/ttuc-fe-01*)
-                  PART=ttuc-fe-01
-                  ;;
-                feature/ttuc-fe-02*)
-                  PART=ttuc-fe-02
-                  ;;
-                feature/ttuc-*)
-                  PART="${HEAD_REF#feature/}"
-                  ;;
-                *)
-                  PART=ttuc-fe-01
-                  ;;
-              esac
-              ;;
-            *)
-              REQUEST=company-branding-website
-              PART=cbw-fe-01
-              ;;
+            release/*|ux/*) REQUEST="${BASE_REF#*/}" ;;
+          esac
+          case "$HEAD_REF" in
+            feature/*) PART="${HEAD_REF#feature/}" ;;
           esac
           echo "request=$REQUEST" >> "$GITHUB_OUTPUT"
           echo "part=$PART" >> "$GITHUB_OUTPUT"
-      - run: |
+          if [ -n "$REQUEST" ] && [ -n "$PART" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping change-size (need base release|ux/<request> and head feature/<part>)."
+          fi
+      - if: steps.sdlc.outputs.run == 'true'
+        run: |
           BASE_REF="${{ github.base_ref }}"
           git fetch origin "$BASE_REF" || true
           python .cursor/sdlc/scripts/sdlc-check.py \
