@@ -1,0 +1,21 @@
+---
+/**
+ * @component WebDevelopmentDemo
+ * @purpose Tall finished-site preview embed (sample patient-facing dental clinic)
+ * @props (none)
+ * @states idle, loaded, reduced-motion-static
+ */
+const demoSrc = "/demos/website-build-demo.html";
+---
+
+<div class="use-case-website" data-demo-root>
+  <p class="use-case-website__idle" data-demo-idle>
+    Demo loads when this row scrolls into view.
+  </p>
+  <iframe
+    class="use-case-website__frame"
+    title="Decorative illustration: sample dental clinic website (not interactive)"
+    data-src={demoSrc}
+    loading="lazy"
+    tabindex="-1"></iframe>
+</div>

@@ -128,8 +128,13 @@
   min-height: 320px;
 }
 
-.use-case-row__demo:has(.use-case-chat) {
+.use-case-row__demo:has(.use-case-chat),
+.use-case-row__demo:has(.use-case-website) {
   padding: var(--space-4);
+}
+
+.use-case-row__demo:has(.use-case-website) {
+  min-height: 380px;
 }
 
 .use-case-chat {
@@ -176,6 +181,58 @@
 }
 
 .use-case-row:not(.use-case-row--idle) .use-case-chat__frame {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.use-case-website {
+  position: relative;
+  width: 100%;
+
+  /* Taller than landscape so stacked hero + cards + footer fit without overlap */
+  aspect-ratio: 4 / 5.5;
+  height: auto;
+  min-height: 360px;
+  background: #f6f7f9;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .use-case-website {
+  background: #0c1220;
+}
+
+.use-case-website__idle {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: var(--space-5);
+  text-align: center;
+  font-size: var(--text-caption-size);
+  color: var(--color-text-secondary);
+  z-index: 1;
+}
+
+.use-case-row:not(.use-case-row--idle) .use-case-website__idle {
+  display: none;
+}
+
+.use-case-website__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.use-case-row:not(.use-case-row--idle) .use-case-website__frame {
   opacity: 1;
   pointer-events: auto;
   visibility: visible;

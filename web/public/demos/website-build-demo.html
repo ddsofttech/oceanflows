@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Brightfield Dental — home</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Lora:ital,wght@1,500;1,600&display=swap"
+    />
+    <style>
+      :root {
+        --ground: #f6f7f9;
+        --card: #ffffff;
+        --line: #dfe3ea;
+        --navy: #142433;
+        --muted: #28323d;
+        --sky: #2578b8;
+        box-sizing: border-box;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --ground: #0c1220;
+          --card: #141c2e;
+          --line: #2a3548;
+          --navy: #f1f4f8;
+          --muted: #c5ced8;
+          --sky: #4ba3e8;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --ground: #0c1220;
+        --card: #141c2e;
+        --line: #2a3548;
+        --navy: #f1f4f8;
+        --muted: #c5ced8;
+        --sky: #4ba3e8;
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+      }
+      html {
+        background: var(--ground);
+      }
+      body {
+        background: var(--ground);
+        font:
+          400 12px/1.45 "DM Sans",
+          system-ui,
+          sans-serif;
+        color: var(--navy);
+        min-height: 100%;
+        padding: 12px 14px 14px;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: auto;
+        scrollbar-width: none;
+      }
+      body::-webkit-scrollbar {
+        display: none;
+      }
+      .page {
+        flex: none;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+      .layout-spacer {
+        flex: none;
+        height: 20px;
+        width: 100%;
+      }
+      .nav-pill {
+        flex: none;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px 8px 12px;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        flex: none;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: -0.02em;
+        color: var(--navy);
+      }
+      .brand-mark {
+        width: 20px;
+        height: 20px;
+        border-radius: 5px;
+        background: var(--navy);
+        color: var(--card);
+        display: grid;
+        place-items: center;
+        font-size: 10px;
+        font-weight: 700;
+      }
+      .nav-links {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--muted);
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      .nav-cta {
+        flex: none;
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 0;
+        background: var(--navy);
+        color: var(--card);
+        font:
+          600 11px "DM Sans",
+          sans-serif;
+      }
+      .hero {
+        flex: none;
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 2px 2px 0;
+      }
+      .hero__visual {
+        margin: 0;
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        line-height: 0;
+      }
+      .hero__visual img {
+        width: min(50vw, 158px);
+        height: min(38vw, 182px);
+        max-height: 182px;
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          #000 55%,
+          transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+      }
+      .hero__copy {
+        flex: 1 1 0;
+        min-width: 0;
+        max-width: none;
+        text-align: center;
+      }
+      @media (max-width: 300px) {
+        .hero {
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+        }
+        .hero__visual img {
+          width: min(56vw, 188px);
+          height: min(44vw, 172px);
+          max-height: 172px;
+          object-position: top center;
+        }
+      }
+      .kicker {
+        margin: 0 0 8px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .headline {
+        margin: 0;
+        font-size: clamp(14px, 2.4vw, 17px);
+        font-weight: 700;
+        line-height: 1.28;
+        color: var(--navy);
+        letter-spacing: -0.02em;
+      }
+      .headline em {
+        font-family: Lora, Georgia, serif;
+        font-style: italic;
+        font-weight: 600;
+      }
+      .cards {
+        flex: none;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        align-items: stretch;
+      }
+      .svc {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 10px 10px 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transition:
+          border-color 0.45s ease,
+          transform 0.45s ease,
+          box-shadow 0.45s ease;
+      }
+      .svc.is-selected {
+        border-color: color-mix(in srgb, var(--sky) 70%, var(--line));
+        transform: translateY(-3px);
+        box-shadow: 0 10px 22px rgba(20, 36, 51, 0.1);
+      }
+      .illus {
+        width: 100%;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 6px;
+        flex: none;
+      }
+      .illus svg {
+        width: 100%;
+        max-width: 76px;
+        height: auto;
+      }
+      .svc h2 {
+        margin: 0 0 6px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--navy);
+      }
+      .svc p {
+        margin: 0 0 6px;
+        font-size: 10px;
+        line-height: 1.4;
+        color: var(--muted);
+        flex: 1;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
+      }
+      .svc a {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--navy);
+        text-decoration: none;
+      }
+      .pager {
+        flex: none;
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        padding-top: 2px;
+      }
+      .pager span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--muted) 35%, transparent);
+      }
+      .pager span.is-active {
+        background: var(--navy);
+      }
+      .foot {
+        flex: none;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding-top: 2px;
+      }
+      .foot p {
+        margin: 0;
+        font-size: 11px;
+        color: var(--muted);
+        max-width: 28em;
+        line-height: 1.5;
+      }
+      .btn-sky {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 16px;
+        border-radius: 999px;
+        border: 0;
+        background: var(--sky);
+        color: #ffffff;
+        font:
+          600 12px "DM Sans",
+          sans-serif;
+      }
+      .btn-sky svg {
+        flex: none;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .page.is-entering .nav-pill,
+        .page.is-entering .hero,
+        .page.is-entering .cards .svc,
+        .page.is-entering .pager,
+        .page.is-entering .foot {
+          animation: rise-in 0.55s ease both;
+        }
+        .page.is-entering .hero {
+          animation-delay: 0.06s;
+        }
+        .page.is-entering .cards .svc:nth-child(1) {
+          animation-delay: 0.12s;
+        }
+        .page.is-entering .cards .svc:nth-child(2) {
+          animation-delay: 0.18s;
+        }
+        .page.is-entering .cards .svc:nth-child(3) {
+          animation-delay: 0.24s;
+        }
+        .page.is-entering .pager {
+          animation-delay: 0.3s;
+        }
+        .page.is-entering .foot {
+          animation-delay: 0.36s;
+        }
+      }
+      @keyframes rise-in {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+        }
+        .svc {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="page is-entering"
+      aria-label="Decorative dental clinic website preview"
+    >
+      <nav class="nav-pill" aria-hidden="true">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">B</span>
+          Brightfield Dental
+        </div>
+        <div class="nav-links">
+          <span>Services</span><span>Our team</span><span>New patients</span
+          ><span>Contact</span>
+        </div>
+        <button type="button" class="nav-cta">Book visit</button>
+      </nav>
+      <header class="hero">
+        <figure class="hero__visual" aria-hidden="true">
+          <img
+            src="/demos/assets/dental-hero-standing.png"
+            width="864"
+            height="1152"
+            alt=""
+            decoding="async"
+          />
+        </figure>
+        <div class="hero__copy">
+          <p class="kicker">Patient care</p>
+          <h1 class="headline">
+            Healthy smiles start with care that feels <em>gentle</em> and clear.
+          </h1>
+        </div>
+      </header>
+      <div class="layout-spacer" aria-hidden="true"></div>
+      <div class="cards" aria-hidden="true">
+        <article class="svc">
+          <div class="illus">
+            <svg viewBox="0 0 80 64" fill="none" aria-hidden="true">
+              <path
+                d="M40 14 C32 14 28 22 28 30 C28 38 32 48 40 52 C48 48 52 38 52 30 C52 22 48 14 40 14 Z"
+                stroke="#142433"
+                stroke-width="1.5"
+                fill="#fff"
+              />
+              <path
+                d="M36 28 H44 M40 24 V32"
+                stroke="#2578b8"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+              <path
+                d="M22 46 L28 40 M58 46 L52 40"
+                stroke="#2578b8"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <h2>Preventive cleanings</h2>
+          <p>
+            Exams, hygiene visits, and home-care tips to keep your teeth healthy
+            all year.
+          </p>
+          <a href="#">Learn more →</a>
+        </article>
+        <article class="svc">
+          <div class="illus">
+            <svg viewBox="0 0 80 64" fill="none" aria-hidden="true">
+              <path
+                d="M26 38 Q40 30 54 38 Q52 50 40 52 Q28 50 26 38 Z"
+                stroke="#142433"
+                stroke-width="1.5"
+                fill="#fff"
+              />
+              <path
+                d="M30 38 Q40 34 50 38"
+                stroke="#2578b8"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <circle cx="24" cy="20" r="3" fill="#2578b8" />
+              <circle cx="40" cy="16" r="2.5" fill="#2578b8" opacity="0.7" />
+              <circle cx="56" cy="22" r="2" fill="#2578b8" opacity="0.5" />
+              <rect
+                x="48"
+                y="26"
+                width="20"
+                height="26"
+                rx="10"
+                stroke="#142433"
+                stroke-width="1.5"
+                fill="#fff"
+              />
+            </svg>
+          </div>
+          <h2>Cosmetic dentistry</h2>
+          <p>
+            Whitening, bonding, and smile refreshes with a natural, balanced
+            look.
+          </p>
+          <a href="#">Learn more →</a>
+        </article>
+        <article class="svc">
+          <div class="illus">
+            <svg viewBox="0 0 80 64" fill="none" aria-hidden="true">
+              <circle
+                cx="40"
+                cy="36"
+                r="18"
+                stroke="#142433"
+                stroke-width="1.5"
+                fill="#fff"
+              />
+              <path
+                d="M40 28 V40 M34 34 H46"
+                stroke="#2578b8"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+              <path
+                d="M22 22 H30 M50 18 H58"
+                stroke="#142433"
+                stroke-width="1.3"
+                stroke-linecap="round"
+              />
+              <path
+                d="M18 48 L24 42 M62 50 L56 44"
+                stroke="#2578b8"
+                stroke-width="1.3"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <h2>Same-day relief</h2>
+          <p>
+            Urgent visits for tooth pain, chips, or swelling when you need help
+            quickly.
+          </p>
+          <a href="#">Learn more →</a>
+        </article>
+      </div>
+      <div class="pager" id="card-pager" aria-hidden="true">
+        <span class="is-active"></span><span></span><span></span>
+      </div>
+      <footer class="foot">
+        <p>
+          New and returning patients welcome — flexible hours and upfront
+          estimates.
+        </p>
+        <button type="button" class="btn-sky">
+          Book appointment
+          <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+            <path
+              d="M2 5h6M5 2l3 3-3 3"
+              stroke="#fff"
+              stroke-width="1.3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </footer>
+    </div>
+    <script>
+      (function () {
+        var page = document.querySelector(".page");
+        if (!page) return;
+        var cards = page.querySelectorAll(".cards .svc");
+        var dots = page.querySelectorAll("#card-pager span");
+        var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+        var idx = 0;
+        var HOLD_MS = 2800;
+        var timer;
+
+        function selectCard(i) {
+          cards.forEach(function (card, j) {
+            card.classList.toggle("is-selected", j === i);
+          });
+          dots.forEach(function (dot, j) {
+            dot.classList.toggle("is-active", j === i);
+          });
+          idx = i;
+        }
+
+        selectCard(0);
+
+        if (rm) {
+          page.classList.remove("is-entering");
+          return;
+        }
+
+        var cycleStarted = false;
+
+        function startCycle() {
+          clearInterval(timer);
+          timer = setInterval(function () {
+            selectCard((idx + 1) % cards.length);
+          }, HOLD_MS);
+        }
+
+        function afterEntrance() {
+          if (cycleStarted) return;
+          cycleStarted = true;
+          page.classList.remove("is-entering");
+          startCycle();
+        }
+
+        var foot = page.querySelector(".foot");
+        if (foot && page.classList.contains("is-entering")) {
+          foot.addEventListener("animationend", afterEntrance, { once: true });
+          setTimeout(afterEntrance, 1100);
+        } else {
+          afterEntrance();
+        }
+
+        document.addEventListener("visibilitychange", function () {
+          if (document.hidden) {
+            clearInterval(timer);
+          } else if (!rm) {
+            startCycle();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
