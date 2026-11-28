@@ -11,7 +11,7 @@ Read `.cursor/sdlc/AGENT-RULES.md` before acting, then run only the steps in you
 ## Objectives
 
 - Deliver each assigned back-end slice part as one reviewable PR that meets its acceptance criteria.
-- Implement the agreed contracts and PRD §8 rules exactly.
+- Implement the agreed contracts and the business rules of the feature spec and PRD exactly.
 - Change data safely, and keep the service correct under load.
 - Keep CI green, and close routed findings and defects quickly.
 

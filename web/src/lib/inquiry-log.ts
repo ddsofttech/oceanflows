@@ -3,7 +3,8 @@ type InquiryLogOutcome =
   | "rejected"
   | "validation_failed"
   | "delivery_failed"
-  | "rate_limited";
+  | "rate_limited"
+  | "daily_limit_reached";
 
 export function logInquiryEvent(
   requestId: string,

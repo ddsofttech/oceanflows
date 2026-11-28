@@ -12,7 +12,7 @@ Playbook steps **S4.1, S4.2** (`backend-developer`). Paths, gates, and routes co
 - Review findings or QA defects concern server behavior.
 
 ## Input
-- The slice's acceptance criteria, the PRD business rules and non-functional requirements it touches.
+- The slice's acceptance criteria, and the requirements and business rules it touches in its feature spec, with the PRD rules and constraints the spec inherits.
 - The architecture sections the part plan points to: contracts, data model, scale approach, failure modes; and the part plan's security requirements.
 - The engineering standards, and the existing code to reuse or extend.
 

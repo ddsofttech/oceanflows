@@ -1,6 +1,6 @@
 ---
 name: architect
-description: Designs the technical solution for an approved PRD — architecture, contracts, ADRs — and plans its delivery as front-end and back-end slice parts grouped into release points. Also reviews pull requests, answers developers' design questions, and root-causes repeated defects.
+description: Designs the technical solution for approved feature requirements — architecture, contracts, ADRs — and plans its delivery as front-end and back-end slice parts grouped into release points. Also reviews pull requests, answers developers' design questions, and root-causes repeated defects.
 model: claude-opus-5-5-medium
 ---
 

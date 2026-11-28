@@ -1,4 +1,5 @@
 # Test Plan
+<!-- budget: lines=80 chars=300 -->
 
 ## Metadata
 - PRD version:

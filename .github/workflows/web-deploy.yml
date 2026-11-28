@@ -29,10 +29,29 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - run: npm ci
         working-directory: web
+      - name: Validate production build env
+        working-directory: web
+        env:
+          CHECK_PRODUCTION_ENV: "1"
+          PUBLIC_BOOKING_URL: ${{ secrets.PUBLIC_BOOKING_URL }}
+          PUBLIC_PUBLIC_EMAIL: ${{ secrets.PUBLIC_PUBLIC_EMAIL }}
+          PUBLIC_CF_ANALYTICS_TOKEN: ${{ secrets.PUBLIC_CF_ANALYTICS_TOKEN }}
+        run: npx tsx scripts/check-production-env.ts
+      - name: Validate production KV binding
+        working-directory: web
+        env:
+          CHECK_PRODUCTION_ENV: "1"
+        run: npm run check:production-wrangler-kv
       - run: npm run build
         working-directory: web
         env:
+          PUBLIC_BOOKING_URL: ${{ secrets.PUBLIC_BOOKING_URL }}
+          PUBLIC_PUBLIC_EMAIL: ${{ secrets.PUBLIC_PUBLIC_EMAIL }}
+          PUBLIC_PUBLIC_PHONE: ${{ secrets.PUBLIC_PUBLIC_PHONE }}
+          PUBLIC_LINKEDIN_URL: ${{ secrets.PUBLIC_LINKEDIN_URL }}
           PUBLIC_CF_ANALYTICS_TOKEN: ${{ secrets.PUBLIC_CF_ANALYTICS_TOKEN }}
+      - run: npm run check:placeholders
+        working-directory: web
       - name: Deploy with Wrangler
         uses: cloudflare/wrangler-action@v3
         with:

@@ -1,0 +1,110 @@
+openapi: 3.1.0
+info:
+  title: DD Software Solutions — Inquiry API
+  version: 1.1.0
+  description: >-
+    Sole server-side behavior for the company branding website (NFR-05).
+    v1.1 adds per-email daily cap (FR-15) and distinct 429 errors.
+servers:
+  - url: https://{host}
+    variables:
+      host:
+        default: oceanflows.net
+        description: Cloudflare Worker host (production or preview)
+paths:
+  /api/inquiry:
+    post:
+      operationId: submitInquiry
+      summary: Submit a contact inquiry
+      description: >-
+        Validates input, runs IP burst limit (BR-13), spam checks (BR-07), then
+        per-email daily cap (FR-15). Spam returns 200 rejected without delivery.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InquiryRequest"
+      responses:
+        "200":
+          description: Processed (includes spam rejection)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InquiryResponse"
+        "400":
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        "429":
+          description: Rate limit exceeded (IP burst or daily email cap)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RateLimitError"
+        "502":
+          description: Upstream email delivery or required store unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorBody"
+components:
+  schemas:
+    InquiryRequest:
+      type: object
+      additionalProperties: false
+      required: [name, email, message, hp]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone:
+          type: string
+          maxLength: 40
+        message:
+          type: string
+          minLength: 1
+          maxLength: 5000
+        hp:
+          type: string
+          maxLength: 0
+    InquiryResponse:
+      type: object
+      required: [sent, rejected]
+      properties:
+        sent:
+          type: boolean
+        rejected:
+          type: boolean
+    ValidationError:
+      type: object
+      required: [error, fields]
+      properties:
+        error:
+          type: string
+          const: validation_failed
+        fields:
+          type: object
+          additionalProperties:
+            type: string
+    RateLimitError:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          enum: [rate_limited, daily_limit_reached]
+    ErrorBody:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          enum: [delivery_failed, server_error]

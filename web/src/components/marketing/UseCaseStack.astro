@@ -1,0 +1,113 @@
+---
+/**
+ * @component UseCaseStack
+ * @purpose Five use-case rows; Web development row is copy left / demo right (D4 layout)
+ * @props (none)
+ * @states default, row-idle, row-active, reduced-motion-static
+ * @story docs/tools-ticker-use-cases/prototype/stories/use-cases-default.html
+ */
+import "../../styles/marketing-tools-use-cases.css";
+import CustomerSupportDemo from "./CustomerSupportDemo.astro";
+import WebDevelopmentDemo from "./WebDevelopmentDemo.astro";
+import UseCaseDemoPlaceholder from "./UseCaseDemoPlaceholder.astro";
+
+const customerSupportBenefits = [
+  "Understands your products, services, pricing, policies, FAQs, and business information.",
+  "Responds to customer inquiries 24/7.",
+  "Communicates naturally, understands customer intent, and handles follow-up questions.",
+  "Explains features, compares options, and helps customers find the right solutions",
+  "Access to only data you accept, no abitrary code execution, or reveal sensitive info.",
+  "Seamless integrates to your existing website.",
+  "Futher intelligent addons to handle bookings, follow ups, ...",
+] as const;
+
+const webDevelopmentBenefits = [
+  "Captures your goals, audience, pages, content, and must-have features in a clear written scope.",
+  "Designs a clickable prototype so you can see and test the website before development starts.",
+  "Gets your approval on the prototype and scope, so changes are agreed up front.",
+  "Builds, tests, and integrates the website with your forms, booking, email, and existing tools.",
+  "Handles your domain, DNS, hosting, security certificate, and release.",
+  "Manages hosting and updates, sets up web analytics, and sends regular reports with recommendations.",
+  "Extends the website with AI assistants, bookings, and follow-ups when you are ready.",
+] as const;
+
+const otherCases = [
+  {
+    variant: "sales" as const,
+    tag: "Sales",
+    title: "Lead qualification & follow-up",
+    summary:
+      "Score new website and email inquiries, draft a first response, and route high-intent leads so nothing sits unanswered.",
+  },
+  {
+    variant: "operations" as const,
+    tag: "Operations",
+    title: "Internal knowledge assistant",
+    summary:
+      "Let staff ask questions against SOPs, pricing sheets, and past decisions — with links back to the source documents.",
+  },
+  {
+    variant: "automation" as const,
+    tag: "Automation",
+    title: "Booking & follow-up workflows",
+    summary:
+      "Connect scheduling, reminders, and post-visit follow-ups so appointments and next steps stay consistent without extra admin.",
+  },
+] as const;
+---
+
+<div class="use-case-stack">
+  <article class="use-case-row use-case-row--idle" data-lazy-demo>
+    <div class="use-case-row__demo" aria-hidden="true">
+      <CustomerSupportDemo />
+    </div>
+    <div class="use-case-row__copy">
+      <p class="use-case-row__tag">Customer support</p>
+      <h3 class="use-case-row__title">Inquiry &amp; FAQ assistant</h3>
+      <p class="use-case-row__hook">
+        A trained assistant with company knowledge.
+      </p>
+      <ol class="use-case-row__benefits">
+        {customerSupportBenefits.map((item) => <li>{item}</li>)}
+      </ol>
+    </div>
+  </article>
+  <article
+    class="use-case-row use-case-row--idle use-case-row--copy-first"
+    data-lazy-demo
+  >
+    <div class="use-case-row__copy">
+      <p class="use-case-row__tag">Web development</p>
+      <h3 class="use-case-row__title">
+        Website design, build &amp; management
+      </h3>
+      <p class="use-case-row__hook">
+        A complete website, managed from idea to launch and beyond.
+      </p>
+      <ol class="use-case-row__benefits">
+        {webDevelopmentBenefits.map((item) => <li>{item}</li>)}
+      </ol>
+    </div>
+    <div class="use-case-row__demo" aria-hidden="true">
+      <WebDevelopmentDemo />
+    </div>
+  </article>
+  {
+    otherCases.map((item) => (
+      <article class="use-case-row use-case-row--idle" data-lazy-demo>
+        <div class="use-case-row__demo" aria-hidden="true">
+          <div data-demo-root>
+            <UseCaseDemoPlaceholder variant={item.variant} />
+          </div>
+        </div>
+        <div class="use-case-row__copy">
+          <p class="use-case-row__tag">{item.tag}</p>
+          <h3 class="use-case-row__title">{item.title}</h3>
+          <p class="use-case-row__summary">{item.summary}</p>
+        </div>
+      </article>
+    ))
+  }
+</div>
+
+<script is:inline src="/scripts/use-case-lazy.js"></script>

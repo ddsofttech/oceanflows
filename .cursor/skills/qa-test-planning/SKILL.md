@@ -12,11 +12,11 @@ Playbook step **S3.5** (`qa`). Paths, gates, and routes come from your step card
 - **Update for a change:** an approved requirement change affects acceptance criteria and the test plan already exists.
 
 ## Input
-- Acceptance criteria and scenarios (PRD §8–9).
+- Acceptance criteria and scenarios in this request's feature specs.
 - The Tests and Security requirements sections of each part plan, and the plan index's release points.
-- Measurable non-functional requirements (PRD §7) and the architecture's scale approach.
+- Measurable non-functional requirements in this request's specs, and the architecture's scale approach.
 - Impact analysis in existing-repo mode.
-- Update for a change: the existing test plan, the approved change request (its proposed PRD changes), and the new baseline's changed sections; the part plans the change touched.
+- Update for a change: the existing test plan, the approved change request (its proposed changes), and the sections the new baseline changed; the part plans the change touched.
 
 ## Process
 

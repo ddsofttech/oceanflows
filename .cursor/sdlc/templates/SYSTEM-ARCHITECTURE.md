@@ -1,4 +1,5 @@
 # System Architecture
+<!-- budget: lines=150 chars=300 -->
 
 C4 model of the whole system as approved. One row per element; the code, contracts, and request designs hold the detail.
 

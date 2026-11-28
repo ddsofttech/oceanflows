@@ -1,4 +1,5 @@
 # UX Review
+<!-- budget: lines=60 chars=300 -->
 
 ## A. What was reviewed
 - UX brief:
@@ -40,5 +41,5 @@ Finding types and severities: `AGENT-RULES.md`.
 - UX constraints that bind architecture:
 - API data the UI assumes:
 - Simulations that must become real:
-- Components front-end parts reuse from the UX branch:
+- Components front-end parts reuse:
 - Accepted or deferred issues:

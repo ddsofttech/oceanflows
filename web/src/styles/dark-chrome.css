@@ -1,0 +1,30 @@
+/* Dark theme: token consumers with light-only hardcoded accent colors */
+
+[data-theme="dark"] .hero-banner {
+  border-bottom-color: var(--color-brand-cyan);
+}
+
+[data-theme="dark"] .hero-banner::after {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-surface-ground) 94%, transparent) 0%,
+    color-mix(in srgb, var(--color-surface-ground) 52%, transparent) 38%,
+    transparent 68%
+  );
+}
+
+@media (width <= 767px) {
+  [data-theme="dark"] .hero-banner::after {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-surface-ground) 96%, transparent) 0%,
+      color-mix(in srgb, var(--color-surface-ground) 78%, transparent) 48%,
+      color-mix(in srgb, var(--color-surface-ground) 28%, transparent) 100%
+    );
+  }
+}
+
+[data-theme="dark"] .btn--accent:hover {
+  background: var(--color-action-primary-hover);
+  color: var(--color-text-inverse);
+}

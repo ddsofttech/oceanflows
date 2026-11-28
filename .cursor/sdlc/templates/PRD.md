@@ -1,79 +1,68 @@
 # Product Requirements Document
+<!-- budget: lines=150 chars=300 -->
+
+The foundation: what holds for the whole product. Requirements, functional and non-functional, are only in the feature specs (§8).
 
 ## Document control
 - Status: Draft | Pending approval | Approved | Canceled
-- Version: `x.y`
+- Version: `x.y` (the PRD and every feature spec share it)
 - Last approved version: (none before `v1.0`)
 - Owner:
 - Stakeholder approvers:
 - Approval date:
 
-## 1. Executive summary
+## 1. Vision
 - Purpose (what and why):
-- Key outcomes:
+- Problem:
+- Users:
 
-## 2. Problem and context
-- Problem/opportunity:
-- Affected users:
-- Current workflow (if has):
-- Known limitations (if has):
+## 2. Business objectives and success measures
+| ID | Objective | Measure | Target | Source |
+|---|---|---|---|---|
 
-## 3. Business objectives and success measures
-| Objective | Measure | Target/source | Notes |
-|---|---|---|---|
-
-## 4. Scope
-### In scope
-- 
-### Out of scope
-- 
-### Candidate MVP
-- 
-
-## 5. Users and stakeholders
+## 3. Users and stakeholders
 | Role/group | Needs/responsibilities | Decision authority |
 |---|---|---|
 
-## 6. Functional requirements
-| ID | Requirement | Priority | Status |
-|---|---|---|---|
+## 4. Capabilities and scope
+| ID | Capability | Features (IDs) |
+|---|---|---|
 
-Status: Proposed/Approved/Implemented
-## 7. Non-functional requirements
-| ID | Quality attribute | Requirement/measure | Status |
-|---|---|---|---|
+Out of scope:
+- 
 
-Status: Proposed/Approved/Implemented
-## 8. Business rules and workflows
-- Rules:
-- Workflows:
-- Exceptions:
-- Scenarios (normal / alternate / failure):
+## 5. Business workflows
+End to end and across features. At most 8 steps each: actor → action → outcome, with the feature that covers the step. States, exceptions, and scenarios go in the feature specs.
 
-## 9. Acceptance criteria
-| Requirement ID | Given/When/Then or equivalent |
-|---|---|
+### W-1: <name>
+1. 
 
-## 10. Constraints, assumptions, risks, dependencies
+## 6. Business rules
+Only rules two or more features depend on, or that hold for the whole product.
 
-Use the **Status** column with the values for each **Type**:
+| ID | Rule | Source |
+|---|---|---|
 
-| Category | Statuses |
-|---|---|
-| Constraints | Proposed, Confirmed, Rejected |
-| Assumptions | Proposed, Confirmed, Rejected |
-| Risks | Identified, Mitigating, Resolved, Materialized |
-| Dependencies | Pending, In Progress, Available, Blocked |
+## 7. Constraints, assumptions, risks, dependencies
+A limit on every feature, such as a platform, a regulation, or a quality bar, is a constraint here; each spec turns it into its own requirements.
+
+Status per type: Constraint and Assumption — Proposed, Confirmed; Risk — Identified, Mitigating, Materialized; Dependency — Pending, In progress, Available, Blocked. Closed items (Rejected, Resolved) leave at approval.
 
 | ID | Type | Description | Status | Owner/action |
 |---|---|---|---|---|
 
-## 11. Open questions
-List items with severity priority: **Blocking** -> **Important** -> **Non-blocking**. Everything is uncertain, needs user attention belongs here.
+## 8. Feature index
+| Feature ID | Feature | Spec | Capability (ID) | Last changed (version, request) |
+|---|---|---|---|---|
 
-| Priority | ID | Question/decision | Impact | Owner | Due/trigger | Severity |
-|---|---|---|---|---|---|---|
+## 9. Open questions
+Product-wide only; a feature's questions go in its spec. Sorted Blocking → Important → Non-blocking; an answered question leaves.
 
-## 12. Change history
-| Version | Request or change request | Change (sections, IDs) | Approver | Date |
+| ID | Question/decision | Severity | Impact | Owner |
+|---|---|---|---|---|
+
+## 10. Change history
+One row per request or change request in each version.
+
+| Version | Request or change request | Features and IDs changed | Approver | Date |
 |---|---|---|---|---|

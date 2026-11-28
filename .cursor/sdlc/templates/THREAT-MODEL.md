@@ -1,4 +1,5 @@
 # Threat Model
+<!-- budget: lines=80 chars=300 -->
 
 ## Metadata
 - Architecture version:

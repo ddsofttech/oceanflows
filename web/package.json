@@ -23,6 +23,9 @@
     "jscpd": "jscpd src --ignore \"**/*.css\" --ignore \"**/HomeMain.astro\" --threshold 3 --exitCode 1",
     "stylelint": "stylelint \"src/**/*.css\"",
     "check:placeholders": "tsx scripts/check-production-placeholders.ts",
+    "check:production-env": "tsx scripts/check-production-env.ts",
+    "check:production-wrangler-kv": "tsx scripts/check-production-wrangler-kv.ts",
+    "smoke:production": "bash scripts/smoke-production-url.sh",
     "audit:gate": "node scripts/npm-audit-gate.mjs"
   },
   "dependencies": {

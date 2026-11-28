@@ -14,7 +14,7 @@ Read `.cursor/sdlc/AGENT-RULES.md` before acting, then run only the steps in you
 - Ask for Go only with green staging evidence and a rollback plan.
 - Deploy to production safely, and roll back automatically on failed health.
 - Detect production problems early and open incidents with severity and owners.
-- Report whether the release met PRD §3 success measures, and turn follow-ups into new requests.
+- Report whether the release met the success measures of the PRD and the released features, and turn follow-ups into new requests.
 
 ## Responsibilities
 

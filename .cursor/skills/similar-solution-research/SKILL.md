@@ -22,13 +22,14 @@ Playbook step **S1.3** (`requirements-analyst`). Paths, gates, and routes come f
 2. Gather about 2–5 comparables: competitor or adjacent products, prior internal attempts, open-source or industry patterns, known failure modes.
 3. For each, record problem match, approach, what worked, what failed or users rejected, and fit for this request. Cite sources; label uncertainty.
 4. Disposition every material idea: **adopt** (informs a requirement), **reject** (with reason), or **defer** (not this release). Do not import a feature list.
-5. Separate **problem lessons** (behavior, edge cases, success measures), which may shape the PRD, from **solution patterns** (architecture, vendors, UX mechanics), which stay in the working paper for the architect — **not** a PRD section.
+5. Separate **problem lessons** (behavior, edge cases, success measures), which may shape the specs, from **solution patterns** (architecture, vendors, UX mechanics), which stay in the research paper for the architect — never in the PRD or a spec.
 6. Do not derive rules or numeric targets from what others claim or charge.
-7. Requirements informed by research carry Status **Proposed** until the user agrees; speculative constraints use **Assumption** in section 10.
+7. Requirements informed by research carry Status **Proposed** until the user agrees; speculative constraints are recorded as an **Assumption**.
+8. Keep the paper to the comparables table and the dispositions, at most 30 lines; cite sources by link, not by quoting them.
 
 ## Output
-- Optional research working paper (comparables, sources, dispositions, solution patterns) — **not** pasted as a PRD heading.
-- PRD updates only: section **2** (evidence in problem/context), **4** (scope or exclusions), **10** (constraints and risks), **11** (non-blocked open decisions).
+- Optional research paper: comparables, sources, dispositions, solution patterns.
+- Updates only to the PRD (problem evidence, capabilities and scope) or this request's specs (scope and exclusions), and to their constraints, risks, and non-blocked open questions.
 
 ## Quality checklist
 - [ ] Search is anchored on the stated problem
@@ -36,5 +37,5 @@ Playbook step **S1.3** (`requirements-analyst`). Paths, gates, and routes come f
 - [ ] Every material idea is adopted, rejected, or deferred
 - [ ] Sources are cited and uncertainty is labeled
 - [ ] No competitor feature was copied into requirements
-- [ ] No architecture section was added to the PRD
+- [ ] No architecture was added to the PRD or a spec
 - [ ] Product-direction choice was asked when blocked

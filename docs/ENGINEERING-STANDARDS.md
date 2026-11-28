@@ -2,8 +2,8 @@
 
 ## Metadata
 - Stack: Astro 5 (`output: "server"` + `@astrojs/cloudflare`; marketing routes prerendered per-page via `export const prerender = true`), TypeScript, Cloudflare Pages (CDN + Pages Functions), Resend; design tokens W3C JSON + CSS variables; plain CSS (from UX prototype)
-- Last changed by request: `company-branding-website`
-- Date: 2026-11-25
+- Last changed by request: `inquiry-email-daily-limit`
+- Date: 2026-11-26
 
 Each rule: one line, one example, the tool that enforces it (or "review"), and whether it is **existing** or **proposed**.
 
@@ -32,7 +32,9 @@ Each rule: one line, one example, the tool that enforces it (or "review"), and w
 | API returns OpenAPI error shapes; no stack traces in responses | `{ error: "validation_failed", fields: { email: "..." } }` | contract tests | proposed |
 | Client maps 502 to delivery-failure UX (FR-08); spam `rejected` shows idle (BR-07) | No success `StatusMessage` on rejected | e2e test | proposed |
 | Never swallow fetch errors; show user-safe copy | `catch` → delivery failure panel | ESLint | proposed |
-| Inquiry spam checks before Resend: empty honeypot `hp`, rate limit 5/min per client IP | Non-empty `hp` or over limit → no email; contract shapes | vitest contract + unit | proposed |
+| Inquiry spam checks before Resend: empty honeypot `hp`, IP rate limit **1/min** per client IP (`CF-Connecting-IP`) | Non-empty `hp` or over limit → no email; contract shapes | vitest contract + unit | proposed |
+| Daily email cap after spam guards: max **3** counted POSTs per normalized email per **UTC calendar day** | Over cap → 429 `daily_limit_reached` (distinct from IP `rate_limited`) | vitest contract + unit | proposed |
+| OpenAPI inquiry contract v1.1 is canonical in `docs/inquiry-email-daily-limit/design/contracts/` | Handler + client tests match enum | contract tests | proposed |
 | HTML-escape all user fields in Resend email body | `message` with `<` sent as entity | unit test | proposed |
 | When `TURNSTILE_SECRET_KEY` is set, verify Turnstile token server-side; when unset, skip | No client-only CAPTCHA trust | unit test with mock | proposed |
 
@@ -54,6 +56,8 @@ Each rule: one line, one example, the tool that enforces it (or "review"), and w
 | Rule | Example | Enforced by | Status |
 |---|---|---|---|
 | No database or ORM | — | review | proposed |
+| Per-email daily counters only in Cloudflare KV via `INQUIRY_DAILY_LIMIT`; keys are peppered SHA-256 hashes, values are counts | No plaintext email in KV | review + security review | proposed |
+| `INQUIRY_LIMIT_HASH_PEPPER` is a Worker secret, not `PUBLIC_*` | — | gitleaks + review | proposed |
 | Content edits in git-tracked Astro/content files | `web/src/content/site-copy.ts` | review | proposed |
 
 ## 7. Testing
@@ -86,7 +90,7 @@ Each rule: one line, one example, the tool that enforces it (or "review"), and w
 | Secrets | gitleaks | repo root | No secrets in diff | proposed |
 | Tests and coverage | vitest + Playwright | diff-cover on `web/` | Changed lines ≥80% | proposed |
 | Change size | `sdlc-check.py` | small 250 / medium 600 / large 1200 lines | Per part plan | proposed |
-| Accessibility | `@axe-core/playwright` | key routes | 0 new serious/critical | proposed |
+| Accessibility | `@axe-core/playwright` | index (incl. ticker + use cases), privacy, 404, contact | 0 new serious/critical | enforced |
 | Design tokens | stylelint `declaration-strict-value` | color, spacing, font-size from vars | No new raw hex in components | proposed |
 | UI catalog | `ui-catalog.py --check` | sources `web/src/components`, tokens path | Catalog matches blocks | proposed |
 

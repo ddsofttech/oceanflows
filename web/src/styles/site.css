@@ -450,27 +450,9 @@ a:hover {
   margin-inline: 0;
   text-align: left;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .hero-banner__content {
-    animation: hero-content-enter 520ms var(--motion-ease) both;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
-  .hero-banner__content {
-    animation: none;
-  }
   .use-case-card {
     transition: none;
-  }
-}
-@keyframes hero-content-enter {
-  from {
-    opacity: 0;
-    transform: translateY(0.5rem);
-  }
-  to {
-    opacity: 1;
-    transform: none;
   }
 }
 .hero-banner__eyebrow {

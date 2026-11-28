@@ -44,7 +44,7 @@ flowchart TD
   ok -->|No| H0{{"HITL: fix input"}}:::hitl
   H0 -->|Revise| S0
   H0 -->|Reject| stop0(["Cancelled"]):::ref
-  ok -->|Yes| S1["S1 Requirements<br/>living PRD"]
+  ok -->|Yes| S1["S1 Requirements<br/>PRD and feature specs"]
   ok -->|"Yes, defect in released code"| QR["S5.1 Reproduce the reported issue<br/>qa"]
   QR -->|"Implementation defect:<br/>defect request"| S4
   QR -->|"Other finding type"| S1
@@ -112,9 +112,9 @@ Agents work in the current repository and read its files directly when a step ne
 
 ## 3. Agent roster
 
-The **orchestrator** is the main Claude session, not a subagent. It runs S0.1, invokes each agent for its steps, relays every HITL package to the human and the decision back, and keeps `DECISION-LOG.md` current. From G4 on (from S5.1 for a defect request) it also keeps the delivery board, routes handoffs between agents, and merges reviewed PRs (section 17). It hands every issue the human reports to `qa` (section 17, Reported issues). Agents follow `AGENT-RULES.md`.
+The **orchestrator** is the main Claude session, not a subagent. It runs S0.1, invokes each agent for its steps, relays every HITL package to the human and the decision back, and keeps `DECISION-LOG.md` current. From G4 on (from S5.1 for a defect request) it also keeps the delivery board, routes handoffs between agents, and merges reviewed PRs (section 17). It also merges the UX branch G3 accepts (S2.5). It hands every issue the human reports to `qa` (section 17, Reported issues). Agents follow `AGENT-RULES.md`.
 
-**Deterministic checks.** `.cursor/sdlc/scripts/sdlc-check.py` (Python 3.10+, no dependencies) checks the process documents: baselines never edited and fully approved, the PRD in template shape, every gate recorded in `DECISION-LOG.md` with dates in order and none in the future, the package committed on the default branch, sensitive merges through G5, no sign-off over an open Blocking defect, and a delivery board that is consistent and current: every planned part has a row, and every PR with a security review shows on it with its status, a released release point has no slice-part rows left and its G7 Go row moved to `decisions/`, and no closed handoff remains. The orchestrator runs it from the project root:
+**Deterministic checks.** `.cursor/sdlc/scripts/sdlc-check.py` (Python 3.10+, no dependencies) checks the process documents: baselines never edited and fully approved, the PRD and feature specs in template shape, every document within its budget (section 8), every gate recorded in `DECISION-LOG.md` with dates in order and none in the future, the package committed on the default branch, a UX branch G3 accepted and every merged part's merge commit on the request branch, sensitive merges through G5, no sign-off over an open Blocking defect, and a delivery board that is consistent and current: every planned part has a row, and every PR with a security review shows on it with its status, a released release point has no slice-part rows left and its G7 Go row moved to `decisions/`, and no closed handoff remains. The orchestrator runs it from the project root:
 
 - before presenting a gate package: `python .cursor/sdlc/scripts/sdlc-check.py --request <request-summary> --gate <G1–G8>`, adding `--release <release point>` for G6 and G7 and `--pr <number>` for G5. A failure goes back to the agent that owns the fix; the package is not shown to the human until the check passes;
 - after recording each decision, without `--gate`. A failure is fixed before the next delegation.
@@ -209,36 +209,51 @@ In `AGENT-RULES.md` (Findings and change control): severity, change classes A–
 
 ## 7. PRD baselines
 
-**Baselines** are the product's approved reference, and only the PRD has them: approved PRD versions in `docs/baselines/prds/`.
+**Baselines** are the product's approved reference, and only the requirements have them: approved versions of the PRD and the feature specs in `docs/baselines/prds/`.
 
-### PRD
+### PRD and feature specs
 
-The product has one PRD and one living file for it, `docs/PRD.md`, which always holds the latest version. Versions are `x.y`:
+The product's requirements live in two kinds of document, both living and both owned by `requirements-analyst`:
 
-- **`vX.0` is approved.** Each is copied unchanged to `docs/baselines/prds/PRD-vX.0.md`; the highest is the current baseline.
-- **`vX.y` with `y > 0` is the open draft.** There is at most one, and it is `docs/PRD.md` with document control **Draft** or **Pending approval**.
+- **The PRD**, `docs/PRD.md` (template `PRD.md`): the foundation that holds for the whole product. Vision, objectives and success measures, users, capabilities and scope, the end-to-end business workflows, product-wide rules, constraints and risks, and the index of features. It holds no requirements.
+- **Feature specs**, `docs/features/<feature ID>.md` (template `FEATURE-SPEC.md`), one per feature in the PRD's index: that feature's functional and non-functional requirements, rules, workflow detail, states, scenarios, and acceptance criteria. A spec always holds its feature's current state and lists the PRD IDs it inherits. Every ID in a spec starts with its feature ID (`GEN-FR-1`, `GEN-AC-3`), so IDs are unique across the product.
 
-**Each request continues `docs/PRD.md`** as the next draft: `v1.0` → `v1.1`, `v1.1` → `v1.2`. The first request ever starts at `v0.1` from `.cursor/sdlc/templates/PRD.md`. If baselines exist but `docs/PRD.md` does not, the next request creates it from the current baseline as `vX.1`. Requests run through S1 one at a time, and PRD §12 records which request made each change. The next draft also folds in what each request's `analysis/finding-notes.md` recorded since the baseline: Class A clarifications, each with its own §12 row, and Class B gaps and risks still open, into §10 or §11.
+**What goes where.** Requirements, functional and non-functional, go only in specs. A workflow, rule, or constraint goes in the PRD when two or more features depend on it or it holds for the whole product; otherwise it goes in the one spec it belongs to. A quality bar for the whole product is a PRD constraint that each spec turns into its own measurable requirements. When a second feature comes to need something a spec holds, it moves to the PRD and both specs cite it. A request changes the specs of the features it touches, creates a spec for each new feature, and adds a row to the feature index for it. Open questions, constraints, and risks go in the document they would change.
 
-**Baselines keep the template they were approved in.** When `.cursor/sdlc/templates/PRD.md` has changed since the baseline, the next draft moves the baseline's content into the current template's sections without changing any requirement, rule, or criterion, and records the reshape in §12 as its own row.
+**This request's specs** are the feature specs its change-history rows name. After S1, agents read this request's specs from its baseline and open the PRD only for the IDs those specs inherit, or for a workflow or rule a step names. They never read every spec.
 
-**Approval happens once, at G1, not per request.** Several requests can add to the draft first. On approval the draft becomes the next `vX.0` (`v1.2` → `v2.0`): document control **Approved**, and every §6 and §7 row still **Proposed** set to **Approved**. It is then copied unchanged to `docs/baselines/prds/`, and S2 or S3 continues in the folder of the request that took it to G1.
+### Versions
 
-**Rejection is per request.** At G1 the human names which requests' changes are rejected; only those are removed, found through §12, and the rest of the draft stays open. If nothing remains, `docs/PRD.md` returns to the current baseline, or is marked **Canceled** when there is none.
+The PRD and the feature specs share one version, `x.y`, kept in the PRD's document control:
 
-**A Class C change starts from the baseline, not the draft.** S1.C proposes the change against the current baseline in its change request. On approval the baseline with the change becomes the next `vX.0` at once, so the paused stage resumes without waiting for unrelated draft content. If a draft was open, `requirements-analyst` reapplies the draft's changes, from its §12, onto the new baseline as `vX.1`, and raises any conflict as a Blocking §11 item.
+- **`vX.0` is approved.** Each is copied unchanged to the folder `docs/baselines/prds/PRD-vX.0/`: `PRD.md` and `features/`. The highest is the current baseline.
+- **`vX.y` with `y > 0` is the open draft.** There is at most one: `docs/PRD.md` with document control **Draft** or **Pending approval**, and the specs in `docs/features/`.
+
+**Each request continues the draft**: `v1.0` → `v1.1`, `v1.1` → `v1.2`. The first request ever starts at `v0.1` from the templates. If baselines exist but `docs/PRD.md` does not, the next request restores the current baseline's files as `vX.1`. Requests run through S1 one at a time. The PRD's change history has one row per request in each version, naming the features and IDs it changed. The next draft also folds in what each request's `analysis/finding-notes.md` recorded since the baseline: Class A clarifications into the document they clarify, recorded in that request's change-history row, and Class B gaps and risks still open into the open questions or risks of the document they affect.
+
+**Closed items leave at approval.** On approval, answered questions, Rejected assumptions and constraints, and Resolved risks are removed from the PRD and the specs: the decision log and git keep them. A living document states the current state, not how it was reached.
+
+**Baselines keep the template they were approved in.** When the templates have changed since the baseline, including a baseline that is a single file `PRD-vX.0.md` from before feature specs, the next draft moves the baseline's content into the current templates, the PRD and one spec per feature, without changing any requirement, rule, or criterion, and records the reshape as its own change-history row.
+
+**Approval happens once, at G1, not per request.** Several requests can add to the draft first. On approval the draft becomes the next `vX.0` (`v1.2` → `v2.0`): document control **Approved**, and every requirement row still **Proposed** in the specs set to **Approved**. The PRD and `docs/features/` are then copied unchanged to `docs/baselines/prds/PRD-vX.0/`, and S2 or S3 continues in the folder of the request that took it to G1.
+
+**Rejection is per request.** At G1 the human names which requests' changes are rejected; only those are removed, found through the change history, and the rest of the draft stays open. If nothing remains, the PRD and specs return to the current baseline, or the PRD is marked **Canceled** when there is none.
+
+**A Class C change starts from the baseline, not the draft.** S1.C proposes the change against the current baseline in its change request. On approval the baseline with the change becomes the next `vX.0` at once, so the paused stage resumes without waiting for unrelated draft content. If a draft was open, `requirements-analyst` reapplies the draft's changes, from its change history, onto the new baseline as `vX.1`, and raises any conflict as a Blocking open question.
 
 ---
 
 ## 8. Workspace layout
 
-The PRD and its baselines live in `docs/PRD.md` and `docs/baselines/` (section 7). Everything else lives in one folder per request: `docs/<request-summary>/`. Use the same `<request-summary>` for every artifact of that request. "Analysis folder", "design folder", and so on mean the subfolders below.
+The PRD, the feature specs, and their baselines live in `docs/PRD.md`, `docs/features/`, and `docs/baselines/` (section 7). Everything else lives in one folder per request: `docs/<request-summary>/`. Use the same `<request-summary>` for every artifact of that request. "Analysis folder", "design folder", and so on mean the subfolders below.
 
 ```text
-docs/PRD.md                        # the one living PRD, latest version; shape: PRD.md template (section 7)
+docs/PRD.md                        # living; the product foundation, latest version (section 7)
+docs/features/
+  <feature ID>.md                  # living; one feature spec per feature in the PRD's index; shape: FEATURE-SPEC.md template
 docs/baselines/
   prds/
-    PRD-v1.0.md, PRD-v2.0.md, …    # approved only; the highest is the current baseline
+    PRD-v1.0/, PRD-v2.0/, …        # approved only, each PRD.md and features/; the highest is the current baseline
 docs/COMPONENTS.md                 # generated UI catalog: components and design tokens; never edited by hand (section 3)
 docs/ENGINEERING-STANDARDS.md      # living; the codebase's conventions and the tools that enforce them
 docs/SYSTEM-ARCHITECTURE.md        # living; C4 model of the whole system, kept by architect
@@ -250,13 +265,9 @@ docs/<request-summary>/
   change-requests/
     <yyyy-mm-dd>-<summary>.md      # Class C proposals for S1.C after the PRD is approved; shape: CHANGE-REQUEST.md template
   analysis/
-    clarification-notes.md         # optional
     impact-analysis.md             # existing-repo only; shape: IMPACT-ANALYSIS.md template
-    # similar-solution research: optional working paper under analysis/
-    requirements-analysis.md       # optional; shape: REQUIREMENTS-ANALYSIS.md template
-    business-rules-and-scenarios.md   # optional; canonical content is PRD §8
-    acceptance-criteria.md         # optional; canonical content is PRD §9
-    finding-notes.md               # Class A clarifications and Class B gaps and risks after G1; folded into the next PRD draft; shape: FINDING-NOTES.md template
+    similar-solution-research.md   # optional
+    finding-notes.md               # Class A clarifications and Class B gaps and risks after G1; folded into the next draft; shape: FINDING-NOTES.md template
   ux/
     UX-BRIEF.md                    # tiers, questions, screen specs, build record
     UX-REVIEW.md                   # check results, design review, handoff note for architecture
@@ -267,7 +278,7 @@ docs/<request-summary>/
     THREAT-MODEL.md                # when security-engineer is consulted
     IMPLEMENTATION-PLAN.md         # index: slice parts, release points, CI; locked at G4
     parts/
-      <part ID>.md                 # one part plan per slice part, at most 60 lines; locked at G4
+      <part ID>.md                 # one part plan per slice part, within its budget; locked at G4
   delivery/
     BOARD.md                       # the delivery loop's state; written only by the orchestrator (section 17)
   testing/
@@ -283,9 +294,11 @@ docs/<request-summary>/
     POST-RELEASE-REVIEW.md
 ```
 
-**Branches.** Claude Code starts every agent worktree from the default branch (on the remote, when there is one), so the package (`.claude/`) is committed there, and pushed, before any request: the installer commits it, creating the repository first for greenfield. When a remote is added to a new repository, `main` is pushed to it first, so it becomes the remote's default branch. At S0.1 the orchestrator checks this, then cuts the **request branch** `release/<request-summary>` from it; its own checkout stays on that branch. Every process document (`docs/PRD.md`, `docs/baselines/`, and `docs/<request-summary>/`) is committed straight to the request branch, with no PR, and pushed when there is a remote before the next delegation, because part branches and reviewers work from the remote. The UX branch and every part branch are cut from the request branch, and every PR targets it. The request branch merges into the default branch only after a G7 Go, once per release point. Each agent works on its own branch, in its own worktree when the runtime offers one, and never switches the branch of another checkout; no checkout ever switches to a ref without the package.
+**Branches.** Claude Code starts every agent worktree from the default branch (on the remote, when there is one), so the package (`.claude/`) is committed there, and pushed, before any request: the installer commits it, creating the repository first for greenfield. When a remote is added to a new repository, `main` is pushed to it first, so it becomes the remote's default branch. At S0.1 the orchestrator checks this, then cuts the **request branch** `release/<request-summary>` from it; its own checkout stays on that branch. Every process document (`docs/PRD.md`, `docs/features/`, `docs/baselines/`, and `docs/<request-summary>/`) is committed straight to the request branch, with no PR, and pushed when there is a remote before the next delegation, because part branches and reviewers work from the remote. The UX branch and every part branch are cut from the request branch, and every PR targets it. The request branch merges into the default branch only after a G7 Go, once per release point. Each agent works on its own branch, in its own worktree when the runtime offers one, and never switches the branch of another checkout; no checkout ever switches to a ref without the package.
 
-Application code lives in the current repository, outside `docs/`. UI code built in S2.3 stays on the branch `ux/<request-summary>` until front-end slice parts take it over in S4 and replace its prototype shell. For greenfield, the scaffold is created in S4 as the implementation plan describes. A file with a same-named template in `.cursor/sdlc/templates/` uses that shape, and so do the files in `change-requests/` (`CHANGE-REQUEST.md`), `design/parts/` (`PART-PLAN.md`), `testing/reports/` (`TEST-REPORT.md`), `testing/security/` (`SECURITY-REVIEW.md`), and `testing/defects/` (`DEFECT.md`); other files follow the Output section of their skill. Fill every section, or record the gap explicitly.
+Application code lives in the current repository, outside `docs/`. UI code built in S2.3 stays on the branch `ux/<request-summary>` until G3 accepts it and it merges into the request branch; front-end slice parts take it over there in S4. Its prototype shell lives in its own folder outside the production build, and the front-end part the implementation plan names deletes each flow's shell, in the release point that first ships that flow. For greenfield, the scaffold is created in S4 as the implementation plan describes. A file with a same-named template in `.cursor/sdlc/templates/` uses that shape, and so do the files in `docs/features/` (`FEATURE-SPEC.md`), `change-requests/` (`CHANGE-REQUEST.md`), `design/parts/` (`PART-PLAN.md`), `testing/reports/` (`TEST-REPORT.md`), `testing/security/` (`SECURITY-REVIEW.md`), and `testing/defects/` (`DEFECT.md`); other files follow the Output section of their skill. Fill every section that applies, write `n/a` under one that does not, and record a gap explicitly.
+
+**Document budgets.** Each template declares a budget in a comment under its title: at most so many non-blank lines, and so many characters per line, for example `<!-- budget: lines=120 chars=300 -->`. A file takes the budget of its template; files in `docs/features/`, `change-requests/`, `design/parts/`, `testing/reports/`, `testing/security/`, and `testing/defects/` take that of the template named above. `sdlc-check.py` fails a document more than 10% over either limit. Its owner then splits it (a feature into two features, a part into two parts) or cuts what repeats other documents, never content the step requires. `DECISION-LOG.md`, `decisions/`, `sources/`, and baselines have no budget: they hold verbatim words or never change.
 
 ---
 
@@ -294,7 +307,9 @@ Application code lives in the current repository, outside `docs/`. UI code built
 ```mermaid
 flowchart TD
   in(["Requirements or source material<br/>from the human"]):::ref --> s01["S0.1 Receive and route<br/>orchestrator"]
-  s01 --> ok{"Requirements usable?"}
+  s01 --> git{"Git repository<br/>with a commit?"}
+  git -->|No| init["git init on main,<br/>commit the folder"] --> ok
+  git -->|Yes| ok{"Requirements usable?"}
   ok -->|No| h{{"HITL: human fixes input"}}:::hitl
   h -->|Revise| s01
   h -->|Reject| x(["Cancelled at intake"]):::ref
@@ -318,7 +333,7 @@ flowchart TD
 | **Agent** | orchestrator |
 | **Skill** | `intake-and-routing` |
 | **Input** | The human's request: typed requirements, source material (meeting notes, transcripts, documents), or both. An issue the human reports in the scope of an open request does not come here: it goes to `qa` (section 17, Reported issues) |
-| **Output** | The request branch (section 8); source material saved unchanged in `sources/`; `DECISION-LOG.md` routing row (mode, profile, route, next step) |
+| **Output** | When the folder is not a git repository or has no commit yet: a repository with the branch `main`, the current folder committed on it, package included, secrets left out. Then the request branch (section 8); source material saved unchanged in `sources/`; `DECISION-LOG.md` routing row (mode, profile, route, next step) |
 | **Stop?** | HITL only if the requirements are empty or unreadable, or the package is not committed (and pushed, when there is a remote) on the default branch |
 | **On Revise** | The human fixes the input → S0.1 |
 | **On Reject** | End the initiative; log "cancelled at intake" |
@@ -328,14 +343,14 @@ flowchart TD
 
 ## 10. Stage S1 — Requirements
 
-**Agent for every S1 step:** `requirements-analyst`. The canonical artifact is the one living `docs/PRD.md` (section 7); every S1 skill updates only the PRD sections its skill file names. Clarification alone is not the G1 package. No prototyping in this stage.
+**Agent for every S1 step:** `requirements-analyst`. The canonical artifacts are the living `docs/PRD.md` and this request's feature specs (section 7); every S1 skill updates only the sections its skill file names. Clarification alone is not the G1 package. No prototyping in this stage.
 
-S1.1–S1.7 have no HITL between them, so the orchestrator can hand them over as one run. **Blocked vs defer** (`AGENT-RULES.md`) applies to every S1 step: a Blocking gap ends the run, after reading ahead through the later steps for their questions, and the blocked step resumes with all the answers; Important and Non-blocking gaps go in PRD §11 and the step continues.
+S1.1–S1.7 have no HITL between them, so the orchestrator can hand them over as one run. **Blocked vs defer** (`AGENT-RULES.md`) applies to every S1 step: a Blocking gap ends the run, after reading ahead through the later steps for their questions, and the blocked step resumes with all the answers; Important and Non-blocking gaps go in the open questions of the PRD or the spec they affect, and the step continues.
 
 ```mermaid
 flowchart TD
-  in(["From S0.1"]):::ref --> s11["S1.1 Clarify<br/>continue the latest PRD"]
-  s11 --> g1{"C1: enough to<br/>enrich the PRD?"}
+  in(["From S0.1"]):::ref --> s11["S1.1 Clarify<br/>continue the PRD and specs"]
+  s11 --> g1{"C1: enough to<br/>write the specs?"}
   g1 -->|No| s11
   g1 -->|Yes| repo{"existing-repo?"}
   repo -->|Yes| s12["S1.2 Impact analysis"]
@@ -344,22 +359,22 @@ flowchart TD
   s13 --> opt{"Two options change<br/>product intent?"}
   opt -->|Yes| h13{{"Relay: choose option"}}:::hitl
   h13 --> s13
-  opt -->|No| s14["S1.4 Analyze into PRD"]
-  s14 --> s15["S1.5 Business rules · PRD §8"]
+  opt -->|No| s14["S1.4 Analyze"]
+  s14 --> s15["S1.5 Workflows, rules,<br/>and scenarios"]
   s15 --> rule{"Blocking rule or<br/>threshold missing?"}
   rule -->|Yes| h15{{"Relay: decide rule"}}:::hitl
   h15 --> s15
-  rule -->|No| s16["S1.6 Acceptance criteria · PRD §9"]
-  s16 --> s17["S1.7 PRD review prep"]
-  s17 --> open{"§11 Blocking or<br/>Important open?"}
-  open -->|Yes| h17{{"Relay: §11 answers"}}:::hitl
+  rule -->|No| s16["S1.6 Acceptance criteria"]
+  s16 --> s17["S1.7 Review prep"]
+  s17 --> open{"Blocking or Important<br/>question open?"}
+  open -->|Yes| h17{{"Relay: answers"}}:::hitl
   h17 --> s17
   open -->|No| g2{{"HITL S1.8 · G1<br/>PRD baseline"}}:::hitl
-  g2 -->|Approve| v["Promote to<br/>docs/baselines/prds/PRD-vX.0"] --> trig{"Design trigger<br/>confirmed?"}
+  g2 -->|Approve| v["Promote PRD and specs to<br/>docs/baselines/prds/PRD-vX.0/"] --> trig{"Design trigger<br/>confirmed?"}
   trig -->|Yes| n(["S2.1"]):::ref
   trig -->|No| n3(["S3.1"]):::ref
   g2 -->|Revise| fix["Apply feedback with<br/>the relevant skills"] --> s17
-  g2 -->|Reject| rj["Remove the rejected<br/>requests' changes · §12"]
+  g2 -->|Reject| rj["Remove the rejected<br/>requests' changes"]
   rj -->|"Problem wrong"| s0(["S0.1"]):::ref
   rj -->|"Solution wrong"| s11
   rj -->|"Request dropped"| more
@@ -383,8 +398,8 @@ flowchart TD
 | | |
 |---|---|
 | **Skill** | `requirements-clarification` |
-| **Input** | The request and its `sources/`; `docs/PRD.md` (section 7) |
-| **Output** | `docs/PRD.md` updated in §§2–7 and §10 (§11 only when not blocked). Optional `analysis/clarification-notes.md` |
+| **Input** | The request and its `sources/`; `docs/PRD.md` and the specs of the features the request touches (section 7) |
+| **Output** | `docs/PRD.md`: vision, objectives, users, capabilities and scope, constraints, and a feature-index row per new feature. This request's specs, created from the `FEATURE-SPEC.md` template when new: purpose, scope, requirements, constraints. Open questions only when not blocked. A change-history row for this request |
 | **Stop?** | **Blocking** gaps stop the step (orchestrator relays). Class C → S1.C |
 | **Next** | S1.2 in `existing-repo` mode, otherwise S1.3, once **C1** holds |
 
@@ -393,8 +408,8 @@ flowchart TD
 | | |
 |---|---|
 | **Skill** | `existing-system-impact-analysis` |
-| **Input** | `docs/SYSTEM-ARCHITECTURE.md` when it exists, then the parts of the repository it points to; the PRD draft and the current baseline |
-| **Output** | `analysis/impact-analysis.md` (template shape). PRD §§6–7, §10, §11 (non-blocked items only) |
+| **Input** | `docs/SYSTEM-ARCHITECTURE.md` when it exists, then the parts of the repository it points to; this request's specs in the draft and in the current baseline |
+| **Output** | `analysis/impact-analysis.md` (template shape). Requirements in this request's specs; risks, dependencies, and open questions (non-blocked only) in the specs, or the PRD when product-wide |
 | **Stop?** | **Blocking** gaps stop the step. Class C → S1.C |
 | **Next** | S1.3 once **C2** holds |
 
@@ -403,8 +418,8 @@ flowchart TD
 | | |
 |---|---|
 | **Skill** | `similar-solution-research` |
-| **Output** | Optional working paper under `analysis/`. PRD §2, §4, §10, §11 (non-blocked items only) |
-| **Stop?** | **Blocking** when two valid product directions remain: the human chooses, and the choice is recorded in the PRD. Class C → S1.C |
+| **Output** | Optional `analysis/similar-solution-research.md`. Problem evidence, scope, constraints, risks, open questions (non-blocked only) in the PRD or this request's specs |
+| **Stop?** | **Blocking** when two valid product directions remain: the human chooses, and the choice is recorded in the spec or the PRD. Class C → S1.C |
 | **Next** | S1.4 |
 
 ### S1.4 Analyze
@@ -412,17 +427,17 @@ flowchart TD
 | | |
 |---|---|
 | **Skill** | `requirements-analysis` |
-| **Output** | PRD §§6–7, §10, §11 (Important/Non-blocking during this step). Optional `analysis/requirements-analysis.md` |
+| **Output** | Requirements in this request's specs; constraints, assumptions, risks, dependencies, and open questions (Important and Non-blocking during this step) in the specs or the PRD |
 | **Stop?** | **Blocking** gaps stop the step. Class C → S1.C |
 | **Next** | S1.5 once **C3** holds |
 
-### S1.5 Business rules and scenarios
+### S1.5 Workflows, rules, and scenarios
 
 | | |
 |---|---|
 | **Skill** | `business-rules-and-scenario-analysis` |
-| **Output** | PRD §8. Optional `analysis/business-rules-and-scenarios.md` |
-| **Stop?** | **Blocking** rule or threshold gaps stop the step; the human's answer is recorded in §8. Class C → S1.C |
+| **Output** | Business workflows and product-wide rules in the PRD; this request's rules, workflow detail, states, exceptions, and scenarios in its specs |
+| **Stop?** | **Blocking** rule or threshold gaps stop the step; the human's answer is recorded as a rule. Class C → S1.C |
 | **Next** | S1.6 once **C4** holds |
 
 ### S1.6 Acceptance criteria
@@ -430,27 +445,27 @@ flowchart TD
 | | |
 |---|---|
 | **Skill** | `acceptance-criteria-and-test-design` |
-| **Output** | PRD §9, with regression criteria in `existing-repo` mode. Optional `analysis/acceptance-criteria.md` |
+| **Output** | Acceptance criteria in this request's specs, with regression criteria in `existing-repo` mode |
 | **Stop?** | **Blocking** verifiability gaps stop the step |
 | **Next** | S1.7 once **C5** holds |
 
-### S1.7 Prepare PRD for review
+### S1.7 Prepare for review
 
 | | |
 |---|---|
 | **Skill** | `prd-review-and-baseline` (draft review) |
-| **Output** | `docs/PRD.md`: template-only headings, refreshed §1, document control **Pending approval**, §11 sorted Blocking → Important → Non-blocking |
-| **Stop?** | Remaining **Blocking** or **Important** §11 rows stop the step: return all of them as questions in one stop for the orchestrator to relay |
-| **Next** | S1.8 once no Blocking or Important §11 rows remain unanswered |
+| **Output** | `docs/PRD.md` and this request's specs: template-only headings, within budget (section 8), open questions sorted Blocking → Important → Non-blocking; the PRD's vision refreshed when the request changed it; document control **Pending approval** |
+| **Stop?** | Remaining **Blocking** or **Important** open questions stop the step: return all of them in one stop for the orchestrator to relay |
+| **Next** | S1.8 once no Blocking or Important open question remains unanswered |
 
 ### S1.8 Human — PRD baseline (G1) `HITL`
 
 | | |
 |---|---|
 | **Skill** | `prd-review-and-baseline` (draft review decision) |
-| **Output** | G1 package: PRD version, summary of changes by request (§12), open Non-blocking items, the experience-design recommendation (the section 11 triggers the request meets, or none, with the evidence), the decision asked |
+| **Output** | G1 package: version, summary of changes by request and feature (change history), open Non-blocking items, the experience-design recommendation (the section 11 triggers the request meets, or none, with the evidence), the decision asked |
 | **Stop?** | **Yes — HITL**. The human confirms or overrides the experience-design recommendation; the orchestrator records the outcome in the G1 row of `DECISION-LOG.md` |
-| **On Approve** | Version `vX.0`, document control **Approved**, §6 and §7 **Proposed** rows set to **Approved**; copy `docs/PRD.md` unchanged to `docs/baselines/prds/PRD-vX.0.md` (section 7) → S2.1 when a section 11 trigger is confirmed, otherwise S3.1 |
+| **On Approve** | Version `vX.0`, document control **Approved**, **Proposed** requirement rows set to **Approved**, closed items removed; copy `docs/PRD.md` and `docs/features/` unchanged to `docs/baselines/prds/PRD-vX.0/` (section 7) → S2.1 when a section 11 trigger is confirmed, otherwise S3.1 |
 | **On Revise** | Apply feedback; re-run affected S1 skills as needed → S1.7 |
 | **On New request** | Not approving yet: the draft stays open and this request ends at S1. The next request continues the draft from S0.1 |
 | **On Reject** | Per request (section 7): remove the rejected requests' changes; the rest stays open. For each rejected request: problem wrong → S0.1; solution wrong → S1.1; otherwise it ends. Nothing downstream starts on rejected content |
@@ -463,10 +478,10 @@ Raised by any agent, at any stage, whenever approved intent or scope would chang
 |---|---|
 | **Agent** | `requirements-analyst` |
 | **Skill** | `prd-review-and-baseline` (baseline change review) |
-| **Input** | The current baseline in `docs/baselines/prds/`; the change request in this request's `change-requests/`; `docs/PRD.md` when a draft is open |
-| **Output** | The change request with its proposed PRD changes and evaluation; the S1.C package |
+| **Input** | The current baseline's PRD and the specs the change touches, in `docs/baselines/prds/`; the change request in this request's `change-requests/`; the same files in `docs/` when a draft is open |
+| **Output** | The change request with its proposed changes to the PRD and specs, and its evaluation; the S1.C package |
 | **Stop?** | **Yes — HITL**. The raising stage pauses |
-| **On Approve** | Apply the change to the baseline as the next `vX.0` in `docs/baselines/prds/`, with §12 updated and the changed §6 and §7 rows **Approved**. `docs/PRD.md` becomes that version, or, when a draft is open, the draft rebased onto it as `vX.1` (section 7); re-run only affected S1 skills; mark the change request **Approved**. If the change affects a design G4 already approved, S3.1–S3.3 run first for what changed: `architect` updates the design, `docs/SYSTEM-ARCHITECTURE.md`, and the affected part plans, and G4 approves the change. If the change affects acceptance criteria and `testing/TEST-PLAN.md` exists, `qa` updates it for what changed (S3.5), and each merged slice part it names for recheck goes back to S5.1; until it passes, it does not count as checked for S5.2. Then resume the stage that paused |
+| **On Approve** | Apply the change to the baseline as the next `vX.0` folder in `docs/baselines/prds/`, with the change history updated and the changed requirement rows **Approved**. `docs/PRD.md` and `docs/features/` become that version, or, when a draft is open, the draft rebased onto it as `vX.1` (section 7); re-run only affected S1 skills; mark the change request **Approved**. If the change affects a design G4 already approved, S3.1–S3.3 run first for what changed: `architect` updates the design, `docs/SYSTEM-ARCHITECTURE.md`, and the affected part plans, and G4 approves the change. If the change affects acceptance criteria and `testing/TEST-PLAN.md` exists, `qa` updates it for what changed (S3.5), and each merged slice part it names for recheck goes back to S5.1; until it passes, it does not count as checked for S5.2. Then resume the stage that paused |
 | **On Revise** | Record the feedback in the change request → S1.C |
 | **On Reject** | Baseline unchanged; mark the change request **Rejected**; resume only if the remaining scope is still coherent |
 
@@ -481,9 +496,9 @@ Designs a request's experience, after the PRD baseline and before architecture, 
 1. **Greenfield UI:** the product has no UI or no design system yet.
 2. **New look:** the visual identity or the design system changes, such as a rebrand or a new look and feel.
 3. **Restructure:** navigation or information architecture changes, or existing screens are redesigned as a whole.
-4. **Open UX:** a new flow whose UX the PRD leaves open, or on which stakeholders disagree.
+4. **Open UX:** a new flow whose UX the feature spec leaves open, or on which stakeholders disagree.
 
-Every other UI change skips S2 and goes to S3.1: a new screen that follows an existing pattern, a new field or state, a copy change. Front-end slice parts build it from the PRD and the UI catalog. When `architect` in S3 or `frontend-developer` in S4 meets a screen the PRD and the catalog cannot settle, or `qa` in S5 finds a usability concern, it hands off a **design need** (section 17): S2 runs for those screens only, and every route to S3.1 below returns instead to the work the design need paused.
+Every other UI change skips S2 and goes to S3.1: a new screen that follows an existing pattern, a new field or state, a copy change. Front-end slice parts build it from the feature spec and the UI catalog. When `architect` in S3 or `frontend-developer` in S4 meets a screen the spec and the catalog cannot settle, or `qa` in S5 finds a usability concern, it hands off a **design need** (section 17): S2 runs for those screens only, and every route to S3.1 below returns instead to the work the design need paused.
 
 **Tiers.** `designer` gives each screen the request changes a **tier**, from T0 (no design) through T1 (screen spec) and T2 (interactive prototype in code) to T3 (explore directions first), defined in `ux-planning`. The highest tier sets the route. A T2 or T3 screen, or a change to the design system, is **built** in S2.3.
 
@@ -492,7 +507,7 @@ Every other UI change skips S2 and goes to S3.1: a new screen that follows an ex
 ```mermaid
 flowchart TD
   s1c(["S1.C"]):::ref
-  in(["docs/baselines/prds/PRD-vX.0<br/>approved at G1"]):::ref --> ui{"G1 confirmed a<br/>design trigger?"}
+  in(["This request's specs<br/>approved at G1"]):::ref --> ui{"G1 confirmed a<br/>design trigger?"}
   ui -->|No| s3(["S3.1, or the work<br/>a design need paused"]):::ref
   ui -->|Yes| s21["S2.1 Tier each screen,<br/>write UX brief · designer"]
   dn(["Design need<br/>from S3, S4, or S5"]):::ref --> s21
@@ -505,7 +520,7 @@ flowchart TD
   t -->|"T0, or T1 in Light,<br/>nothing to build"| s3
   t -->|"T1, nothing to build"| s24
   t -->|"T2 or T3, or a<br/>design-system change"| s23["S2.3 Build interactive prototype<br/>on the UX branch · designer"]
-  s23 --> cc{"PRD intent must<br/>change to build?"}
+  s23 --> cc{"Approved intent must<br/>change to build?"}
   cc -.->|Yes| s1c
   cc -->|No| s24["S2.4 Validate · design-lead<br/>check results first, then judgment"]
   s24 --> d{"Finding type?"}
@@ -513,7 +528,7 @@ flowchart TD
   d -.->|"Requirement or AC defect"| s1c
   d -->|"None or deferred,<br/>nothing built"| s3
   d -->|"None or deferred,<br/>built"| g3{{"HITL S2.5 · G3<br/>UX acceptance"}}:::hitl
-  g3 -->|Approve| s3
+  g3 -->|Approve| mux["Merge UX branch into<br/>request branch · orchestrator"] --> s3
   g3 -->|"Revise: UX"| fix
   g3 -.->|"Revise: requirements"| s1c
   g3 -->|Reject| rs["Delete the UX branch<br/>designer"] --> wv{"Human records<br/>a waiver?"}
@@ -529,7 +544,7 @@ flowchart TD
 |---|---|
 | **Agent** | `designer` |
 | **Skill** | `ux-planning`, `ui-design` for screen specs; `design-system-design` for trigger 1 or 2, or when a screen needs a change to the design system |
-| **Input** | This request's baseline, never a draft: the `docs/baselines/prds/PRD-vX.0.md` its G1 approved, or a later one its S1.C approved; the triggers G1 confirmed (`DECISION-LOG.md`), or the design need and the screens it names; `docs/COMPONENTS.md`; the existing screens the PRD changes |
+| **Input** | This request's specs (section 7) from its baseline, never a draft: the `docs/baselines/prds/PRD-vX.0/` its G1 approved, or a later one its S1.C approved; the triggers G1 confirmed (`DECISION-LOG.md`), or the design need and the screens it names; `docs/COMPONENTS.md`; the existing screens the specs change |
 | **Output** | `ux/UX-BRIEF.md`: the triggers or design need that started S2, a tier per changed screen (only the design need's screens, when one started it), the questions for T2 and T3 screens, a screen spec per T1 screen, the design-system changes needed, and, for trigger 1 or 2, the options for the human with a recommended one and its visual identity. For a T3 screen: 2–3 throwaway directions as static pages, a screenshot of each in `ux/directions/`, linked in the brief |
 | **Stop?** | No |
 | **Next** | S2.2 for a T3 screen, trigger 1 or 2, or the Full profile. Otherwise: something to build → S2.3; T1 → S2.4, or S3.1 in Light; T0 → S3.1 |
@@ -551,7 +566,7 @@ flowchart TD
 | **Agent** | `designer` |
 | **Skill** | `ux-planning`, `ui-design`; `design-system-design` for design-system changes in the brief |
 | **Input** | `ux/UX-BRIEF.md`; `docs/COMPONENTS.md`; `docs/ENGINEERING-STANDARDS.md` when it exists |
-| **Output** | On the branch `ux/<request-summary>`, never merged in S2: the brief's design-system changes, the components of each T2 and T3 screen, a story per state with mock data, a prototype shell that links each flow's screens into a clickable prototype, `docs/COMPONENTS.md` regenerated, and the UI checks the engineering standards name, run. Screenshots at mobile and desktop widths in `ux/screens/` of each state of each T2 and T3 screen, and of each screen a design-system change restyles. The build record in the brief. Greenfield before the scaffold exists: the same, as plain HTML, CSS, and JavaScript pages linked into clickable flows, with no framework or build step, which the first front-end slice part moves into the scaffold |
+| **Output** | On the branch `ux/<request-summary>`, cut from the request branch (section 8): the brief's design-system changes, the components of each T2 and T3 screen, a story per state with mock data, a prototype shell that links each flow's screens into a clickable prototype, `docs/COMPONENTS.md` regenerated, and the UI checks the engineering standards name, run. Screenshots at mobile and desktop widths in `ux/screens/` of each state of each T2 and T3 screen, and of each screen a design-system change restyles. The build record in the brief. Greenfield before the scaffold exists: the same, as plain HTML, CSS, and JavaScript pages linked into clickable flows, with no framework or build step, which the first front-end slice part moves into the scaffold |
 | **Stop?** | Class C → S1.C |
 | **Next** | S2.4. On a fix, change only the failed screens |
 
@@ -561,7 +576,7 @@ flowchart TD
 |---|---|
 | **Agent** | `design-lead` (never the builder) |
 | **Skill** | `ux-validation`, then `ui-design-review` |
-| **Input** | `ux/UX-BRIEF.md` and the approved PRD; for what was built, the UI check results, `ux/screens/`, and the stories and prototype on `ux/<request-summary>` |
+| **Input** | `ux/UX-BRIEF.md` and this request's approved specs; for what was built, the UI check results, `ux/screens/`, and the stories and prototype on `ux/<request-summary>` |
 | **Output** | `ux/UX-REVIEW.md`: the check results, a result per question and changed screen, the design review, and the handoff note for architecture |
 | **Stop?** | UX defect → `designer` fixes the failed screens only (S2.1 for a screen spec, S2.3 for UI) → S2.4. Requirement or AC defect → S1.C |
 | **Next** | S2.5 when something was built; otherwise S3.1 |
@@ -572,7 +587,7 @@ flowchart TD
 |---|---|
 | **Agent** | `design-lead` |
 | **Stop?** | **Yes — HITL** |
-| **On Approve** | Only when every material question is answered or explicitly deferred → S3.1 with the handoff note. The screenshots in `ux/screens/` are the approved look |
+| **On Approve** | Only when every material question is answered or explicitly deferred. The orchestrator merges `ux/<request-summary>` into the request branch and deletes it; a merge that is not clean goes back to `designer`, who merges the request branch into the UX branch without changing a screen → S3.1 with the handoff note. The screenshots in `ux/screens/` are the approved look |
 | **On Revise** | UX → S2.3 → S2.4 → S2.5. Requirements → S1.C, then re-enter S2 |
 | **On Reject** | `designer` deletes `ux/<request-summary>` → a change request with the reasons → S1.C. S3.1 only if the human records a waiver |
 
@@ -580,11 +595,11 @@ flowchart TD
 
 ## 12. Stage S3 — Design and plan
 
-Runs once per request, from the approved PRD and the UX handoff: the handoff note in `ux/UX-REVIEW.md`, the UX brief when S2 ended without a review, or nothing when S2 did not run. It ends with an approved design and delivery plan, a working pipeline, and a test plan.
+Runs once per request, from this request's approved specs and the UX handoff: the handoff note in `ux/UX-REVIEW.md`, the UX brief when S2 ended without a review, or nothing when S2 did not run. It ends with an approved design and delivery plan, a working pipeline, and a test plan.
 
 ```mermaid
 flowchart TD
-  in(["Approved PRD + UX handoff"]):::ref --> s31["S3.1 Design<br/>architect"]
+  in(["Approved specs + UX handoff"]):::ref --> s31["S3.1 Design<br/>architect"]
   s31 --> sec{"Auth, PII, payments, infra,<br/>secrets, or new integration?"}
   sec -->|Yes| cons["Consult security-engineer<br/>threat model"] --> inf
   sec -->|No| inf{"Infeasible item that<br/>changes intent?"}
@@ -610,7 +625,7 @@ flowchart TD
 |---|---|
 | **Agent** | `architect`; consults `security-engineer` for auth, PII, payments, infrastructure, secrets, or a new external integration |
 | **Skill** | `architecture-and-technical-design`, `engineering-standards`; `security-engineer` uses `threat-modeling` |
-| **Input** | This request's baseline: the `docs/baselines/prds/PRD-vX.0.md` its G1 approved, or a later one its S1.C approved; `ux/UX-REVIEW.md` (handoff note), or `ux/UX-BRIEF.md` when S2 ended without a review; `docs/SYSTEM-ARCHITECTURE.md` when it exists |
+| **Input** | This request's specs (section 7) from its baseline: the `docs/baselines/prds/PRD-vX.0/` its G1 approved, or a later one its S1.C approved; `ux/UX-REVIEW.md` (handoff note), or `ux/UX-BRIEF.md` when S2 ended without a review; `docs/SYSTEM-ARCHITECTURE.md` when it exists |
 | **Output** | `design/ARCHITECTURE.md`: this request's design and its change to the system architecture. `docs/SYSTEM-ARCHITECTURE.md` created (first request) or updated, every changed element tagged with this request. `docs/ENGINEERING-STANDARDS.md` created or updated; `design/THREAT-MODEL.md` when consulted |
 | **Stop?** | Infeasible item that changes intent → S1.C |
 | **Next** | S3.2 |
@@ -621,8 +636,8 @@ flowchart TD
 |---|---|
 | **Agent** | `architect` |
 | **Skill** | `implementation-planning` |
-| **Input** | `design/ARCHITECTURE.md`, `docs/SYSTEM-ARCHITECTURE.md`, `design/THREAT-MODEL.md`, `docs/ENGINEERING-STANDARDS.md`, the approved PRD; `ux/UX-BRIEF.md` and `docs/COMPONENTS.md` when S2 ran |
-| **Output** | `design/IMPLEMENTATION-PLAN.md`: the index of slice parts with owners, dependencies, sizes, and review classes (section 5), release points, and the CI, quality gates, and environments to provision. `design/parts/<part ID>.md`: one part plan per slice part, at most 60 lines, pointing to the sections it needs instead of copying them; a part that needs more is split |
+| **Input** | `design/ARCHITECTURE.md`, `docs/SYSTEM-ARCHITECTURE.md`, `design/THREAT-MODEL.md`, `docs/ENGINEERING-STANDARDS.md`, this request's approved specs; `ux/UX-BRIEF.md` and `docs/COMPONENTS.md` when S2 ran |
+| **Output** | `design/IMPLEMENTATION-PLAN.md`: the index of slice parts with owners, dependencies, sizes, and review classes (section 5), release points, and the CI, quality gates, and environments to provision. `design/parts/<part ID>.md`: one part plan per slice part, within its budget (section 8), pointing to the sections it needs instead of copying them; a part that needs more is split |
 | **Stop?** | No |
 | **Next** | S3.3 |
 
@@ -655,7 +670,7 @@ Light may draft the plan while the design is still being revised when risk is lo
 |---|---|
 | **Agent** | `qa` |
 | **Skill** | `qa-test-planning` |
-| **Input** | The approved PRD's acceptance criteria, the release points in `design/IMPLEMENTATION-PLAN.md`, the Tests and Security requirements sections of each part plan in `design/parts/`. After an S1.C change: also the change request and the existing `testing/TEST-PLAN.md` |
+| **Input** | The acceptance criteria in this request's approved specs, the release points in `design/IMPLEMENTATION-PLAN.md`, the Tests and Security requirements sections of each part plan in `design/parts/`. After an S1.C change: also the change request and the existing `testing/TEST-PLAN.md` |
 | **Output** | `testing/TEST-PLAN.md`, created, or updated for what changed |
 | **Stop?** | An untestable or contradictory criterion → consult `requirements-analyst` (section 17); Class C → S1.C |
 | **Next** | S5.1 for each slice part as it merges |
@@ -688,7 +703,7 @@ flowchart TD
   f -->|"Yes: fix in the same PR"| s41
   f -.->|"Scope creep"| s1c
   f -->|No| sens{"Sensitive PR,<br/>or Full profile?"}
-  sens -->|No| merge["S4.5 Merge"]
+  sens -->|No| merge["S4.5 Merge into<br/>request branch · orchestrator"]
   sens -->|Yes| g5{{"HITL S4.5 · G5<br/>merge"}}:::hitl
   g5 -->|Approve| merge
   g5 -->|Revise| s41
@@ -705,7 +720,7 @@ flowchart TD
 | **Agent** | `frontend-developer` or `backend-developer`: the slice part's owner on the board |
 | **Skill** | `feature-implementation`; front-end parts also `ui-implementation`, back-end parts also `backend-implementation` |
 | **Input** | The part plan `design/parts/<part ID>.md` and only the sections it points to; `docs/ENGINEERING-STANDARDS.md`. For a fix: the open findings in the PR's review comments and `testing/security/PR-<number>.md`, or the defect record. For a defect request (section 17): the defect record in place of a part plan |
-| **Output** | Code and tests on the part's branch. Greenfield: the scaffold the plan describes |
+| **Output** | Code and tests on the part's branch, cut from `release/<request-summary>`. Greenfield: the scaffold the plan describes |
 | **Stop?** | A design, contract, security, or acceptance-criteria question the documents do not answer → consult handoff (section 17). A contract change goes to `architect` first. Class C → pause → S1.C. Defect request: a fix that needs a contract, data-model, migration, architecture, or requirement change → report it; the orchestrator reroutes to S1.1 (section 17) |
 | **Next** | S4.2 |
 
@@ -715,7 +730,7 @@ flowchart TD
 |---|---|
 | **Agent** | The slice-part owner |
 | **Skill** | `feature-implementation`; front-end parts also `ui-implementation`, back-end parts also `backend-implementation` |
-| **Output** | One PR per slice part, described in the shape of the `PULL-REQUEST.md` template; every quality gate passes on what the PR adds (C6), and any other CI failure is explained in the PR |
+| **Output** | One PR per slice part, targeting the request branch, described in the shape of the `PULL-REQUEST.md` template; every quality gate passes on what the PR adds (C6), and any other CI failure is explained in the PR |
 | **Stop?** | A CI or environment failure the change did not cause → handoff to `devops` |
 | **Next** | By review class (section 5): Routine → S4.5; Important → S4.3; Sensitive → S4.3 and S4.4 in parallel. In Full, S4.3 also runs for Routine. For a fix, each reviewer re-checks only its own open findings and the commits since the head it last reviewed |
 
@@ -746,6 +761,7 @@ flowchart TD
 | | |
 |---|---|
 | **Agent** | For G5: the PR's reviewers, one combined package. The orchestrator merges, with no agent session. A PR that cannot merge cleanly goes back to its owner at S4.1 |
+| **Output** | The PR merged into the request branch by the orchestrator and pushed; its merge commit in the board's PR cell |
 | **Stop?** | **HITL** for a Sensitive PR (section 5), and for every PR in Full. Otherwise the orchestrator merges once the reviews its class needs pass (none for Routine), CI is green on the head (the reviewed head when reviewed), and `sdlc-check.py --request <request-summary> --gate G5 --pr <number>` passes, with no human stop |
 | **On Approve** | Merge → S5.1 |
 | **On Revise** | → S4.1 → S4.2 → the reviews its class needs |
@@ -976,8 +992,8 @@ Agents never talk to each other. An agent that needs another role ends its run w
 |---|---|---|---|---|
 | Developer → `architect` | Design unclear, a pattern the standards lack, performance doubt, a contract that must change | Answers; a design change within approved intent becomes an ADR | `design/ARCHITECTURE.md` (ADR or clarification) | Only for a design change after G4 (`AGENT-RULES.md`, Change classes): G4 for that change |
 | Developer → `security-engineer` | Touching auth, PII, or secrets without a clear requirement | Advises; adds a security requirement when needed | `design/THREAT-MODEL.md` | No |
-| `architect`, `frontend-developer`, or `qa` → `designer` | **Design need:** a screen the PRD and the UI catalog cannot settle, one that meets a section 11 trigger G1 did not confirm, or a usability concern found in S5 | S2 for the named screens only (section 11); the paused work resumes from the UX handoff, and after G4 `architect` points the affected part plans to it | `ux/UX-BRIEF.md`; the routing row in `DECISION-LOG.md` | Only where S2 stops (G2, G3) |
-| Developer or `qa` → `requirements-analyst` | An acceptance criterion is ambiguous, contradictory, or incomplete | Class A clarification, a Class B gap or risk with an owner, or a Class C change request | `analysis/finding-notes.md`, carried into the next PRD draft | Only for Class C (S1.C) |
+| `architect`, `frontend-developer`, or `qa` → `designer` | **Design need:** a screen the feature spec and the UI catalog cannot settle, one that meets a section 11 trigger G1 did not confirm, or a usability concern found in S5 | S2 for the named screens only (section 11); the paused work resumes from the UX handoff, and after G4 `architect` points the affected part plans to it | `ux/UX-BRIEF.md`; the routing row in `DECISION-LOG.md` | Only where S2 stops (G2, G3) |
+| Developer or `qa` → `requirements-analyst` | An acceptance criterion is ambiguous, contradictory, or incomplete | Class A clarification, a Class B gap or risk with an owner, or a Class C change request | `analysis/finding-notes.md`, carried into the next draft | Only for Class C (S1.C) |
 | Reviewer → developer | Review or security finding, all open findings in one handoff | Fixes in the same PR | PR comments; security findings in `testing/security/PR-<number>.md` | No |
 | The human → `qa` | An issue the human reports (section 17, Reported issues) | Reproduces it at S5.1; files a defect, another finding, or the evidence that it does not reproduce | Defect record, or `DECISION-LOG.md` | No |
 | `qa` → developer | Defect | Debugs and fixes through S4.1–S4.5 | Defect record | No |
@@ -997,7 +1013,7 @@ The human can report an issue at any time. The orchestrator never files it or ju
 **Defect request.** A request whose only input is one reported issue in released code, in `existing-repo` mode, when `docs/ENGINEERING-STANDARDS.md` and the CI that runs its quality gates already exist; otherwise the request takes the normal path from S1.1.
 
 - S0.1 saves the report in `sources/`, logs the route (Defect), and delegates S5.1 to `qa` to reproduce it. Not reproduced → the evidence goes to the human, who revises or cancels the request at S0.1. Any finding type other than an implementation defect → the request continues at S1.1 on the normal path, with `qa`'s finding as a source.
-- For an implementation defect, the orchestrator opens `delivery/BOARD.md` (route Defect): one release point, and one part per owner the fix needs, the back-end part first, each with its review class (section 5; Important when unsure). S1–S3 do not run, the PRD is not touched, and there is no G1–G4.
+- For an implementation defect, the orchestrator opens `delivery/BOARD.md` (route Defect): one release point, and one part per owner the fix needs, the back-end part first, each with its review class (section 5; Important when unsure). S1–S3 do not run, the PRD and feature specs are not touched, and there is no G1–G4.
 - From S4.1 on, each part runs exactly as a slice part: S4.1–S4.5 with the reviews its class needs, S5.1 retest, S5.2 release test of the defect and its affected regression, G6, S6 with G7, and S7 with G8. The defect record stands in for the part plan and the test plan.
 - A fix that needs a contract, data-model, migration, architecture, or requirement change does not fit: the developer stops and reports it, the orchestrator records the reroute in `DECISION-LOG.md` and sets the board's route to Normal, and the request continues at S1.1 on the normal path with the defect record as a source.
 
@@ -1015,11 +1031,11 @@ The human can report an issue at any time. The orchestrator never files it or ju
 
 | Check | Evidence | If unmet |
 |---|---|---|
-| C1 | Problem, outcomes, stakeholders, draft requirements, scope, and material assumptions are each at least partially clear, and nothing missing would force an invention | Stay on S1.1 |
-| C2 | Impact report saved and material risks folded into the PRD *(existing-repo)* | Stay on S1.2 |
-| C3 | Gaps, assumptions, constraints, and risks dispositioned in the PRD (owned, accepted, or open in §10 or §11) | Stay on S1.4 |
-| C4 | Material rules, workflows, and scenarios in PRD §8, explicit enough to write acceptance criteria | Stay on S1.5 |
-| C5 | Observable criteria in PRD §9, or an explicit §11 follow-up naming the owner | Stay on S1.6 |
+| C1 | Problem, outcomes, stakeholders, the features touched, draft requirements, scope, and material assumptions are each at least partially clear, and nothing missing would force an invention | Stay on S1.1 |
+| C2 | Impact report saved and material risks folded into this request's specs or the PRD *(existing-repo)* | Stay on S1.2 |
+| C3 | Gaps, assumptions, constraints, and risks dispositioned in the specs or the PRD (owned, accepted, or an open question) | Stay on S1.4 |
+| C4 | Material workflows, rules, and scenarios in the PRD and this request's specs, explicit enough to write acceptance criteria | Stay on S1.5 |
+| C5 | Observable criteria in this request's specs, or an open question naming the owner | Stay on S1.6 |
 | C6 | Every quality gate in the engineering standards, security gates included, passes on what the PR adds, none silenced or reconfigured except through a known exception the PR adds to the engineering standards; other CI failures explained and not caused by the change | Stay on S4.2 |
 | C7 | The reviews the PR's review class needs (section 5) are done; no unresolved Blocking or Important finding | Back to S4.1 |
 
@@ -1027,7 +1043,7 @@ The human can report an issue at any time. The orchestrator never files it or ju
 
 | Gate | Step | Evidence | If unmet |
 |---|---|---|---|
-| G1 | S1.8 | A human approved a specific complete PRD version and confirmed which section 11 design triggers it meets, if any | Stay on S1.8 |
+| G1 | S1.8 | A human approved a specific complete version of the PRD and feature specs and confirmed which section 11 design triggers it meets, if any | Stay on S1.8 |
 | G2 | S2.2 | A human chose the direction of each T3 screen, the design system and visual identity for trigger 1 or 2, and, in Full, confirmed the tiers | Stay on S2.2 |
 | G3 | S2.5 | Material UX questions answered or deferred; UI checks ran on everything built, or their absence is a finding; evidence labeled owner walkthrough or user session; handoff note written | Stay in S2, or S1.C |
 | G4 | S3.3 | A human accepted a specific design, its change to the system architecture, ADR set, engineering standards, and delivery plan with release points; open technical and security risks have owners | Stay on S3.3 |
@@ -1061,7 +1077,7 @@ Build (S4) needs a git host and a CI pipeline on it. There is no local substitut
 | Tool | Purpose | Used by |
 |---|---|---|
 | Browser automation | UI screenshots and click-through, smoke, end-to-end | `designer`, `design-lead`, `qa`, `frontend-developer` |
-| Claude artifacts | The house design systems, read only | `designer` |
+| Claude artifacts | The CodeIT Design System, read only | `designer` |
 | Package registries | Dependencies and images | Developers, `devops` |
 | Issue store | Defects, incidents, and Class C follow-ups; without one, one file each in `testing/defects/` | orchestrator, `qa`, `devops` |
 | Deploy target | Staging and production, with rollback | `devops` |

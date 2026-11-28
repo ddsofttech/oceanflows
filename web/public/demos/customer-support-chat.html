@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>DD Assistant – chat animation</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700&display=swap"
+    />
+    <style>
+      :root {
+        --pg: #f4f8ff;
+        --card: #fff;
+        --line: #dfe7f3;
+        --text: #152947;
+        --muted: #63728a;
+        --ai: #f0f3f8;
+        --inb: #fff;
+        --blue: #1e40af;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --pg: #070f2b;
+          --card: #0e1a44;
+          --line: #22337a;
+          --text: #f1f5f9;
+          --muted: #a8b5cc;
+          --ai: #13245f;
+          --inb: #0b1738;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --pg: #070f2b;
+        --card: #0e1a44;
+        --line: #22337a;
+        --text: #f1f5f9;
+        --muted: #a8b5cc;
+        --ai: #13245f;
+        --inb: #0b1738;
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+      }
+      html {
+        height: 100%;
+        background: var(--card);
+      }
+      body {
+        /* Opaque so rounded .card corners do not show parent demo grey through the iframe */
+        background: var(--card);
+        font:
+          400 14px/1.5 Inter,
+          system-ui,
+          sans-serif;
+        color: var(--text);
+        display: grid;
+        place-items: stretch;
+        min-height: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .card {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow:
+          0 16px 48px rgba(26, 51, 102, 0.14),
+          0 2px 8px rgba(26, 51, 102, 0.05);
+        overflow: hidden;
+      }
+      .hd {
+        min-height: 64px;
+        flex: none;
+        background: var(--blue);
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 20px;
+        color: #fff;
+      }
+      .lg {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: #fff;
+        display: grid;
+        place-items: center;
+        flex: none;
+        color: var(--blue);
+      }
+      .t {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .t b {
+        display: inline;
+        font:
+          700 18px/1.2 Montserrat,
+          sans-serif;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #7fe2b5;
+        flex: none;
+        animation: pl 2s infinite;
+      }
+      .min {
+        margin-left: auto;
+        width: 10px;
+        height: 2px;
+        border-radius: 2px;
+        background: #fff;
+      }
+      .bd {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        scrollbar-width: none;
+        transition: opacity 0.5s;
+      }
+      .bd::-webkit-scrollbar {
+        display: none;
+      }
+      .ts {
+        align-self: center;
+        font:
+          500 12px Inter,
+          sans-serif;
+        color: var(--muted);
+        animation: fi 0.5s;
+      }
+      .r {
+        display: flex;
+        flex-direction: column;
+        max-width: 80%;
+        animation: pop 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .r.u {
+        align-self: flex-end;
+        align-items: flex-end;
+      }
+      .r.a {
+        align-self: flex-start;
+      }
+      .who {
+        font:
+          500 12px Inter,
+          sans-serif;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .b {
+        padding: 14px 16px;
+        border-radius: 12px;
+      }
+      .u .b {
+        background: var(--blue);
+        color: #fff;
+        border-radius: 12px 12px 4px 12px;
+      }
+      .a .b {
+        background: var(--ai);
+        color: var(--text);
+        border-radius: 12px 12px 12px 4px;
+      }
+      .w {
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .w.on {
+        opacity: 1;
+      }
+      .dots {
+        display: flex;
+        gap: 5px;
+        padding: 5px 2px;
+      }
+      .dots i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--muted);
+        animation: bn 1s infinite;
+      }
+      .dots i:nth-child(2) {
+        animation-delay: 0.15s;
+      }
+      .dots i:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .ft {
+        flex: none;
+        border-top: 1px solid var(--line);
+        padding: 15px 20px 12px;
+      }
+      .in {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        height: 57px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 0 9px 0 16px;
+        background: var(--inb);
+      }
+      .tx {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: clip;
+        direction: ltr;
+      }
+      .tx:empty::before {
+        content: "Type your message…";
+        color: var(--muted);
+      }
+      .tx.ty::after {
+        content: "";
+        display: inline-block;
+        width: 1.5px;
+        height: 16px;
+        background: var(--text);
+        vertical-align: -3px;
+        margin-left: 1px;
+        animation: bk 0.8s steps(1) infinite;
+      }
+      .snd {
+        width: 38px;
+        height: 38px;
+        border-radius: 9px;
+        background: var(--blue);
+        display: grid;
+        place-items: center;
+        flex: none;
+      }
+      .snd.go {
+        animation: pr 0.35s;
+      }
+      .pw {
+        text-align: center;
+        font:
+          500 11px Inter,
+          sans-serif;
+        color: var(--muted);
+        margin-top: 10px;
+      }
+      @keyframes pop {
+        from {
+          opacity: 0;
+          transform: translateY(10px) scale(0.97);
+        }
+      }
+      @keyframes fi {
+        from {
+          opacity: 0;
+        }
+      }
+      @keyframes bn {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.5;
+        }
+        30% {
+          transform: translateY(-4px);
+          opacity: 1;
+        }
+      }
+      @keyframes bk {
+        50% {
+          opacity: 0;
+        }
+      }
+      @keyframes pl {
+        50% {
+          opacity: 0.35;
+        }
+      }
+      @keyframes pr {
+        40% {
+          transform: scale(0.86);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card" aria-label="Chat with customer support AI assistant">
+      <div class="hd">
+        <div class="lg" aria-hidden="true">
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M4 14v-2a8 8 0 0 1 16 0v2" />
+            <path d="M4 14a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1v-5H4Z" />
+            <path d="M20 14a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-1v-5h1Z" />
+            <path d="M12 18v2a2 2 0 0 0 2 2h2" />
+          </svg>
+        </div>
+        <div class="t">
+          <b>AI Assistant</b>
+          <i class="dot" aria-hidden="true"></i>
+        </div>
+        <i class="min" aria-hidden="true"></i>
+      </div>
+      <div class="bd" id="bd" role="log" aria-live="polite"></div>
+      <div class="ft">
+        <div class="in">
+          <div class="tx" id="tx" aria-hidden="true"></div>
+          <div class="snd" id="snd" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path
+                d="M9 15.5V3.5M4 8.5l5-5 5 5"
+                stroke="#fff"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+        <div class="pw">Powered by DD Software Solutions Inc.</div>
+      </div>
+    </main>
+    <script>
+      (function () {
+        var M = [
+          [
+            "u",
+            "Hi! We run a small logistics company and lose hours to manual reporting. Can AI help?",
+          ],
+          [
+            "a",
+            "Yes, definitely. We can connect AI to the systems you already use, automate the reports, and flag problems early. First, we map where your team loses the most time.",
+          ],
+          [
+            "u",
+            "That sounds good. Would it work with our current software, or would we need to replace it?",
+          ],
+          [
+            "a",
+            "No replacement needed. We integrate AI with your existing apps and APIs. Want to book a 30-minute consultation to walk through your setup?",
+          ],
+        ];
+        var bd = document.getElementById("bd"),
+          tx = document.getElementById("tx"),
+          snd = document.getElementById("snd");
+        var rm = matchMedia("(prefers-reduced-motion:reduce)").matches,
+          run = 0;
+        var sl = function (ms) {
+          return new Promise(function (r) {
+            setTimeout(r, ms);
+          });
+        };
+        function el(c, t) {
+          var e = document.createElement("div");
+          e.className = c;
+          if (t) e.textContent = t;
+          return e;
+        }
+        function down() {
+          bd.scrollTo({
+            top: bd.scrollHeight,
+            behavior: rm ? "auto" : "smooth",
+          });
+        }
+        function row(k, who) {
+          var r = el("r " + k);
+          if (who) r.appendChild(el("who", who));
+          bd.appendChild(r);
+          return r;
+        }
+        function words(t) {
+          var b = el("b"),
+            s = [];
+          t.split(" ").forEach(function (w, i, a) {
+            var x = document.createElement("span");
+            x.className = "w";
+            x.textContent = w + (i < a.length - 1 ? " " : "");
+            b.appendChild(x);
+            s.push(x);
+          });
+          return { b: b, s: s };
+        }
+        async function play() {
+          var id = ++run;
+          bd.innerHTML = "";
+          bd.style.opacity = 1;
+          tx.textContent = "";
+          if (rm) {
+            bd.appendChild(el("ts", "Today, 10:24 AM"));
+            M.forEach(function (m) {
+              var r = row(m[0], m[0] === "a" ? "DD Assistant" : "");
+              var w = words(m[1]);
+              w.s.forEach(function (x) {
+                x.classList.add("on");
+              });
+              r.appendChild(w.b);
+            });
+            return;
+          }
+          await sl(700);
+          if (id !== run) return;
+          bd.appendChild(el("ts", "Today, 10:24 AM"));
+          await sl(900);
+          for (var i = 0; i < M.length; i++) {
+            var m = M[i];
+            if (id !== run) return;
+            if (m[0] === "u") {
+              tx.classList.add("ty");
+              for (var c = 1; c <= m[1].length; c++) {
+                tx.textContent = m[1].slice(0, c);
+                tx.scrollLeft = tx.scrollWidth;
+                await sl(24);
+                if (id !== run) return;
+              }
+              await sl(450);
+              snd.classList.add("go");
+              await sl(180);
+              tx.classList.remove("ty");
+              tx.textContent = "";
+              snd.classList.remove("go");
+              var r = row("u");
+              var w = words(m[1]);
+              w.s.forEach(function (x) {
+                x.classList.add("on");
+              });
+              r.appendChild(w.b);
+              down();
+              await sl(900);
+            } else {
+              var r2 = row("a", "DD Assistant"),
+                d = el("b"),
+                dots = el("dots");
+              dots.innerHTML = "<i></i><i></i><i></i>";
+              d.appendChild(dots);
+              r2.appendChild(d);
+              down();
+              await sl(1300);
+              if (id !== run) return;
+              var w2 = words(m[1]);
+              r2.replaceChild(w2.b, d);
+              down();
+              for (var k = 0; k < w2.s.length; k++) {
+                w2.s[k].classList.add("on");
+                if (k % 6 === 5) down();
+                await sl(70);
+                if (id !== run) return;
+              }
+              await sl(1000);
+            }
+          }
+          await sl(5000);
+          if (id !== run) return;
+          bd.style.opacity = 0;
+          await sl(600);
+          if (id !== run) return;
+          play();
+        }
+        play();
+      })();
+    </script>
+  </body>
+</html>

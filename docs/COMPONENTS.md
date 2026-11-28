@@ -13,36 +13,55 @@ Audience: SMB owners and executives deciding whether a founder-led AI consultanc
 | Component | Purpose | Props | States | Source | Story |
 |---|---|---|---|---|---|
 | CloudflareWebAnalytics | Cookieless page-view beacon (FR-14); omitted when token unset | (none) | default \| disabled (no PUBLIC_CF_ANALYTICS_TOKEN) | `web/src/components/CloudflareWebAnalytics.astro` |  |
+| CustomerSupportDemo | Owner chat prototype embed for Customer Support use case (SITE-FR-17, D9) | (none) | idle, loaded, reduced-motion-static | `web/src/components/marketing/CustomerSupportDemo.astro` | docs/tools-ticker-use-cases/prototype/stories/use-cases-customer-support.html |
 | SiteLayout | Marketing site document shell with theme, styles, and scripts | title, description, skipTarget | default | `web/src/components/SiteLayout.astro` |  |
 | SiteMeta | Per-route document title and meta description for SEO | title, description | default | `web/src/components/SiteMeta.astro` |  |
+| ToolsTicker | Text-only marquee of integration tools inside Services (SITE-FR-16) | (none) | default, reduced-motion-static | `web/src/components/marketing/ToolsTicker.astro` | docs/tools-ticker-use-cases/prototype/stories/tools-ticker-default.html |
+| UseCaseDemoPlaceholder | Decorative abstract motion demo for non–Customer Support use cases (Q29) | variant | idle, active, reduced-motion-static | `web/src/components/marketing/UseCaseDemoPlaceholder.astro` | docs/tools-ticker-use-cases/prototype/stories/use-cases-default.html |
+| UseCaseStack | Four use-case rows with demo left and copy right (D4 layout) | (none) | default, row-idle, row-active, reduced-motion-static | `web/src/components/marketing/UseCaseStack.astro` | docs/tools-ticker-use-cases/prototype/stories/use-cases-default.html |
 
 ## Tokens
 
 | Token | Value |
 |---|---|
-| `color.brand.deep-blue` | #1E40AF |
-| `color.brand.cyan` | #06B6D4 |
-| `color.brand.silver` | #94A3B8 |
+| `color.brand.deep-blue` | #187080 |
+| `color.brand.cyan` | #187080 |
 | `color.brand.white` | #FFFFFF |
 | `color.text.primary` | #0B1746 |
 | `color.text.secondary` | #475569 |
 | `color.text.inverse` | #FFFFFF |
-| `color.text.link` | #1E40AF |
+| `color.text.link` | #187080 |
 | `color.surface.ground` | #F8FAFC |
 | `color.surface.card` | #FFFFFF |
 | `color.surface.navy` | #081F59 |
 | `color.surface.navy-950` | #0B1746 |
-| `color.theme-dark.text-primary` | #F8FAFC |
-| `color.theme-dark.text-secondary` | #94A3B8 |
-| `color.theme-dark.surface-ground` | #0B1746 |
-| `color.theme-dark.surface-card` | #081F59 |
-| `color.theme-dark.border-default` | #1E3A5F |
+| `color.theme-dark.text-primary` | #F5F5F5 |
+| `color.theme-dark.text-secondary` | #B3B3B3 |
+| `color.theme-dark.text-inverse` | #1A1A1A |
+| `color.theme-dark.text-link` | #E4E7E7 |
+| `color.theme-dark.surface-ground` | #252525 |
+| `color.theme-dark.surface-card` | #2F2F2F |
+| `color.theme-dark.surface-navy` | #1C1C1C |
+| `color.theme-dark.navy-950` | #252525 |
+| `color.theme-dark.navy-900` | #1C1C1C |
+| `color.theme-dark.border-default` | #404040 |
+| `color.theme-dark.border-input` | #5C5C5C |
+| `color.theme-dark.border-focus` | #E4E7E7 |
+| `color.theme-dark.brand-cyan` | #E4E7E7 |
+| `color.theme-dark.action-accent` | #E4E7E7 |
+| `color.theme-dark.brand-deep-blue` | #E4E7E7 |
+| `color.theme-dark.action-primary` | #E4E7E7 |
+| `color.theme-dark.action-primary-hover` | #F5F5F5 |
+| `color.theme-dark.status-success` | #86EFAC |
+| `color.theme-dark.status-success-bg` | #1E3328 |
+| `color.theme-dark.status-error` | #F87171 |
+| `color.theme-dark.status-error-bg` | #331F1F |
 | `color.border.default` | #E2E8F0 |
 | `color.border.input` | #94A3B8 |
-| `color.border.focus` | #1E40AF |
-| `color.action.primary` | #1E40AF |
-| `color.action.primary-hover` | #1D4ED8 |
-| `color.action.accent` | #06B6D4 |
+| `color.border.focus` | #187080 |
+| `color.action.primary` | #187080 |
+| `color.action.primary-hover` | #156570 |
+| `color.action.accent` | #187080 |
 | `color.status.success` | #15803D |
 | `color.status.success-bg` | #F0FDF4 |
 | `color.status.error` | #B91C1C |

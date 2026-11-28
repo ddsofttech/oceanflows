@@ -1,4 +1,5 @@
 # UX Brief
+<!-- budget: lines=100 chars=300 -->
 
 - Started by (design triggers confirmed at G1, or a design need with its source and screens):
 
@@ -7,7 +8,7 @@
 |---|---|---|---|---|
 
 ## B. Design system
-- Design system (the product's own, extracted from the existing UI, or for a new product or a new look: the human's own, Meridian, another house system, or a custom direction, recommended with why):
+- Design system (the product's own, extracted from the existing UI, or for a new product or a new look: the CodeIT Design System by default, or the one the human chooses, with why):
 - Visual identity (brand attributes, what the domain avoids, signature decisions, imagery; kept in the tokens file's `$description`):
 - Changes needed (tokens, components, states):
 

@@ -37,6 +37,17 @@ const description =
         schedule consultations. Analytics help us understand site usage in
         aggregate.
       </p>
+      <h2 style="font-size: 1.25rem; line-height: 1.75rem;">
+        Inquiry rate limiting
+      </h2>
+      <p style="font-size: 1rem; line-height: 1.5rem;">
+        To limit abuse, we count how many times each email address submits the
+        inquiry form per UTC calendar day (at most three per day). We do not
+        store your email address in plain text for this purpose; we keep a
+        one-way hash of the normalized address with a server-held secret. These
+        counters are retained only for the current UTC day and are removed at
+        midnight UTC.
+      </p>
       <h2 style="font-size: 1.25rem; line-height: 1.75rem;">Who receives it</h2>
       <p style="font-size: 1rem; line-height: 1.5rem;">
         Inquiries are sent to <code>{inquiryEmail}</code>. Cal.com processes

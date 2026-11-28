@@ -13,28 +13,28 @@ Playbook steps **S2.1, S2.3** (`designer`). Paths, gates, and routes come from y
 
 ## Input
 - The UX brief: tiers, questions, in-scope screens.
-- Approved PRD: users, jobs, rules, scenarios, acceptance criteria, and the accessibility targets.
+- This request's approved specs: users, jobs, rules, scenarios, acceptance criteria, and accessibility targets.
 - The UI catalog, `docs/COMPONENTS.md`: the visual identity, and the components and tokens to compose from.
 - The existing stories or screenshots of the screens being changed, and the design-review findings for a fix.
 
 ## Process
 **Ground the design**
 
-1. Name the product's subject, its primary user, and the one job each in-scope screen serves. Take them from the PRD; a missing answer is a finding, not a guess. Read the visual identity in the catalog: its attributes, signature decisions, imagery rules, and what the domain avoids.
+1. Name the product's subject, its primary user, and the one job each in-scope screen serves. Take them from the spec and the PRD; a missing answer is a finding, not a guess. Read the visual identity in the catalog: its attributes, signature decisions, imagery rules, and what the domain avoids.
 2. Use the real content of the domain throughout: real field names, plausible data, real lengths of names and numbers. Never lorem ipsum.
 
 **Plan each screen before building it**
 
 3. Write a one-sentence layout concept per screen and compare at least two options as rough wireframes (ASCII is enough): what the eye meets first, second, and third.
 4. Choose the alignment and grid, and the one element that carries the screen. Everything else stays quiet.
-5. Review the plan against the PRD and the screens beside it in the flow: if a screen reads like the layout any similar product would get, or repeats a neighbour's pattern (one card grid, one hero) for a different job, revise it and say what changed.
+5. Review the plan against the spec and the screens beside it in the flow: if a screen reads like the layout any similar product would get, or repeats a neighbour's pattern (one card grid, one hero) for a different job, revise it and say what changed.
 
 **Build with the design system**
 
 6. Compose from the catalog's components and tokens only, and let the identity's signature decisions show on every changed screen. Hierarchy comes from scale, weight, spacing, and position before color.
 7. Structure is information: borders, dividers, numbering, labels, and cards must encode something about the content. Use numbered markers only for a real sequence.
 8. Typography: keep lines under about 80 characters, use the system's type scale, and do not accent single words in headings.
-9. Design every state the PRD scenarios name: loading, empty, partial, error, success, permission denied, and long or missing data. Empty states invite the next action.
+9. Design every state the spec's scenarios name: loading, empty, partial, error, success, permission denied, and long or missing data. Empty states invite the next action.
 10. Motion only to show what a user action changed (open, expand, confirm, remove). Animate transform and opacity, not size or position. At most one orchestrated moment per flow; no decorative entrance on every section.
 11. Imagery, in the identity's style:
     - an image, illustration, or icon appears only where it carries content: the product itself, the user's own data, or something the user must recognise;
@@ -50,7 +50,7 @@ Playbook steps **S2.1, S2.3** (`designer`). Paths, gates, and routes come from y
 
 **Avoid the defaults**
 
-13. Unless the PRD or design system asks for them, do not spend free choices on generated-looking defaults:
+13. Unless the spec, the PRD, or the design system asks for them, do not spend free choices on generated-looking defaults:
     - cream or beige page grounds; keep light surfaces white or neutral and put color on actions and accents;
     - a framework's default palette left unchanged; near-black ground with one acid accent; purple-to-blue or purple-to-pink gradient washes;
     - identical rounded cards with the same soft shadow, one radius on everything, gradients as decoration; glass, neumorphic, or glow effects as decoration;
@@ -77,7 +77,7 @@ Playbook steps **S2.1, S2.3** (`designer`). Paths, gates, and routes come from y
 - [ ] Every changed screen has a stated job and a layout concept chosen from options, not repeated from a neighbour with a different job
 - [ ] The identity's signature decisions are visible; imagery carries content and follows step 11
 - [ ] Only design-system components and tokens are used; gaps are recorded, not styled locally
-- [ ] Every PRD state for the in-scope flows is designed
+- [ ] Every state the spec names for the in-scope flows is designed
 - [ ] Copy is user-facing, consistent across the flow, and errors explain the fix
 - [ ] No unrequested default from step 13
 - [ ] Contrast, focus, keyboard, target size, and reduced motion pass

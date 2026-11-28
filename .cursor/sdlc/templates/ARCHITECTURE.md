@@ -1,7 +1,8 @@
 # Architecture
+<!-- budget: lines=120 chars=300 -->
 
 ## Metadata
-- PRD version:
+- PRD version and feature specs (IDs):
 - UX handoff (UX review note, UX brief, or S2 did not run):
 - Mode: greenfield or existing-repo
 - System architecture version (its last change-history row before this request):
@@ -10,7 +11,7 @@
 
 ## 1. Context
 - Constraints:
-- Non-functional requirements (PRD §7 IDs):
+- Non-functional requirements (feature spec §4 IDs) and PRD constraints:
 - Integration points:
 - Binding UX constraints and simulations that must become real:
 

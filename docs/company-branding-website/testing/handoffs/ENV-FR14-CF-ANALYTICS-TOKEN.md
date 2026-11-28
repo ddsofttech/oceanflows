@@ -31,3 +31,29 @@ Production at https://oceanflows.net does not load the Cloudflare Web Analytics 
 
 - Full **FR-14** verification on production URL.
 - RP2 release test row for hosted analytics (not a frontend code defect).
+
+---
+
+## Devops answer (2026-11-26, H4 → D24)
+
+**Disposition:** **owner token claimed (D24)** — hosted FR-14 remains **blocked** until Workers Builds has `PUBLIC_CF_ANALYTICS_TOKEN` as a **Build** variable and a **new build** completes on production branch **`main`**.
+
+**Hosted beacon live?** **No** (as of 2026-11-26 post-D24). `curl https://oceanflows.net/`: no `static.cloudflareinsights.com/beacon.min.js`, no `data-cf-beacon` in HTML.
+
+**What was checked**
+
+| Check | Result |
+|---|---|
+| Live HTML | Beacon absent |
+| Owner (D24) | **`PUBLIC_CF_ANALYTICS_TOKEN` set**; **production Git branch `main`** (not `release/company-branding-website`) |
+| GitHub Actions secrets (`gh secret list`, prior) | `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` only — add `PUBLIC_CF_ANALYTICS_TOKEN` if using `web-deploy.yml` |
+| Deploy path | **Workers Builds** on branch **`main`** per `delivery/SETUP-GUIDES.md` §A1; Astro inlines token only at build time (§A2 / §A6) |
+
+**Remaining owner / devops actions**
+
+1. Confirm **Workers Builds** → `oceanflows-company-site` → **Settings** → **Builds** → **Build variables and secrets** includes `PUBLIC_CF_ANALYTICS_TOKEN` (not runtime-only).
+2. **Redeploy** from `main` (Retry deployment or merge that triggers Builds).
+3. Optional: GitHub **Settings** → **Secrets** → Actions → `PUBLIC_CF_ANALYTICS_TOKEN` for `.github/workflows/web-deploy.yml`.
+4. Notify QA to rerun hosted FR-14: beacon in page source + network request; no new analytics cookies.
+
+**Devops follow-up (PR `cbw-devops-02`):** `delivery/SETUP-GUIDES.md` aligned with D24 (`main`, FR-14); deploy workflow runs placeholder + env checks when secrets exist.

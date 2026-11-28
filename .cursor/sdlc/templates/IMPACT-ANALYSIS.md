@@ -1,4 +1,5 @@
 # Existing-System Impact Analysis
+<!-- budget: lines=50 chars=300 -->
 
 ## 1. Feature summary and baseline
 - Intended outcome:

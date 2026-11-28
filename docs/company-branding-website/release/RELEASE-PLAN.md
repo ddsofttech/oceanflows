@@ -4,6 +4,139 @@ Request: `company-branding-website`. One section per release point, newest first
 
 ---
 
+## Release point RP2
+
+- **Slice parts included:** `cbw-fe-04`, `cbw-devops-02`
+- **Release candidate (commit or build):** `12bf29b361e6a0acc2469f17ae17830d02f63176` (PR #12 merge to `main` — integrates `cbw-fe-04` + `cbw-devops-02`)
+- **QA sign-off (G6 decision):** D26 Approve (2026-11-26) — “approve”; known issues per `docs/company-branding-website/testing/reports/RP2.md`
+
+### Release notes
+
+- **User-facing:** Production site at `https://oceanflows.net` with owner booking link (Cal.com), cookieless Cloudflare Web Analytics, enforced HTTPS, and production placeholder guards (no `[TOKEN]` in public HTML).
+- **Technical:**
+  - `cbw-fe-04`: FR-14 beacon (`beacon.min.js` + `data-cf-beacon`) on home, privacy, and 404 when `PUBLIC_CF_ANALYTICS_TOKEN` is set at build time.
+  - `cbw-devops-02`: `scripts/check-production-env.ts`, `web-deploy-production` workflow with env validation; HTTP→HTTPS **301** on apex (NFR-06); owner `PUBLIC_*` at Workers Builds / GitHub Action build.
+  - **Staging / soak host:** `https://oceanflows.net` (production custom domain — no separate staging URL; same pattern as RP1).
+  - **Deploy path:** GitHub Actions `.github/workflows/web-deploy.yml` (`web-deploy-production`); Workers Builds disconnected per `delivery/SETUP-GUIDES.md` §A1. Last successful production deploy: run [45879006142](https://github.com/ddsofttech/oceanflows/actions/runs/45879006142) @ RC `12bf29b3` (2026-11-26, `workflow_dispatch`).
+- **Known issues accepted at G6:** FR-07 (live Resend inbox not proven); SR-01/SR-02 (G5 disposition); FR-03/FR-05/NFR-07/FR-11 owner content and privacy draft; `www` not in DNS; E5/NFR-04 reduced-motion not run; TM-12 edge rate-limit burst not run — per `testing/reports/RP2.md`.
+
+### Rollout
+
+1. **Scope:** RP2 formal production configuration on `https://oceanflows.net` (G7 production go-live).
+2. **Prerequisite (G6 / env handoffs):** H4/H6/H7 closed (analytics token, owner booking URL, Always Use HTTPS). GitHub secrets `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, owner `PUBLIC_*` for Action deploys when used.
+3. **Already completed (G6 evidence):** PR #12 merged; post-merge `web-ci` [45871048785](https://github.com/ddsofttech/oceanflows/actions/runs/45871048785) success @ `12bf29b3`; QA production soak pass `testing/reports/RP2.md`.
+4. **S6.2 devops verify:** See staging section below — **Pass** (2026-11-26 UTC, **verify-only** — production already at RC `12bf29b3`; no redeploy).
+5. **Migrations, in order:** None.
+6. **Feature flags and their default:** None; production guard via build env + `check:placeholders`.
+
+### Rollback
+
+- Rollback criteria (concrete signals and thresholds): Home or `/privacy` returns 5xx for more than 5 minutes after an RP2-tagged deploy; browser certificate error on apex; HTTP apex stops redirecting to HTTPS; inquiry API sustained 5xx on valid submissions; production HTML shows bracket placeholders or generic `https://cal.com` booking; or FR-14 beacon missing on primary pages while token is configured at build.
+  - Home or `/privacy` returns 5xx for more than 5 minutes after an RP2-tagged deploy; or
+  - Browser certificate error on `oceanflows.net`; or
+  - HTTP apex stops redirecting to HTTPS (serves 200 on cleartext without 301); or
+  - Inquiry API sustained 5xx on valid submissions during soak; or
+  - Production HTML shows bracket placeholders (`[...]`) or generic `https://cal.com` booking target; or
+  - FR-14 regression: beacon missing on all primary pages while token is configured at build.
+- **Rollback steps:**
+  1. Cloudflare dashboard → Worker `oceanflows-company-site` → **Deployments** → promote previous active version (pre–RP2 or last known-good).
+  2. If rollback target is git-defined: revert merge on `main` via PR and run `web-deploy-production` with prior RC secrets, or re-run last successful deploy workflow on prior SHA.
+  3. If DNS/custom-domain or HTTPS misconfiguration: repair **SSL/TLS → Edge Certificates** / **Always Use HTTPS** and Worker **Domains & Routes**; do not patch app code outside PR process.
+  4. Notify orchestrator; record incident if customer traffic impacted during rollback window.
+- **Rollback tested:** **no** — dashboard / workflow promote only; acceptable for RP2 first prod go-live. **Pointer:** this Rollback subsection.
+
+### Staging verification (S6.2)
+
+- **Date:** 2026-11-26 (UTC)
+- **Target URL:** `https://oceanflows.net`
+- **Method:** **Verify-only** — no deploy. Production already serving RC `12bf29b3` (deploy run [45879006142](https://github.com/ddsofttech/oceanflows/actions/runs/45879006142)). `npm run smoke:production` (`web/scripts/smoke-production-url.sh`); `curl` with browser UA; TLS via `openssl s_client`; DNS via `dig @1.1.1.1`.
+- **Result:** **Staging verification — Pass** (RP2 soak host green).
+
+**Evidence (authoritative for S6.2):**
+
+| Check | Result | Evidence |
+|---|---|---|
+| Deploy at RC | **pass** | `web-deploy-production` run 45879006142 **success**, `headSha` = `12bf29b361e6a0acc2469f17ae17830d02f63176` |
+| `smoke:production` | **pass** | Exit 0 @ 2026-11-26 — HTTPS home OK; HTTP→HTTPS redirect confirmed |
+| DNS apex | **pass** | `A` → `104.21.8.238`, `172.67.158.30`; `AAAA` Cloudflare anycast |
+| NFR-06 HTTP→HTTPS | **pass** | `curl -sI http://oceanflows.net/` → **301** `Location: https://oceanflows.net/` |
+| HTTPS home | **pass** | **HTTP 200**, `ssl_verify_result=0`; cert `CN=oceanflows.net`, GTS WE1, valid 2026-11-26 → 2027-02-24 |
+| `/privacy/` | **pass** | **HTTP 200**; copy mentions “Cloudflare Web Analytics, which does not use cookies” |
+| FR-14 beacon | **pass** | `beacon.min.js` + `data-cf-beacon` on `/`, `/privacy/`, 404 HTML |
+| FR-12 / 404 | **pass** | `GET /does-not-exist-rp2-smoke` → **404**; `primary-nav` present; beacon on 404 page |
+| D3 booking | **pass** | `href="https://cal.com/young-dang/30min"` on home HTML |
+| BR-09 placeholders | **pass** | No bracket tokens in sampled home HTML (QA + smoke script) |
+| Contact / inquiry API | **pass** | `POST /api/inquiry` `{}` → **400** `validation_failed` (handler reachable) |
+| DNS `www.oceanflows.net` | **N/A** | No apex `www` in DNS — non-blocking carry-forward from RP1 |
+| QA RC corroborating | **pass** | `testing/reports/RP2.md` — 29/29 unit, 18/18 e2e @ RC; material ACs pass on production |
+
+### Staging checklist
+
+Mapped to RP2 material ACs + RP1 regression smoke; **hosted column green** (2026-11-26).
+
+| Check (smoke set mapped to AC IDs) | Result | Evidence |
+|---|---|---|
+| NFR-06 — HTTPS enforced | pass | HTTP 301 → HTTPS; TLS 200 on apex |
+| FR-14 — cookieless analytics beacon | pass | Beacon on home, privacy, 404 |
+| BR-09 — no placeholders in HTML | pass | `smoke:production` + live HTML |
+| D2/D3/D6 — domain, booking, env | pass | `https://oceanflows.net` 200; owner Cal.com link |
+| FR-01–05 — home marketing content | pass | 200; sections and CTAs in HTML |
+| FR-11 — `/privacy` loads | pass | 200 |
+| FR-12 — 404 + nav | pass | 404 smoke path with `primary-nav` |
+| FR-06–08 — inquiry form / API edge | pass | Form on site; API 400 validation |
+| TM-04 — no secrets in artifact | pass | CI `gate / secrets` on merge (QA) |
+| Playwright integrated (local RC) | pass | QA 18/18 @ `12bf29b3` |
+
+**S6.2 outcome:** **Pass** — verify-only; production already at RP2 RC. **Non-blocking:** `www` not published; FR-07/TM-12/NFR-04/owner content per G6 acceptance.
+
+### Observation
+
+- **Dashboards and alerts:** Cloudflare Worker `oceanflows-company-site` deploy status; GitHub Actions `web-ci` and `web-deploy-production` on `main`; Cloudflare Web Analytics (FR-14) for traffic after go-live.
+- **KPIs to watch (PRD §3 IDs):** O5 inquiry/booking — site reachable, booking link live; O1–O4 owner content still pending human review; FR-07 live Resend delivery still not proven in QA.
+- **Observation window:** **48h soak** after **G7 Go (D27)** — **start:** `2026-11-26T20:11:00Z`; **end:** `2026-11-28T20:11:00Z`; **owner:** `devops` + human spot-check; **status:** **started** (S7.1 initial snapshot below).
+- **S7.1 initial snapshot (2026-11-26T20:15:00Z):** Release **RP2** @ RC `12bf29b3`. **Redeploy:** not required (confirm-only S6.4). Reachability: `https://oceanflows.net/` → **HTTP 200**; `http://oceanflows.net/` → **301** → HTTPS; `/privacy/` → **200**; FR-14 **beacon** on home, privacy, 404; booking `https://cal.com/young-dang/30min`; **no bracket placeholders**; `POST /api/inquiry` `{}` → **400** `validation_failed`; 404 smoke path with `primary-nav`. `npm run smoke:production` exit **0**. **Incidents:** none.
+
+### Go decision (G7) — RP2 production go-live
+
+RP2 G7 asks the human for **Go** to mark **production released** at RC `12bf29b3`. Production traffic already reflects this RC from Workers Builds + manual Action deploy; **S6.4 on Go is record-and-confirm** unless drift is found (no unnecessary redeploy).
+
+**G7 package (S6.3 input):**
+
+| Field | Value |
+|---|---|
+| **Recommendation** | **Go** |
+| **Staging (S6.2)** | **Pass** (2026-11-26 UTC, verify-only) |
+| **Rationale** | G6 D26 approved RP2 with known issues documented in QA. Devops S6.2: apex on Cloudflare; **HTTP 301 → HTTPS**; **HTTPS 200** on home and privacy; FR-14 **beacon** on primary pages; owner **booking URL** on home; smoke 404 with nav; **`POST /api/inquiry` reachable**. Deploy evidence: Action run 45879006142 **success** @ RC `12bf29b3` — no redeploy required for staging. Rollback plan recorded above. QA: 29/29 unit, 18/18 e2e; material RP2 ACs **pass** on production. |
+| **Residual (accepted at G6 — not waived by devops)** | FR-07 live Resend; SR-01/SR-02; owner content FR-03/05/NFR-07/FR-11; `www` DNS; NFR-04 reduced-motion; TM-12 burst — owners per `testing/reports/RP2.md`. |
+| **On Approve (Go)** | Orchestrator marks RP2 **Released** on `https://oceanflows.net`; start 48h observation (S7.1). **S6.4:** confirm production remains @ `12bf29b3` (re-run smoke or promote only if drift). |
+| **On Hold** | New regression on soak host (5xx, cert error, beacon/HTTPS/booking/placeholder regression) — devops reruns S6.2 and refreshes this package. |
+| **On No-go** | Roll back Worker per Rollback section; park formal prod release until RC reconfirmed. |
+
+**Rollback plan pointer:** RP2 → Rollback subsection above (Worker deployment promote; HTTPS/DNS repair; git revert + redeploy if needed).
+
+- **G7 decision:** **Go** — **D27** (2026-11-26) — mark RP2 **Released** @ `12bf29b3` on `https://oceanflows.net`; S6.4 confirm-only; start 48h observation. Verbatim archive: orchestrator `DECISION-LOG.md` (not written by devops).
+
+### Deploy record
+
+| Environment | Date | Version | Result | Rollback run? |
+|---|---|---|---|---|
+| Cloudflare Worker (production apex) | 2026-11-26 | `12bf29b3` (RC) | **Deployed** — Action [45879006142](https://github.com/ddsofttech/oceanflows/actions/runs/45879006142) success | N/A |
+| Staging verify (S6.2) | 2026-11-26 | `12bf29b3` | **Pass** — verify-only; smoke + curl evidence | N/A |
+| Production (S6.4) | 2026-11-26 | `12bf29b3` | **Confirmed** — health re-verified; **no redeploy** (drift none vs RC `12bf29b361e6a0acc2469f17ae17830d02f63176`) | N/A |
+
+### Release status
+
+| Field | Value |
+|---|---|
+| S6.1 | Complete — this section |
+| S6.2 | Complete — **Pass** (verify-only); evidence 2026-11-26 |
+| S6.3 / G7 | **Complete** — **Go** (D27, 2026-11-26); RP2 **Released** on `https://oceanflows.net` @ `12bf29b3` |
+| S6.4 production | **Complete** — confirm-only @ `12bf29b3`; health pass 2026-11-26T20:15Z |
+| S7.1 observation | **In progress** — window `2026-11-26T20:11:00Z` → `2026-11-28T20:11:00Z` |
+| **Board: release status** | **Released** (RP2) — orchestrator synced per D27 |
+
+---
+
 ## Release point RP1
 
 - **Slice parts included:** `cbw-fe-01`, `cbw-be-01`, `cbw-fe-02`, `cbw-fe-03`
@@ -16,7 +149,7 @@ Request: `company-branding-website`. One section per release point, newest first
 - **Technical:**
   - Astro 5 on `@astrojs/cloudflare`; inquiry API via Worker runtime; CI `web-ci` on feature merges.
   - Hosted target **accepted at G6:** `https://oceanflows.net` (production custom domain used as RP1 soak host; RP2 still covers analytics, placeholder guard, and formal production sign-off per IMPLEMENTATION-PLAN).
-  - Deploy path: Cloudflare **Worker application** `oceanflows-company-site` (Workers Builds / `npx wrangler deploy`); see `delivery/CLOUDFLARE-PAGES-SETUP.md`.
+  - Deploy path: Cloudflare **Worker application** `oceanflows-company-site` (Workers Builds / `npx wrangler deploy`); see `delivery/SETUP-GUIDES.md`.
 - **Known issues accepted at G6:** SR-01 (rate-limit residual), SR-02 (subject CRLF), FR-07/Resend live inbox not proven in QA, owner content sign-off gaps (FR-03/05/NFR-07), G3 waivers — per `testing/reports/RP1.md`.
 
 ### Rollout
@@ -140,14 +273,14 @@ RP1 uses G7 to **accept `https://oceanflows.net` as the RP1 release host** and m
 - **Technical:**
   - Adds `web/` Astro 5 scaffold with `@astrojs/cloudflare`, `wrangler.toml`, env examples, placeholder guard script.
   - Adds `.github/workflows/web-ci.yml` (engineering-standard PR gates) and `web-deploy.yml` (production deploy workflow; secrets not yet wired).
-  - Documents Cloudflare setup in `docs/company-branding-website/delivery/CLOUDFLARE-PAGES-SETUP.md`.
+  - Documents Cloudflare setup in `docs/company-branding-website/delivery/SETUP-GUIDES.md`.
 - **Known issues accepted at G6:** None (Important/Blocking). Open **environment handoff H2**: Cloudflare Pages project / API credentials not yet provisioned by owner — does not block RP0 closure; blocks hosted preview deploy and RP1 staging soak on Cloudflare.
 
 ### Rollout
 
 1. **Scope:** Git-only + CI. No production or customer-facing URL for RP0.
 2. **Already completed (G6 evidence):** Merge `cbw-devops-01`; verify `web-ci` success on RC `05ec0c5` ([run 45694850445](https://github.com/ddsofttech/oceanflows/actions/runs/45694850445)).
-3. **Optional (blocked on H2):** First Cloudflare Pages preview or project-linked build — owner completes `delivery/CLOUDFLARE-PAGES-SETUP.md` and GitHub secrets `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` (or dashboard Git integration). **Not required to mark RP0 released.**
+3. **Optional (blocked on H2):** First Cloudflare Pages preview or project-linked build — owner completes `delivery/SETUP-GUIDES.md` and GitHub secrets `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` (or dashboard Git integration). **Not required to mark RP0 released.**
 4. **Migrations, in order:** None.
 5. **Feature flags and their default:** None.
 

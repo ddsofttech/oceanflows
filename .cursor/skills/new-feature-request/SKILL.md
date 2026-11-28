@@ -13,11 +13,11 @@ Playbook step **S7.4** (`devops`). Paths, gates, and routes come from your step 
 ## Input
 - Request text, or the approved follow-ups from the post-release review.
 - Corrective flag, when G8 rejected the release outcome.
-- The latest PRD and the prior request's decision log.
+- The PRD's feature index, the spec of the feature concerned, and the prior request's decision log.
 
 ## Process
 1. Write the request as a problem and desired outcome, not a solution.
-2. Link it to the latest PRD and the evidence that triggered it (incident, metric, defect, feedback).
+2. Link it to the feature it concerns (its feature ID), or say it is a new feature, and to the evidence that triggered it (incident, metric, defect, feedback).
 3. Mark corrective work as such, with its severity.
 4. Return the package to the orchestrator, which takes it in with `intake-and-routing`.
 

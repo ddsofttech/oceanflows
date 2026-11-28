@@ -1,4 +1,5 @@
 # Engineering Standards
+<!-- budget: lines=100 chars=300 -->
 
 ## Metadata
 - Stack:

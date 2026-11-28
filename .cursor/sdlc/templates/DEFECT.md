@@ -1,4 +1,5 @@
 # <Defect ID>: <one-line title>
+<!-- budget: lines=30 chars=300 -->
 
 Used when no issue store is connected; an issue store uses the same fields.
 

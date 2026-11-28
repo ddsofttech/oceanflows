@@ -13,7 +13,7 @@ Playbook step **S3.1** (`security-engineer`, consulted by `architect`). Paths, g
 
 ## Input
 - The draft architecture: data flows, contracts, data model, deployment; the system architecture's containers, components, and trust boundaries.
-- PRD security, privacy, and compliance requirements; data the product holds.
+- Security, privacy, and compliance requirements in this request's specs, and the PRD's constraints; data the product holds.
 - The existing threat model or security review history, if any.
 
 ## Process

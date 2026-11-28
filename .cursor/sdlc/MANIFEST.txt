@@ -16,14 +16,13 @@
 .cursor/sdlc/scripts/clean-worktrees.py
 .cursor/sdlc/scripts/sdlc-check.py
 .cursor/sdlc/scripts/ui-catalog.py
-.cursor/sdlc/templates/ACCEPTANCE-CRITERIA.md
 .cursor/sdlc/templates/ARCHITECTURE.md
 .cursor/sdlc/templates/BOARD.md
-.cursor/sdlc/templates/BUSINESS-RULES-AND-SCENARIOS.md
 .cursor/sdlc/templates/CHANGE-REQUEST.md
 .cursor/sdlc/templates/DECISION-LOG.md
 .cursor/sdlc/templates/DEFECT.md
 .cursor/sdlc/templates/ENGINEERING-STANDARDS.md
+.cursor/sdlc/templates/FEATURE-SPEC.md
 .cursor/sdlc/templates/FINDING-NOTES.md
 .cursor/sdlc/templates/IMPACT-ANALYSIS.md
 .cursor/sdlc/templates/IMPLEMENTATION-PLAN.md
@@ -32,7 +31,6 @@
 .cursor/sdlc/templates/PRD.md
 .cursor/sdlc/templates/PULL-REQUEST.md
 .cursor/sdlc/templates/RELEASE-PLAN.md
-.cursor/sdlc/templates/REQUIREMENTS-ANALYSIS.md
 .cursor/sdlc/templates/SECURITY-REVIEW.md
 .cursor/sdlc/templates/SYSTEM-ARCHITECTURE.md
 .cursor/sdlc/templates/TEST-PLAN.md

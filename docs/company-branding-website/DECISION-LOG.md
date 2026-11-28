@@ -5,4 +5,4 @@ One row per human decision, answer, or routing event, oldest first. `sdlc-check.
 | ID | Date | Gate | Step | Decision | Subject | Human's words (verbatim) | By | Notes |
 |---|---|---|---|---|---|---|---|---|
 
-Rows through D23 (RP1 G7 Go) archived in `decisions/RP1.md`. Next ID: **D24**.
+Rows through D27 (RP2 G7 Go) archived in `decisions/RP2.md`. Next ID: **D28**.

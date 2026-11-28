@@ -2,6 +2,8 @@
 import BookingPanel from "../BookingPanel.astro";
 import ContactDetails from "../ContactDetails.astro";
 import InquiryForm from "../InquiryForm.astro";
+import ToolsTicker from "./ToolsTicker.astro";
+import UseCaseStack from "./UseCaseStack.astro";
 import { publicSiteConfig } from "../../lib/public-site";
 
 const site = publicSiteConfig();
@@ -15,7 +17,7 @@ const site = publicSiteConfig();
   <div class="hero-banner__art" aria-hidden="true">
     <img
       class="hero-banner__art-img hero-banner__art-img--light"
-      src="/assets/banners/light_banner.svg?v=8"
+      src="/assets/banners/light_banner.svg?v=11"
       width="1200"
       height="400"
       alt=""
@@ -23,7 +25,7 @@ const site = publicSiteConfig();
     />
     <img
       class="hero-banner__art-img hero-banner__art-img--dark"
-      src="/assets/banners/dark_banner.svg?v=8"
+      src="/assets/banners/dark_banner.svg?v=9"
       width="1200"
       height="400"
       alt=""
@@ -32,27 +34,46 @@ const site = publicSiteConfig();
   </div>
   <div class="container hero-banner__inner">
     <div class="hero-banner__content">
-      <p class="hero-banner__eyebrow">AI consulting &amp; engineering</p>
+      <p class="hero-banner__eyebrow hero-reveal-step" style="--reveal-step: 0">
+        AI consulting &amp; engineering
+      </p>
       <h1 id="home-heading" class="hero-banner__brand-line">
-        Turn AI Opportunities Into Working Solutions.
+        <span
+          class="hero-banner__brand-line-part hero-reveal-step"
+          style="--reveal-step: 1">Turn AI Opportunities</span
+        >
+        <span
+          class="hero-banner__brand-line-part hero-reveal-step"
+          style="--reveal-step: 2">Into Working Solutions.</span
+        >
       </h1>
-      <p class="hero-banner__lead muted">
+      <p
+        class="hero-banner__lead muted hero-reveal-step"
+        style="--reveal-step: 3"
+      >
         We help businesses identify where AI creates value, design practical
         solutions, and integrate intelligent systems into everyday operations.
       </p>
-      <ul class="hero-banner__tags" aria-label="Focus areas">
+      <ul
+        class="hero-banner__tags hero-reveal-step"
+        style="--reveal-step: 4"
+        aria-label="Focus areas"
+      >
         <li>AI Strategy</li>
         <li>AI Integration</li>
         <li>Intelligent Automation</li>
       </ul>
-      <div class="hero-banner__actions">
+      <div
+        class="hero-banner__actions hero-reveal-step"
+        style="--reveal-step: 5"
+      >
         <a class="btn btn--primary" href="#contact">Book a consultation</a>
         <a class="btn btn--secondary" href="#use-cases">Explore use cases</a>
       </div>
     </div>
   </div>
 </section>
-<section id="services" class="section section--services">
+<section id="services" class="section section--services reveal-section">
   <div class="container">
     <div class="section-heading">
       <p class="label">Services</p>
@@ -273,7 +294,16 @@ const site = publicSiteConfig();
     </div>
   </div>
 </section>
-<section id="approach" class="section section--approach">
+<section
+  id="tools"
+  class="section section--tools reveal-section"
+  aria-label="Tools and platforms we build with and integrate"
+>
+  <div class="container">
+    <ToolsTicker />
+  </div>
+</section>
+<section id="approach" class="section section--approach reveal-section">
   <div class="container">
     <div class="section-heading">
       <p class="label">Approach</p>
@@ -311,7 +341,7 @@ const site = publicSiteConfig();
             proposing technology.
           </p>
           <div class="approach-stage__deliverable">
-            <p class="approach-stage__deliverable-label">You receive</p>
+            <p class="approach-stage__deliverable-label">Deliverable</p>
             <p class="approach-stage__deliverable-value">
               Opportunity assessment and prioritized use cases
             </p>
@@ -362,7 +392,7 @@ const site = publicSiteConfig();
             implementation scope.
           </p>
           <div class="approach-stage__deliverable">
-            <p class="approach-stage__deliverable-label">You receive</p>
+            <p class="approach-stage__deliverable-label">Deliverable</p>
             <p class="approach-stage__deliverable-value">
               Solution approach and integration plan
             </p>
@@ -403,7 +433,7 @@ const site = publicSiteConfig();
             environment.
           </p>
           <div class="approach-stage__deliverable">
-            <p class="approach-stage__deliverable-label">You receive</p>
+            <p class="approach-stage__deliverable-label">Deliverable</p>
             <p class="approach-stage__deliverable-value">
               Working integration in your environment
             </p>
@@ -435,7 +465,7 @@ const site = publicSiteConfig();
             handover.
           </p>
           <div class="approach-stage__deliverable">
-            <p class="approach-stage__deliverable-label">You receive</p>
+            <p class="approach-stage__deliverable-label">Deliverable</p>
             <p class="approach-stage__deliverable-value">
               Handover and guidance on measuring outcomes
             </p>
@@ -447,7 +477,7 @@ const site = publicSiteConfig();
 </section>
 <section
   id="use-cases"
-  class="section section--use-cases"
+  class="section section--use-cases reveal-section"
   aria-labelledby="use-cases-heading"
 >
   <div class="container">
@@ -461,93 +491,12 @@ const site = publicSiteConfig();
         person when judgment matters.
       </p>
     </div>
-    <ul class="use-case-grid">
-      <li class="use-case-card">
-        <img
-          class="use-case-card__media"
-          src="/assets/usecases/usecase-customer-support.jpg"
-          width="1536"
-          height="1024"
-          alt=""
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="use-case-card__body">
-          <p class="use-case-card__tag">Customer support</p>
-          <h3 class="use-case-card__title">Inquiry &amp; FAQ assistant</h3>
-          <p class="use-case-card__text">
-            Answer routine questions from approved FAQs and policies — hours,
-            shipping, returns — and escalate exceptions to your team.
-          </p>
-        </div>
-      </li>
-      <li class="use-case-card">
-        <img
-          class="use-case-card__media"
-          src="/assets/usecases/usecase-lead-qualification.jpg"
-          width="1536"
-          height="1024"
-          alt=""
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="use-case-card__body">
-          <p class="use-case-card__tag">Sales</p>
-          <h3 class="use-case-card__title">
-            Lead qualification &amp; follow-up
-          </h3>
-          <p class="use-case-card__text">
-            Score new website and email inquiries, draft a first response, and
-            route high-intent leads so nothing sits unanswered.
-          </p>
-        </div>
-      </li>
-      <li class="use-case-card">
-        <img
-          class="use-case-card__media"
-          src="/assets/usecases/usecase-internal-knowledge.jpg"
-          width="1536"
-          height="1024"
-          alt=""
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="use-case-card__body">
-          <p class="use-case-card__tag">Operations</p>
-          <h3 class="use-case-card__title">Internal knowledge assistant</h3>
-          <p class="use-case-card__text">
-            Let staff ask questions against SOPs, pricing sheets, and past
-            decisions — with links back to the source documents.
-          </p>
-        </div>
-      </li>
-      <li class="use-case-card">
-        <img
-          class="use-case-card__media"
-          src="/assets/usecases/usecase-workflow-automation.jpg"
-          width="1536"
-          height="1024"
-          alt=""
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="use-case-card__body">
-          <p class="use-case-card__tag">Automation</p>
-          <h3 class="use-case-card__title">
-            Booking &amp; follow-up workflows
-          </h3>
-          <p class="use-case-card__text">
-            Connect scheduling, reminders, and post-visit follow-ups so
-            appointments and next steps stay consistent without extra admin.
-          </p>
-        </div>
-      </li>
-    </ul>
+    <UseCaseStack />
   </div>
 </section>
 <section
   id="about"
-  class="section section--about"
+  class="section section--about reveal-section"
   aria-labelledby="about-heading"
 >
   <div class="container">
@@ -559,10 +508,10 @@ const site = publicSiteConfig();
     </div>
     <div class="about-intro">
       <p>
-        DD Software Solutions Inc. is an Alberta-based software and AI
-        consulting company founded in 2023. We help small and medium-sized
-        businesses solve practical business challenges through software
-        engineering, intelligent automation, and AI integration.
+        <strong>DD Software Solutions Inc.</strong> is an Alberta-based software and
+        AI consulting company founded in 2023. We help small and medium-sized businesses
+        solve practical business challenges through software engineering, intelligent
+        automation, and AI integration.
       </p>
       <p>
         With a foundation in software quality, enterprise applications,
@@ -622,7 +571,7 @@ const site = publicSiteConfig();
     </div>
   </div>
 </section>
-<section id="contact" class="section section--tight">
+<section id="contact" class="section section--tight reveal-section">
   <div class="container">
     <div class="section-heading">
       <p class="label">Contact</p>
