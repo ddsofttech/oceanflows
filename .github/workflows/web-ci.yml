@@ -5,9 +5,6 @@ on:
   push:
     branches:
       - main
-      - ux/company-branding-website
-      - release/tools-ticker-use-cases
-      - 'feature/**'
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
@@ -19,9 +16,6 @@ defaults:
 
 env:
   CI: true
-  WORKING_DIR: web
-  REQUEST: company-branding-website
-  BASE_BRANCH: origin/ux/company-branding-website
 
 jobs:
   format:
@@ -164,18 +158,10 @@ jobs:
         id: cov
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            BASE="${{ github.base_ref }}"
+            echo "branch=origin/${{ github.base_ref }}" >> "$GITHUB_OUTPUT"
           else
-            BASE="${{ github.ref_name }}"
+            echo "branch=origin/${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
           fi
-          case "$BASE" in
-            *tools-ticker-use-cases*)
-              echo "branch=origin/release/tools-ticker-use-cases" >> "$GITHUB_OUTPUT"
-              ;;
-            *)
-              echo "branch=origin/ux/company-branding-website" >> "$GITHUB_OUTPUT"
-              ;;
-          esac
       - run: |
           git fetch origin "${{ steps.cov.outputs.branch }}" || true
           diff-cover web/coverage/lcov.info \
